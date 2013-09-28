@@ -1,4 +1,6 @@
+bin
 *.class
+.metadata
 
 # Package Files #
 *.jar
