@@ -169,6 +169,14 @@ public class PostScript {
 				pop(DStack);
 				break;
 			default:
+				for (UserValue uv : map)
+				{
+					if (uv.getKey() == Elem[i])
+					{
+						Elem[i] = Double.toString(uv.getValue());
+						break;
+					}
+				}
 				DStack.push(Elem[i]);
 				break;
 			}
