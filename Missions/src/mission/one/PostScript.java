@@ -56,6 +56,64 @@ public class PostScript {
 	}
 	
 	/**
+	 * 
+	 * @post Teste si les deux premiers elements de la stack ne sont pas egaux
+	 */
+	public void ne(Stack s){
+		if(s.size()>=2){
+			boolean temp =s.pop()!=s.pop();
+			s.push(temp);
+		}
+	}
+	
+	/**
+	 * 
+	 * @post Teste si les deux premiers elements de la pile sont egaux
+	 */
+	public void eq(Stack s){
+		if(s.size()>=2){
+			boolean temp =s.pop()==s.pop();
+			s.push(temp);
+		}
+	}
+	
+	/**
+	 * @pre 
+	 * @post Echange la place des deux elements top de la stack
+	 */
+	public void exch(Stack s) {
+		if(s.size()>=2){
+			String temp1=(String) s.pop();
+			String temp2=(String) s.pop();
+			s.push(temp1);
+			s.push(temp2);
+		}
+	}
+	
+	/**
+	 * 
+	 * @post push une copie du top element
+	 */
+	public void dup(Stack s) {
+		if(s.isEmpty()!=true){
+			String temp= (String) s.peek();
+			s.push(temp);
+		}
+	}
+	
+	/**
+	 * 
+	 * @post pop le top element
+	 */
+	public String pop(Stack s) {
+		String temp="stackvide";
+		if(s.isEmpty()!=true){
+			temp=(String) s.pop();
+		}
+		return temp;
+	}
+	
+	/**
 	 * @pre The key to be defined and his value are in the stack s
 	 * @post Defines a symbol from the key and his value
 	 */
