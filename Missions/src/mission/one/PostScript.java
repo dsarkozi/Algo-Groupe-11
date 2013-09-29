@@ -1,9 +1,13 @@
 package mission.one;
 
+import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.Stack;
 
 public class PostScript {
 
+	private ArrayList<UserValue> map;
+	
 	/**
 	 * @pre
 	 * @post imprime le contenu de toute la pile s;
@@ -49,6 +53,18 @@ public class PostScript {
 	public void div(Stack s) {
 		double temp = (double) s.pop() / (double) s.pop();
 		s.push(temp);
+	}
+	
+	/**
+	 * @pre The key to be defined and his value are in the stack s
+	 * @post Defines a symbol from the key and his value
+	 */
+	public void def(Stack s) throws EmptyStackException
+	{
+		double value = (double) s.pop();
+		String key = (String) s.pop();
+		if (!key.startsWith("/")) return;
+		map.add(new UserValue(key.substring(1), value));
 	}
 
 	/**
@@ -99,5 +115,50 @@ public class PostScript {
 				break;
 			}
 		}
+	}
+	
+	private class UserValue
+	{
+		private String key;
+		private double value;
+		
+		public UserValue(String key, double value)
+		{
+			this.key = key;
+			this.value = value;
+		}
+
+		/**
+		 * @return the key
+		 */
+		public String getKey()
+		{
+			return key;
+		}
+
+		/**
+		 * @param key the key to set
+		 */
+		public void setKey(String key)
+		{
+			this.key = key;
+		}
+
+		/**
+		 * @return the value
+		 */
+		public double getValue()
+		{
+			return value;
+		}
+
+		/**
+		 * @param value the value to set
+		 */
+		public void setValue(int value)
+		{
+			this.value = value;
+		}
+
 	}
 }
