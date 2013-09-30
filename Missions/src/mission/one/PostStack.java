@@ -4,7 +4,7 @@ import java.util.EmptyStackException;
 
 public class PostStack <E>
 {
-	private Node first;
+	private Node top;
 	int size;
 	
 	/**
@@ -14,7 +14,7 @@ public class PostStack <E>
 	 */
 	public PostStack()
 	{
-		first = null;
+		top = null;
 		size = 0;
 	}
 	
@@ -40,8 +40,8 @@ public class PostStack <E>
 	
 	public void push(E object)
 	{
-		Node newNode = new Node(first, object);
-		first = newNode;
+		Node newNode = new Node(top, object);
+		top = newNode;
 		size++;
 		
 	}
@@ -58,7 +58,7 @@ public class PostStack <E>
 		{
 			throw new EmptyStackException();
 		}
-		return first.getObject();
+		return top.getObject();
 	}
 	
 	public E pop() throws EmptyStackException
@@ -67,8 +67,8 @@ public class PostStack <E>
 		{
 			throw new EmptyStackException();
 		}
-		E result = first.getObject();
-		first = first.getNext();
+		E result = top.getObject();
+		top = top.getNext();
 		size--;
 		return result;
 	}
