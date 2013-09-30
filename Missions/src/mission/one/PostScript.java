@@ -2,7 +2,6 @@ package mission.one;
 
 import java.util.ArrayList;
 import java.util.EmptyStackException;
-import java.util.Stack;
 
 public class PostScript {
 
@@ -12,54 +11,54 @@ public class PostScript {
 	 * @pre
 	 * @post imprime le contenu de toute la pile s;
 	 */
-	public void pstack(Stack s) {
-		for (int i = 0; i < s.size(); i++) {
+	public void pstack(PostStack<Double> s) {
+		for (int i = 0; i < s.getSize(); i++) {
 			System.out.println(s.get(i));
 		}
 	}
 
 	/**
 	 * @pre
-	 * @post remplace les deux premiers elements de la stack par leur somme
+	 * @post remplace les deux premiers elements de la PostStack par leur somme
 	 */
-	public void add(Stack s) {
-		double temp = (double) s.pop() + (double) s.pop();
+	public void add(PostStack<Double> s) {
+		double temp = s.pop() + s.pop();
 		s.push(temp);
 	}
 
 	/**
 	 * @pre
-	 * @post remplace les deux premiers elements de la stack par leur différence
+	 * @post remplace les deux premiers elements de la PostStack par leur différence
 	 */
-	public void sub(Stack s) {
-		double temp = (double) s.pop() - (double) s.pop();
+	public void sub(PostStack<Double> s) {
+		double temp = s.pop() - s.pop();
 		s.push(temp);
 	}
 
 	/**
 	 * @pre
-	 * @post remplace les deux premiers elements de la stack par leur
+	 * @post remplace les deux premiers elements de la PostStack par leur
 	 *       multiplication
 	 */
-	public void mul(Stack s) {
+	public void mul(PostStack<Double> s) {
 		double temp = (double) s.pop() * (double) s.pop();
 		s.push(temp);
 	}
 
 	/**
 	 * @pre
-	 * @post remplace les deux premiers elements de la stack par leur division
+	 * @post remplace les deux premiers elements de la PostStack par leur division
 	 */
-	public void div(Stack s) {
+	public void div(PostStack s) {
 		double temp = (double) s.pop() / (double) s.pop();
 		s.push(temp);
 	}
 	
 	/**
 	 * 
-	 * @post Teste si les deux premiers elements de la stack ne sont pas egaux
+	 * @post Teste si les deux premiers elements de la PostStack ne sont pas egaux
 	 */
-	public void ne(Stack s){
+	public void ne(PostStack s){
 		if(s.size()>=2){
 			boolean temp =s.pop()!=s.pop();
 			s.push(temp);
@@ -70,7 +69,7 @@ public class PostScript {
 	 * 
 	 * @post Teste si les deux premiers elements de la pile sont egaux
 	 */
-	public void eq(Stack s){
+	public void eq(PostStack s){
 		if(s.size()>=2){
 			boolean temp =s.pop()==s.pop();
 			s.push(temp);
@@ -79,9 +78,9 @@ public class PostScript {
 	
 	/**
 	 * @pre 
-	 * @post Echange la place des deux elements top de la stack
+	 * @post Echange la place des deux elements top de la PostStack
 	 */
-	public void exch(Stack s) {
+	public void exch(PostStack s) {
 		if(s.size()>=2){
 			String temp1=(String) s.pop();
 			String temp2=(String) s.pop();
@@ -94,7 +93,7 @@ public class PostScript {
 	 * 
 	 * @post push une copie du top element
 	 */
-	public void dup(Stack s) {
+	public void dup(PostStack s) {
 		if(s.isEmpty()!=true){
 			String temp= (String) s.peek();
 			s.push(temp);
@@ -105,7 +104,7 @@ public class PostScript {
 	 * 
 	 * @post pop le top element
 	 */
-	public String pop(Stack s) {
+	public String pop(PostStack s) {
 		String temp="stackvide";
 		if(s.isEmpty()!=true){
 			temp=(String) s.pop();
@@ -114,10 +113,10 @@ public class PostScript {
 	}
 	
 	/**
-	 * @pre The key to be defined and his value are in the stack s
+	 * @pre The key to be defined and his value are in the PostStack s
 	 * @post Defines a symbol from the key and his value
 	 */
-	public void def(Stack s) throws EmptyStackException
+	public void def(PostStack s) throws EmptyStackException
 	{
 		double value = (double) s.pop();
 		String key = (String) s.pop();
@@ -132,7 +131,7 @@ public class PostScript {
 	public void decode(String ligne) {
 		assert ligne != null : "argument String ligne == null.";
 		String Elem[] = ligne.split(" ");
-		Stack DStack = new Stack(); // TODO , initialiser comme dans la def.
+		PostStack DStack = new PostStack(); // TODO , initialiser comme dans la def.
 		for (int i = 0; i < Elem.length; i++) {
 			switch (Elem[i]) {
 			case "pstack":
