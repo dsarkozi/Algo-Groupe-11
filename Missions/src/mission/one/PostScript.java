@@ -1,38 +1,62 @@
 package mission.one;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.EmptyStackException;
 
 public class PostScript {
 
-	private ArrayList<UserValue> map;
+	private PostStack<String> stack;
+	private ArrayList<String> lines;
+	private String outputFile;
+	private ArrayList<UserValue> userValues;
 	
+	public PostScript()
+	{
+		lines = new ArrayList<String>();
+		userValues = new ArrayList<UserValue>();
+		stack = new PostStack<String>();
+		outputFile = "Result.txt";
+	}
+
 	/**
-	 * @pre
-	 * @post imprime le contenu de toute la pile s;
+	 * Provoque l'impression de toute la pile dans le fichier de sortie.
+	 * @pre  s != null
+	 * @post le contenu de la pile a ete imprime dans le fichier de sortie
+	 * 		 le cas echeant, l'interpretation de la ligne courante est a mesure de se poursuivre
 	 */
-	public void pstack(PostStack<Double> s) {
-		for (int i = 0; i < s.getSize(); i++) {
-			System.out.println(s.get(i));
+	public void pstack() throws IOException
+	{
+		String line = "";
+		if(!stack.isEmpty())
+		{
+			line = stack.get(0);
+			for (int i = 1; i < stack.getSize(); i++) {
+				(line.concat(" ")).concat(stack.get(i));
+			}
 		}
+		FileManager.writeInFile(outputFile, line);
 	}
 
 	/**
 	 * @pre
 	 * @post remplace les deux premiers elements de la PostStack par leur somme
 	 */
-	public void add(PostStack<Double> s) {
-		double temp = s.pop() + s.pop();
-		s.push(temp);
+	public void add()
+	{
+		double result = Double.parseDouble(stack.pop())
+				+ Double.parseDouble(stack.pop());
+		stack.push(Double.toString(result));
 	}
 
 	/**
 	 * @pre
 	 * @post remplace les deux premiers elements de la PostStack par leur différence
 	 */
-	public void sub(PostStack<Double> s) {
-		double temp = s.pop() - s.pop();
-		s.push(temp);
+	public void sub()
+	{
+		double result = Double.parseDouble(stack.pop())
+				- Double.parseDouble(stack.pop());
+		stack.push(Double.toString(result));
 	}
 
 	/**
@@ -40,88 +64,95 @@ public class PostScript {
 	 * @post remplace les deux premiers elements de la PostStack par leur
 	 *       multiplication
 	 */
-	public void mul(PostStack<Double> s) {
-		double temp = (double) s.pop() * (double) s.pop();
-		s.push(temp);
+	public void mul()
+	{
+		double result = Double.parseDouble(stack.pop())
+				* Double.parseDouble(stack.pop());
+		stack.push(Double.toString(result));
 	}
 
 	/**
 	 * @pre
 	 * @post remplace les deux premiers elements de la PostStack par leur division
 	 */
-	public void div(PostStack s) {
-		double temp = (double) s.pop() / (double) s.pop();
-		s.push(temp);
+	public void div()
+	{
+		double result = Double.parseDouble(stack.pop())
+				/ Double.parseDouble(stack.pop());
+		stack.push(Double.toString(result));
 	}
 	
 	/**
 	 * 
 	 * @post Teste si les deux premiers elements de la PostStack ne sont pas egaux
 	 */
-	public void ne(PostStack s){
-		if(s.size()>=2){
-			boolean temp =s.pop()!=s.pop();
-			s.push(temp);
-		}
+	public void ne()
+	{
+		boolean result = Double.parseDouble(stack.pop())
+				!= Double.parseDouble(stack.pop());
+		stack.push(Boolean.toString(result));
 	}
 	
 	/**
 	 * 
 	 * @post Teste si les deux premiers elements de la pile sont egaux
 	 */
-	public void eq(PostStack s){
-		if(s.size()>=2){
-			boolean temp =s.pop()==s.pop();
-			s.push(temp);
-		}
+	public void eq()
+	{
+		boolean result = Double.parseDouble(stack.pop())
+				== Double.parseDouble(stack.pop());
+		stack.push(Boolean.toString(result));
 	}
 	
 	/**
 	 * @pre 
 	 * @post Echange la place des deux elements top de la PostStack
 	 */
-	public void exch(PostStack s) {
-		if(s.size()>=2){
-			String temp1=(String) s.pop();
-			String temp2=(String) s.pop();
-			s.push(temp1);
-			s.push(temp2);
-		}
+	public void exch()
+	{
+			String elem1= stack.pop();
+			String elem2= stack.pop();
+			stack.push(elem1);
+			stack.push(elem2);
 	}
 	
 	/**
 	 * 
 	 * @post push une copie du top element
 	 */
-	public void dup(PostStack s) {
-		if(s.isEmpty()!=true){
-			String temp= (String) s.peek();
-			s.push(temp);
-		}
+	public void dup()
+	{
+			stack.push(stack.peek());
 	}
 	
 	/**
 	 * 
 	 * @post pop le top element
 	 */
-	public String pop(PostStack s) {
-		String temp="stackvide";
-		if(s.isEmpty()!=true){
-			temp=(String) s.pop();
-		}
-		return temp;
+	public String pop()
+	{
+		return stack.pop();
 	}
 	
 	/**
-	 * @pre The key to be defined and his value are in the PostStack s
+	 * @pre The key to be defined and his value are in the stack
 	 * @post Defines a symbol from the key and his value
 	 */
-	public void def(PostStack s) throws EmptyStackException
+	public void def()
 	{
-		double value = (double) s.pop();
-		String key = (String) s.pop();
+		double value = Double.parseDouble(stack.pop());
+		String key = stack.pop();
 		if (!key.startsWith("/")) return;
-		map.add(new UserValue(key.substring(1), value));
+		else key = key.substring(1);
+		for (UserValue uv : userValues)
+		{
+			if (uv.getKey() == key)
+			{
+				uv.setValue(value);
+				return;
+			}
+		}
+		userValues.add(new UserValue(key, value));
 	}
 
 	/**
@@ -130,55 +161,81 @@ public class PostScript {
 	 */
 	public void decode(String ligne) {
 		assert ligne != null : "argument String ligne == null.";
-		String Elem[] = ligne.split(" ");
-		PostStack DStack = new PostStack(); // TODO , initialiser comme dans la def.
-		for (int i = 0; i < Elem.length; i++) {
-			switch (Elem[i]) {
+		String elem[] = ligne.split(" ");
+		for (int i = 0; i < elem.length; i++) {
+			switch (elem[i]) {
 			case "pstack":
-				pstack(DStack);
+				try
+				{
+					pstack();
+				}
+				catch (IOException e)
+				{
+					System.err.println("Une erreur est survenue à l'écriture dans le fichier "+outputFile);
+					return;
+				}
 				break;
 			case "add":
-				add(DStack);
+				add();
 				break;
 			case "sub":
-				sub(DStack);
+				sub();
 				break;
 			case "mul":
-				mul(DStack);
+				mul();
 				break;
 			case "div":
-				div(DStack);
+				div();
 				break;
 			case "dup":
-				dup(DStack);
+				dup();
 				break;
 			case "exch":
-				exch(DStack);
+				exch();
 				break;
 			case "eq":
-				eq(DStack);
+				eq();
 				break;
 			case "ne":
-				ne(DStack);
+				ne();
 				break;
 			case "def":
-				def(DStack);
+				def();
 				break;
 			case "pop":
-				pop(DStack);
+				pop();
 				break;
 			default:
-				for (UserValue uv : map)
+				for (UserValue uv : userValues)
 				{
-					if (uv.getKey() == Elem[i])
+					if (uv.getKey() == elem[i])
 					{
-						Elem[i] = Double.toString(uv.getValue());
+						elem[i] = Double.toString(uv.getValue());
 						break;
 					}
 				}
-				DStack.push(Elem[i]);
+				stack.push(elem[i]);
 				break;
 			}
+		}
+	}
+	
+	public static void main(String[] args)
+	{
+		PostScript ps = new PostScript();
+		String inputFile = args[0];
+		//transformer le fichier en lignes de strings (read)
+		try{
+		ps.lines = FileManager.readFile(inputFile);
+		}
+		catch (IOException e)
+		{
+			System.err.println("Une erreur est survenue à la lecture du fichier "+inputFile);
+			return;
+		}
+		//decoder et faire les calculs pour chaque ligne
+		for(String line : ps.lines){
+			ps.decode(line);			
 		}
 	}
 	
@@ -202,14 +259,6 @@ public class PostScript {
 		}
 
 		/**
-		 * @param key the key to set
-		 */
-		public void setKey(String key)
-		{
-			this.key = key;
-		}
-
-		/**
 		 * @return the value
 		 */
 		public double getValue()
@@ -220,7 +269,7 @@ public class PostScript {
 		/**
 		 * @param value the value to set
 		 */
-		public void setValue(int value)
+		public void setValue(double value)
 		{
 			this.value = value;
 		}

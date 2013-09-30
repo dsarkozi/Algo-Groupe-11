@@ -52,7 +52,7 @@ public class PostStack <E>
 	 * @post L'element stocke au sommet de la pile a ete retourne, ou bien une
 	 * exception EmptyStackException a ete lancee si la pile etait vide.
 	 */
-	public E peek() throws EmptyStackException
+	public E peek()
 	{
 		if(this.isEmpty())
 		{
@@ -61,7 +61,7 @@ public class PostStack <E>
 		return top.getObject();
 	}
 	
-	public E pop() throws EmptyStackException
+	public E pop()
 	{
 		if(this.isEmpty())
 		{
@@ -71,6 +71,17 @@ public class PostStack <E>
 		top = top.getNext();
 		size--;
 		return result;
+	}
+	
+	public E get(int index)
+	{
+		if (this.isEmpty()) throw new EmptyStackException();
+		Node current = top;
+		for (int i = 0 ; i < index ; i++)
+		{
+			current = current.getNext();
+		}
+		return current.getObject();
 	}
 	
 	private class Node
