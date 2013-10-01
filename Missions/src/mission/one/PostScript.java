@@ -4,6 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 
+/**
+ * Classe de base representant l'interpreteur PostScript, contenant une pile,
+ * les lignes du fichier a traiter, le nom du fichier dans lequel ecrire ainsi
+ * que la liste des symboles definis par l'utilisateur. Cette classe constitue
+ * le point d'entree du programme.
+ */
 public class PostScript
 {
 
@@ -12,6 +18,9 @@ public class PostScript
 	private String outputFile;
 	private ArrayList<UserValue> userValues;
 
+	/**
+	 * Constructeur de l'interpreteur. Initialise ses attributs.
+	 */
 	public PostScript(String inputFile)
 	{
 		lines = new ArrayList<String>();
@@ -23,7 +32,7 @@ public class PostScript
 	/**
 	 * Provoque l'impression de toute la pile dans le fichier de sortie.
 	 * 
-	 * @pre s != null
+	 * @pre -
 	 * @post le contenu de la pile a ete imprime dans le fichier de sortie le
 	 *       cas echeant, l'interpretation de la ligne courante est a mesure de
 	 *       se poursuivre
@@ -43,9 +52,10 @@ public class PostScript
 	}
 
 	/**
-	 * @pre
-	 * @post remplace les deux premiers elements de la PostStack par leur somme. Deux elements "pop" sont parse
-	 * 	 en double pour le calcul. Avant le push du resultat, il est parse en String
+	 * @pre -
+	 * @post remplace les deux premiers elements de la pile par leur somme. Deux
+	 *       elements "pop" sont parse en double pour le calcul. Avant le push
+	 *       du resultat, il est parse en String
 	 */
 	public void add()
 	{
@@ -55,11 +65,10 @@ public class PostScript
 	}
 
 	/**
-	 * @pre
-	 * @post remplace les deux premiers elements de la PostStack par leur
-	 *       différence. Deux elements "pop" sont parse
-	 * 	 en double pour le calcul. Avant le push du resultat, il est parse en String
-	 */
+	 * @pre -
+	 * @post remplace les deux premiers elements de la pile par leur différence.
+	 *       Deux elements "pop" sont parse en double pour le calcul. Avant le
+	 *       push du resultat, il est parse en String
 	 */
 	public void sub()
 	{
@@ -69,11 +78,10 @@ public class PostScript
 	}
 
 	/**
-	 * @pre
-	 * @post remplace les deux premiers elements de la PostStack par leur
-	 *       multiplication. Deux elements "pop" sont parse
-	 * 	 en double pour le calcul. Avant le push du resultat, il est parse en String
-	 */
+	 * @pre -
+	 * @post remplace les deux premiers elements de la pile par leur produit.
+	 *       Deux elements "pop" sont parse en double pour le calcul. Avant le
+	 *       push du resultat, il est parse en String
 	 */
 	public void mul()
 	{
@@ -83,11 +91,10 @@ public class PostScript
 	}
 
 	/**
-	 * @pre
-	 * @post remplace les deux premiers elements de la PostStack par leur
-	 *       division. Deux elements "pop" sont parse
-	 * 	 en double pour le calcul. Avant le push du resultat, il est parse en String
-	 */
+	 * @pre -
+	 * @post remplace les deux premiers elements de la pile par leur quotient.
+	 *       Deux elements "pop" sont parse en double pour le calcul. Avant le
+	 *       push du resultat, il est parse en String
 	 */
 	public void div()
 	{
@@ -97,11 +104,10 @@ public class PostScript
 	}
 
 	/**
-	 * 
-	 * @post Teste si les deux premiers elements de la PostStack ne sont pas
-	 *       egaux. Deux elements "pop" sont parse
-	 * 	 en double pour l'operation. Le push du resultat est un boolean
-	 */
+	 * @pre -
+	 * @post Teste si les deux premiers elements de la pile ne sont pas egaux.
+	 *       Deux elements "pop" sont parse en double pour l'operation. Le push
+	 *       du resultat est un boolean
 	 */
 	public void ne()
 	{
@@ -111,9 +117,10 @@ public class PostScript
 	}
 
 	/**
-	 * 
-	 * @post Teste si les deux premiers elements de la pile sont egaux. Deux elements "pop" sont parse
-	 * 	 en double pour l'operation. Le push du resultat est un boolean
+	 * @pre -
+	 * @post Teste si les deux premiers elements de la pile sont egaux. Deux
+	 *       elements "pop" sont parse en double pour l'operation. Le push du
+	 *       resultat est un boolean
 	 */
 	public void eq()
 	{
@@ -123,8 +130,8 @@ public class PostScript
 	}
 
 	/**
-	 * @pre
-	 * @post Echange la place des deux elements top de la PostStack
+	 * @pre -
+	 * @post Echange la place des deux elements du sommet de la pile
 	 */
 	public void exch()
 	{
@@ -135,8 +142,8 @@ public class PostScript
 	}
 
 	/**
-	 * 
-	 * @post push une copie du top element
+	 * @pre -
+	 * @post Place une copie de l'element du sommet de la pile sur celle-ci
 	 */
 	public void dup()
 	{
@@ -144,8 +151,8 @@ public class PostScript
 	}
 
 	/**
-	 * 
-	 * @post pop le top element
+	 * @pre -
+	 * @post Enleve l'element du sommet de la pile
 	 */
 	public String pop()
 	{
@@ -154,7 +161,8 @@ public class PostScript
 
 	/**
 	 * @pre The key to be defined and his value are in the stack
-	 * @post Defines a symbol from the key and his value
+	 * @post Defines a symbol from the key and his value or updates his value if
+	 *       the symbol has already been defined
 	 */
 	public void def()
 	{
