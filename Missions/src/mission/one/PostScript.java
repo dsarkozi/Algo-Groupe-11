@@ -2,6 +2,7 @@ package mission.one;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 
 public class PostScript
 {
@@ -11,12 +12,12 @@ public class PostScript
 	private String outputFile;
 	private ArrayList<UserValue> userValues;
 
-	public PostScript()
+	public PostScript(String inputFile)
 	{
 		lines = new ArrayList<String>();
 		userValues = new ArrayList<UserValue>();
 		stack = new PostStack<String>();
-		outputFile = "Result.txt";
+		outputFile = inputFile.concat("--result.txt");
 	}
 
 	/**
@@ -35,7 +36,7 @@ public class PostScript
 			line = stack.get(0);
 			for (int i = 1; i < stack.getSize(); i++)
 			{
-				(line.concat(" ")).concat(stack.get(i));
+				line = (line.concat(" ")).concat(stack.get(i));
 			}
 		}
 		FileManager.writeInFile(outputFile, line);
@@ -153,7 +154,7 @@ public class PostScript
 		else key = key.substring(1);
 		for (UserValue uv : userValues)
 		{
-			if (uv.getKey() == key)
+			if (uv.getKey().equals(key))
 			{
 				uv.setValue(value);
 				return;
@@ -220,7 +221,7 @@ public class PostScript
 				default:
 					for (UserValue uv : userValues)
 					{
-						if (uv.getKey() == elem[i])
+						if (uv.getKey().equals(elem[i]))
 						{
 							elem[i] = Double.toString(uv.getValue());
 							break;
@@ -234,8 +235,8 @@ public class PostScript
 
 	public static void main(String[] args)
 	{
-		PostScript ps = new PostScript();
 		String inputFile = args[0];
+		PostScript ps = new PostScript(args[0]);
 		// transformer le fichier en lignes de strings (read)
 		try
 		{
@@ -251,7 +252,70 @@ public class PostScript
 		// decoder et faire les calculs pour chaque ligne
 		for (String line : ps.lines)
 		{
-			ps.decode(line);
+			try
+			{
+				ps.decode(line);
+			}
+			catch (EmptyStackException e)
+			{
+				System.err
+						.println("Not enough arguments in the stack for this operation. Check Result.txt file !");
+				try
+				{
+					FileManager.writeInFile(ps.outputFile,
+							"Format error in the line : " + line);
+					FileManager
+							.writeInFile(ps.outputFile, "-- line failed -- ");
+				}
+				catch (IOException ex)
+				{
+					System.err
+							.println("Une erreur est survenue à l'écriture dans le fichier "
+									+ ps.outputFile);
+				}
+				ps.stack.emptyStack();
+				continue;
+			}
+			catch (NumberFormatException e)
+			{
+				System.err
+						.println("Wrong type of value in the stack. Check Result.txt file !");
+				try
+				{
+					FileManager.writeInFile(ps.outputFile,
+							"Parse error in the line : " + line);
+					FileManager
+							.writeInFile(ps.outputFile, "-- line failed -- ");
+				}
+				catch (IOException ex)
+				{
+					System.err
+							.println("Une erreur est survenue à l'écriture dans le fichier "
+									+ ps.outputFile);
+				}
+				ps.stack.emptyStack();
+				continue;
+			}
+			try
+			{
+				FileManager.writeInFile(ps.outputFile, "-- line passed --");
+			}
+			catch (IOException e)
+			{
+				System.err
+						.println("Une erreur est survenue à l'écriture dans le fichier "
+								+ ps.outputFile);
+			}
+		}
+		try
+		{
+			FileManager.writeInFile(ps.outputFile, "** end of file **\n");
+		}
+		catch (IOException e)
+		{
+			System.err
+					.println("Une erreur est survenue à l'écriture dans le fichier "
+							+ ps.outputFile);
 		}
 	}
 

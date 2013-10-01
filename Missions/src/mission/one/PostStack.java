@@ -89,6 +89,14 @@ public class PostStack<E>
 		return current.getObject();
 	}
 
+	public void emptyStack()
+	{
+		while (!this.isEmpty())
+		{
+			this.pop();
+		}
+	}
+
 	private class Node
 	{
 		private Node next;
