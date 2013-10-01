@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class FileManager
 {
-	/*
+	/**
 	 * ReadFile permet de lire tout le contenu d'un fichier ligne par ligne et
 	 * de stocker chacunes des ces lignes dans un ArrayList. Return : - retourne
 	 * un ArrayList de string contenant les lignes du fichier passe en parametre
@@ -39,7 +39,7 @@ public class FileManager
 		return null;
 	}
 
-	/*
+	/**
 	 * WriteInFile est une methode qui permet de placer un string a la fin d'un
 	 * fichier texte. Si le fichier existe deja, le String sera place en fin de
 	 * fichier. Sinon, un nouveau fichier (filename) sera cree et le String

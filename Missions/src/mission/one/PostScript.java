@@ -337,6 +337,10 @@ public class PostScript
 		}
 	}
 
+	/**
+	 * Classe representant chaque paire cle-valeur contenant un symbole defini
+	 * par l'utilisateur et sa valeur associee
+	 */
 	private class UserValue
 	{
 		private String key;

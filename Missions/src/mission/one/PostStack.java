@@ -41,14 +41,14 @@ public class PostStack<E>
 	{
 		return this.size;
 	}
-	
+
 	/**
-	* Sert a ajouter un nouvel element a la stack.
-	* 
-	* @pre _
-	* @post Rajoute un element au sommet de la stack.
-	* 	Increment le taille de la stack de 1 apres le push.
-	*/
+	 * Sert a ajouter un nouvel element a la stack.
+	 * 
+	 * @pre _
+	 * @post Rajoute un element au sommet de la stack. Increment le taille de la
+	 *       stack de 1 apres le push.
+	 */
 	public void push(E object)
 	{
 		Node newNode = new Node(top, object);
@@ -72,14 +72,14 @@ public class PostStack<E>
 		}
 		return top.getObject();
 	}
-	
+
 	/**
-	* Cette methode sert a pop le top element et a le return
-	* 
-	* @pre _
-	* @post pop le top element de le stack et le retourn.
-	* 	Une execption EmptyStackException est lancee si la stack est vide.
-	*/
+	 * Cette methode sert a pop le top element et a le return
+	 * 
+	 * @pre _
+	 * @post pop le top element de le stack et le retourn. Une execption
+	 *       EmptyStackException est lancee si la stack est vide.
+	 */
 	public E pop()
 	{
 		if (this.isEmpty())
@@ -91,14 +91,14 @@ public class PostStack<E>
 		size--;
 		return result;
 	}
-	
+
 	/**
-	* Sert a retourner l'element au sommet de la stack sans le retirer.
-	* 
-	* @pre _
-	* @post Le top element est retourner.
-	* 	Si la stack etait vide, une exception EmptyStackException est lancee.
-	*/
+	 * Sert a retourner l'element au sommet de la stack sans le retirer.
+	 * 
+	 * @pre _
+	 * @post Le top element est retourner. Si la stack etait vide, une exception
+	 *       EmptyStackException est lancee.
+	 */
 	public E get(int index)
 	{
 		if (this.isEmpty()) throw new EmptyStackException();
@@ -109,14 +109,15 @@ public class PostStack<E>
 		}
 		return current.getObject();
 	}
-	
+
 	/**
-	* Sert a vider entièrement la stack. Cette methode est appele lors d'une
-	* erreur de format dans une ligne postscript.
-	* 
-	* * @pre _
- 	* @post Tant que la stack n'est pas vide, on pop le top element.
-	*/
+	 * Sert a vider entièrement la stack. Cette methode est appele lors d'une
+	 * erreur de format dans une ligne postscript.
+	 * 
+	 * * @pre _
+	 * 
+	 * @post Tant que la stack n'est pas vide, on pop le top element.
+	 */
 	public void emptyStack()
 	{
 		while (!this.isEmpty())
