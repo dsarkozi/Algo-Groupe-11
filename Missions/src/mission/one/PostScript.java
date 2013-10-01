@@ -44,7 +44,8 @@ public class PostScript
 
 	/**
 	 * @pre
-	 * @post remplace les deux premiers elements de la PostStack par leur somme
+	 * @post remplace les deux premiers elements de la PostStack par leur somme. Deux elements "pop" sont parse
+	 * 	 en double pour le calcul. Avant le push du resultat, il est parse en String
 	 */
 	public void add()
 	{
@@ -56,7 +57,9 @@ public class PostScript
 	/**
 	 * @pre
 	 * @post remplace les deux premiers elements de la PostStack par leur
-	 *       différence
+	 *       différence. Deux elements "pop" sont parse
+	 * 	 en double pour le calcul. Avant le push du resultat, il est parse en String
+	 */
 	 */
 	public void sub()
 	{
@@ -68,7 +71,9 @@ public class PostScript
 	/**
 	 * @pre
 	 * @post remplace les deux premiers elements de la PostStack par leur
-	 *       multiplication
+	 *       multiplication. Deux elements "pop" sont parse
+	 * 	 en double pour le calcul. Avant le push du resultat, il est parse en String
+	 */
 	 */
 	public void mul()
 	{
@@ -80,7 +85,9 @@ public class PostScript
 	/**
 	 * @pre
 	 * @post remplace les deux premiers elements de la PostStack par leur
-	 *       division
+	 *       division. Deux elements "pop" sont parse
+	 * 	 en double pour le calcul. Avant le push du resultat, il est parse en String
+	 */
 	 */
 	public void div()
 	{
@@ -92,7 +99,9 @@ public class PostScript
 	/**
 	 * 
 	 * @post Teste si les deux premiers elements de la PostStack ne sont pas
-	 *       egaux
+	 *       egaux. Deux elements "pop" sont parse
+	 * 	 en double pour l'operation. Le push du resultat est un boolean
+	 */
 	 */
 	public void ne()
 	{
@@ -103,7 +112,8 @@ public class PostScript
 
 	/**
 	 * 
-	 * @post Teste si les deux premiers elements de la pile sont egaux
+	 * @post Teste si les deux premiers elements de la pile sont egaux. Deux elements "pop" sont parse
+	 * 	 en double pour l'operation. Le push du resultat est un boolean
 	 */
 	public void eq()
 	{
