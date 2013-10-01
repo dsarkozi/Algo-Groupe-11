@@ -111,7 +111,8 @@ public class PostStack<E>
 	}
 	
 	/**
-	* Sert a vider entièrement la stack.
+	* Sert a vider entièrement la stack. Cette methode est appele lors d'une
+	* erreur de format dans une ligne postscript.
 	* 
 	* * @pre _
  	* @post Tant que la stack n'est pas vide, on pop le top element.
