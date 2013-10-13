@@ -1,6 +1,7 @@
 bin
 *.class
 .metadata
+doc
 
 # Package Files #
 *.jar
