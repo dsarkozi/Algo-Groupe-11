@@ -54,11 +54,13 @@ public class LinkedRBinaryTree<E> implements RBinaryTree<E> {
     @Override
     public void setLeft(RBinaryTree<E> tree) {
             root.setLeft((BTNode<E>) tree.root());
+            size++;
     }
 
     @Override
     public void setRight(RBinaryTree<E> tree) {
             root.setRight((BTNode<E>) tree.root());
+            size++;
     }
 
     @Override
