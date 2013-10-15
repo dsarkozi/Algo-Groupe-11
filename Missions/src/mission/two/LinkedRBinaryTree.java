@@ -1,5 +1,8 @@
 package mission.two;
 
+/*
+ * @author : Benoit Sluysmans
+ */
 
 public class LinkedRBinaryTree<E> implements RBinaryTree<E> {
     

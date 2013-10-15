@@ -1,5 +1,9 @@
 package mission.two;
 
+/*
+ * @author : Benoit Sluysmans
+ */
+
 
 public class BTNode<E> implements Position<E>{
     private E element;
