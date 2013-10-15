@@ -20,10 +20,10 @@ public class Derivation implements FormalExpressionTree
 	public Derivation()
 	{
 		pattern = Pattern.compile("\\((.+)\\)");
-		patternSimple = Pattern.compile("(.+)([+\\-*/])(.+)");
-		patternLeft = Pattern.compile("(.+\\))([+\\-*/])(.+)");
-		patternRight = Pattern.compile("(.+)([+\\-*/])(\\(.+)");
-		patternDouble = Pattern.compile("(.+\\))([+\\-*/])(\\(.+)");
+		patternSimple = Pattern.compile("(.+)([+\\-*/\\^])(.+)");
+		patternLeft = Pattern.compile("(.+\\))([+\\-*/\\^])(.+)");
+		patternRight = Pattern.compile("(.+)([+\\-*/\\^])(\\(.+)");
+		patternDouble = Pattern.compile("(.+\\))([+\\-*/\\^])(\\(.+)");
 		bTree = new LinkedRBinaryTree<>();
 		operators = new ArrayList<String>();
 		operators.add("sin");
@@ -43,45 +43,60 @@ public class Derivation implements FormalExpressionTree
 	 * @author David Sarkozi
 	 * @param expression
 	 *            Une ligne de l'input formattee en String
-	 * @pre -
-	 * @post Stocke dans bTree l'arbre correspondant a expression
+	 * @param iterator
+	 *            Un noeud de bTree, point de depart ou stocker l'equivalent en
+	 *            arbre de expression
+	 * @pre iterator doit etre la racine de bTree lors du premier appel et le
+	 *      noeud de depart pour les autres appels successifs, expression doit
+	 *      etre correctement formattee (bien parenthesee et parsable)
+	 * @post Stocke dans bTree l'arbre correspondant a expression a l'aide de
+	 *       iterator, parcourant bTree
 	 * 
 	 */
 	// ([^\(\)]+)[+\-*/]([^\(\)]+)
-	public void loadExpression(String expression)
+	public void loadExpression(String expression, BTNode<String> iterator)
 	{
 		String[] expr = parenthesesRemover(expression);
 		String[] exprSplit = null;
 		if (expr == null) // 10
 		{
-			bTree.setElement(expression);
+			iterator.setElement(expression);
 			return;
 		}
-		else if (expr.length == 1) // (10+x) or (x^3)
+		else if (expr.length == 1) // 10+x or x^3
 		{
 			exprSplit = exprSplitter(expr[0]);
-			if (exprSplit == null) // x^3
+			if (exprSplit == null)
 			{
-				bTree.setElement(expr[0]);
+				throw new InputFormatException();
 			}
 			else
 			// 10+x
 			{
-				bTree.setElement(expr[1]); // +
-				loadExpression(expr[0]); // 10
-				loadExpression(expr[2]); // x
+				iterator.setElement(expr[1]); // +
+				BTNode<String> iterLeft = new BTNode<String>(null, null, null,
+						iterator);
+				iterator.setLeft(iterLeft);
+				BTNode<String> iterRight = new BTNode<String>(null, null, null,
+						iterator);
+				iterator.setRight(iterRight);
+				loadExpression(expr[0], iterLeft); // 10
+				loadExpression(expr[2], iterRight); // x
 			}
 		}
 		else if (expr.length == 2) // sin or cos
 		{
-			bTree.setElement(expr[0]); // sin or cos
-			loadExpression(expr[1]); // x or (x+2)
+			iterator.setElement(expr[0]); // sin or cos
+			BTNode<String> iterChild = new BTNode<String>(null, null, null,
+					iterator);
+			iterator.setRight(iterChild);
+			loadExpression(expr[1], iterChild); // x or (x+2)
 		}
 	}
 
 	/**
 	 * @author David Sarkozi
-	 * @pre -
+	 * @pre expression doit etre bien parenthesee
 	 * @post Retourne un tableau contenant soit l'expression sans parenthese,
 	 *       soit l'operateur trigonometrique et son expression, soit null s'il
 	 *       n'y a pas de parenthese
@@ -114,7 +129,7 @@ public class Derivation implements FormalExpressionTree
 
 	/**
 	 * @author David Sarkozi
-	 * @pre -
+	 * @pre expression doit etre bien formee
 	 * @post Retourne un tableau contenant soit l'expression splittee, soit null
 	 *       s'il n'y a pas d'operateur dans expression
 	 * @param expression
