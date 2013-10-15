@@ -15,16 +15,9 @@ public class BTNode<E> implements Position<E>{
             this.right = right;
             this.parent = parent;
             
-            /**if(left.getClass().equals(this.getClass())){
-                    ((BTNode<E>) left).setParent(this);
-            }
-            if(right.getClass().equals(this.getClass())){
-                    ((BTNode<E>) right).setParent(this);
-            }**/
     }
     /**
-     * Methode permettant de determiner s'il y a un enfant a gauche.
-     * @return true s'il y en a un et false dans le cas contraire.
+     * Determine s'il y a un enfant a gauche.
      */
     public boolean hasLeft(){
             if(left != null){
@@ -33,8 +26,7 @@ public class BTNode<E> implements Position<E>{
             return false;
     }
     /**
-     * Methode permettant de determiner s'il y a un enfant a droite.
-     * @return true s'il y en a un et false dans le cas contraire.
+     * Determine s'il y a un enfant a droite.
      */
     public boolean hasRight(){
             if(right != null){
@@ -43,7 +35,7 @@ public class BTNode<E> implements Position<E>{
             return false;
     }
     /**
-     * Methode qui renvoie true si l'element courant a des enfants.
+     * Retourne true si l'element a des enfants.
      */
     public boolean hasChildren(){
             if(left != null || right != null){
@@ -52,7 +44,7 @@ public class BTNode<E> implements Position<E>{
             return false;
     }
     /**
-     * Methode qui renvoie true si l'element courant a un parent.
+     * Retourne true si l'element a un parent.
      */
     public boolean hasParent(){
             if(parent != null){
@@ -88,9 +80,7 @@ public class BTNode<E> implements Position<E>{
     public void setParent(Position<E> parent) {
             this.parent = parent;
     }
-    /**
-     * Return l'élément present dans le Node.
-     */
+
     public E element() {
             return element;
     }
