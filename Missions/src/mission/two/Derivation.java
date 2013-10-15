@@ -25,7 +25,7 @@ public class Derivation implements FormalExpressionTree
 		patternLeft = Pattern.compile("(.+\\))([+\\-*/\\^])(.+)");
 		patternRight = Pattern.compile("(.+)([+\\-*/\\^])(\\(.+)");
 		patternDouble = Pattern.compile("(.+\\))([+\\-*/\\^])(\\(.+)");
-		bTree = new LinkedRBinaryTree<>();
+		bTree = new LinkedRBinaryTree<String>();
 		operators = new ArrayList<String>();
 		operators.add("sin");
 		operators.add("cos");
@@ -39,7 +39,7 @@ public class Derivation implements FormalExpressionTree
 		String inputFile = args[0];
 		String outputFile = inputFile.concat("--result.txt");
 		Derivation drv = new Derivation();
-		ArrayList<String> lines = null;
+		ArrayList<String> lines = null;		
 		// transformer le fichier en lignes de strings (read)
 		try
 		{
@@ -196,12 +196,35 @@ public class Derivation implements FormalExpressionTree
 		}
 		return null;
 	}
-
+	
+	/** Fonction retournant un String representant l'arbre bTree
+	 * @pre bTree.isEmpty() == null
+	 * @post Un string representant l'arbre est retourne, ou bien 
+	 */
 	@Override
 	public String toString()
 	{
-		// TODO Auto-generated method stub
-		return super.toString();
+		return toStringR(bTree);
+	}
+	
+	/** Fonction recursive pour parcourir l'arbre et le convertir en String
+	 * @param T <l'arbre a convertir en String>
+	 */
+	private String toStringR(RBinaryTree<String> T)
+	{
+		// element isole
+		if(T.isLeaf())
+			return T.root().element();
+		// operateur 'original'
+		if(operators.contains(T.root().element()))
+		{
+			if(T.leftTree() != null)
+				return T.root().element() + "(" + toStringR(T.leftTree()) + ")";
+			else
+				return T.root().element() + "(" + toStringR(T.rightTree()) + ")";
+		}
+		// cas general
+		return toStringR(T.leftTree()) + T.root().element() + toStringR(T.rightTree());
 	}
 
 	@Override
