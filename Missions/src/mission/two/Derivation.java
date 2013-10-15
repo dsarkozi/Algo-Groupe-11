@@ -11,12 +11,17 @@ import java.util.regex.*;
 public class Derivation implements FormalExpressionTree
 {
 	private LinkedRBinaryTree<String> bTree;
+	private static final int PAR = 1;
+	private static final int NO_PAR = 2;
+	private static final int NO_OP = 3;
 	private Pattern pattern;
 	private Pattern patternSimple;
 	private Pattern patternLeft;
 	private Pattern patternRight;
 	private Pattern patternDouble;
+	private Pattern patternNegative;
 	private ArrayList<String> operators;
+	private ArrayList<Pattern> patternOps;
 
 	public Derivation()
 	{
@@ -25,10 +30,19 @@ public class Derivation implements FormalExpressionTree
 		patternLeft = Pattern.compile("(.+\\))([+\\-*/\\^])(.+)");
 		patternRight = Pattern.compile("(.+)([+\\-*/\\^])(\\(.+)");
 		patternDouble = Pattern.compile("(.+\\))([+\\-*/\\^])(\\(.+)");
-		bTree = new LinkedRBinaryTree<String>();
+		patternNegative = Pattern.compile("\\-.+");
+		bTree = new LinkedRBinaryTree<String>(new BTNode<String>(null, null,
+				null, null));
 		operators = new ArrayList<String>();
 		operators.add("sin");
 		operators.add("cos");
+
+		patternOps = new ArrayList<Pattern>();
+		for (String operator : operators)
+		{
+			patternOps.add(Pattern.compile("(.+)([+\\-*/\\^])(" + operator
+					+ ".+)"));
+		}
 	}
 
 	/**
@@ -39,7 +53,9 @@ public class Derivation implements FormalExpressionTree
 		String inputFile = args[0];
 		String outputFile = inputFile.concat("--result.txt");
 		Derivation drv = new Derivation();
-		ArrayList<String> lines = null;		
+		ArrayList<String> lines = null;
+		String output = null;
+		int err = 0;
 		// transformer le fichier en lignes de strings (read)
 		try
 		{
@@ -55,18 +71,40 @@ public class Derivation implements FormalExpressionTree
 		// decoder et faire les calculs pour chaque ligne
 		for (String line : lines)
 		{
-				drv.loadExpression(line, drv.bTree.root);
+			if (!drv.checkSyntax(line, PAR))
+			{
+				err++;
+				output = "Line syntaxically incorrect";
+			}
+			else
+			{
+				try
+				{
+					drv.loadExpression(line, drv.bTree.root);
+					output = drv.toString();
+				}
+				catch (InputFormatException e)
+				{
+					err++;
+					output = e.getMessage();
+				}
+			}
+			try
+			{
+				FileManager.writeInFile(outputFile, output);
+				// TODO Appel a derive
+			}
+			catch (IOException e)
+			{
+				System.err
+						.println("Une erreur est survenue à l'écriture dans le fichier "
+								+ outputFile);
+			}
+			drv.bTree = new LinkedRBinaryTree<String>(new BTNode<String>(null,
+					null, null, null));
 		}
-		try
-		{
-			FileManager.writeInFile(outputFile,""); //TODO Appel a derive
-		}
-		catch (IOException e)
-		{
-			System.err
-					.println("Une erreur est survenue à l'écriture dans le fichier "
-							+ outputFile);
-		}
+		if (err > 0) System.err.println("Input file syntaxically incorrect in "
+				+ err + " lines");
 	}
 
 	/**
@@ -90,15 +128,31 @@ public class Derivation implements FormalExpressionTree
 		String[] exprSplit = null;
 		if (expr == null) // 10
 		{
+
+			if (!checkSyntax(expression, NO_PAR)
+					|| !checkSyntax(expression, NO_OP))
+			{
+				throw new InputFormatException("Line syntaxically incorrect");
+			}
+
 			iterator.setElement(expression);
 			return;
 		}
-		else if (expr.length == 1) // 10+x or x^3
+		else if (expr.length == 1) // 10+x or x^(-3)
 		{
 			exprSplit = exprSplitter(expr[0]);
-			if (exprSplit == null)
+			if (exprSplit == null) // -3
 			{
-				throw new InputFormatException();
+				// throw new InputFormatException();
+				if (patternNegative.matcher(expr[0]).matches())
+				{
+					iterator.setElement(expr[0]);
+					return;
+				}
+				else
+				{
+					System.err.println("Input file syntaxically incorrect");
+				}
 			}
 			else
 			// 10+x
@@ -116,7 +170,7 @@ public class Derivation implements FormalExpressionTree
 		}
 		else if (expr.length == 2) // sin or cos
 		{
-			iterator.setElement(expr[0]); // sin or cos 
+			iterator.setElement(expr[0]); // sin or cos
 			BTNode<String> iterChild = new BTNode<String>(null, null, null,
 					iterator);
 			iterator.setRight(iterChild);
@@ -176,55 +230,124 @@ public class Derivation implements FormalExpressionTree
 			return new String[] { matcher.group(1), matcher.group(2),
 					matcher.group(3) };
 		}
-		matcher = patternLeft.matcher(expression);
-		if (matcher.matches())
-		{
-			return new String[] { matcher.group(1), matcher.group(2),
-					matcher.group(3) };
-		}
 		matcher = patternRight.matcher(expression);
 		if (matcher.matches())
 		{
-			return new String[] { matcher.group(1), matcher.group(2),
-					matcher.group(3) };
+			if (checkSyntax(matcher.group(1), PAR)
+					&& checkSyntax(matcher.group(3), PAR))
+			{
+				return new String[] { matcher.group(1), matcher.group(2),
+						matcher.group(3) };
+			}
+		}
+		matcher = patternLeft.matcher(expression);
+		if (matcher.matches())
+		{
+			if (checkSyntax(matcher.group(1), PAR)
+					&& checkSyntax(matcher.group(3), PAR))
+			{
+				return new String[] { matcher.group(1), matcher.group(2),
+						matcher.group(3) };
+			}
 		}
 		matcher = patternSimple.matcher(expression);
 		if (matcher.matches())
 		{
+			Matcher matcherOps = null;
+			for (Pattern pat : patternOps)
+			{
+				matcherOps = pat.matcher(expression);
+				if (matcherOps.matches())
+				{
+					return new String[] { matcherOps.group(1),
+							matcherOps.group(2), matcherOps.group(3) };
+				}
+			}
 			return new String[] { matcher.group(1), matcher.group(2),
 					matcher.group(3) };
 		}
 		return null;
 	}
-	
-	/** Fonction retournant un String representant l'arbre bTree
-	 * @pre bTree.isEmpty() == null
-	 * @post Un string representant l'arbre est retourne, ou bien 
+
+	/**
+	 * @author David Sarkozi
+	 * @pre check doit etre un algorithme implemente
+	 * @post Verifie la syntaxe d'expression selon l'algorithme choisi avec
+	 *       check
+	 * @param expression
+	 *            Une expression dont il faut verifier sa syntaxe
+	 * @param check
+	 *            L'algorithme de verification utilise, entre verifier le nombre
+	 *            de parentheses, verifier leur presence et verifier la presence
+	 *            d'un operateur
+	 * @return true si l'expression est syntaxiquement correcte selon le check
+	 *         choisi, false sinon
 	 */
+	private boolean checkSyntax(String expression, int check)
+	{
+		char[] tab = expression.toCharArray();
+		switch (check)
+		{
+			case PAR:
+				int l = 0,
+				r = 0;
+				for (int k = 0; k < tab.length; k++)
+				{
+					if (tab[k] == '(') l++;
+					else if (tab[k] == ')') r++;
+				}
+				return l == r;
+			case NO_PAR:
+				for (int k = 0; k < tab.length; k++)
+				{
+					if (tab[k] == '(' || tab[k] == ')') return false;
+				}
+				return true;
+			case NO_OP:
+				for (int k = 0; k < tab.length; k++)
+				{
+					if (tab[k] == '+' || tab[k] == '*' || tab[k] == '\\'
+							|| tab[k] == '^' || (tab[k] == '-' && k > 0))
+					{
+						return false;
+					}
+				}
+				return true;
+		}
+		return true;
+	}
+
 	@Override
 	public String toString()
 	{
 		return toStringR(bTree);
 	}
-	
-	/** Fonction recursive pour parcourir l'arbre et le convertir en String
-	 * @param T <l'arbre a convertir en String>
-	 */
+
 	private String toStringR(RBinaryTree<String> T)
 	{
 		// element isole
-		if(T.isLeaf())
-			return T.root().element();
-		// operateur 'original'
-		if(operators.contains(T.root().element()))
+		if (T.isLeaf())
 		{
-			if(T.leftTree() != null)
-				return T.root().element() + "(" + toStringR(T.leftTree()) + ")";
-			else
-				return T.root().element() + "(" + toStringR(T.rightTree()) + ")";
+			BTNode<String> root = (BTNode<String>) T.root();
+			if (root.hasParent())
+			{
+				String elem = root.element();
+				return (patternNegative.matcher(elem).matches()) ? "(" + elem
+						+ ")" : elem;
+			}
+			else return root.element();
+		}
+		// operateur 'original'
+		if (operators.contains(T.root().element()))
+		{
+			if (!T.leftTree().isEmpty()) return T.root().element() + "("
+					+ toStringR(T.leftTree()) + ")";
+			else return T.root().element() + "(" + toStringR(T.rightTree())
+					+ ")";
 		}
 		// cas general
-		return toStringR(T.leftTree()) + T.root().element() + toStringR(T.rightTree());
+		return "(" + toStringR(T.leftTree()) + T.root().element()
+				+ toStringR(T.rightTree()) + ")";
 	}
 
 	@Override
