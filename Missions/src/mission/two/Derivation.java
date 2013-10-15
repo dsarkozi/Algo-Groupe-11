@@ -1,5 +1,6 @@
 package mission.two;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.*;
 
@@ -31,12 +32,41 @@ public class Derivation implements FormalExpressionTree
 	}
 
 	/**
-	 * 
+	 * @author David Sarkozi
 	 */
 	public static void main(String[] args)
 	{
-		// TODO Auto-generated method stub
-
+		String inputFile = args[0];
+		String outputFile = inputFile.concat("--result.txt");
+		Derivation drv = new Derivation();
+		ArrayList<String> lines = null;
+		// transformer le fichier en lignes de strings (read)
+		try
+		{
+			lines = FileManager.readFile(inputFile);
+		}
+		catch (IOException e)
+		{
+			System.err
+					.println("Une erreur est survenue à la lecture du fichier "
+							+ inputFile);
+			return;
+		}
+		// decoder et faire les calculs pour chaque ligne
+		for (String line : lines)
+		{
+				drv.loadExpression(line, drv.bTree.root);
+		}
+		try
+		{
+			FileManager.writeInFile(outputFile,""); //TODO Appel a derive
+		}
+		catch (IOException e)
+		{
+			System.err
+					.println("Une erreur est survenue à l'écriture dans le fichier "
+							+ outputFile);
+		}
 	}
 
 	/**
@@ -73,20 +103,20 @@ public class Derivation implements FormalExpressionTree
 			else
 			// 10+x
 			{
-				iterator.setElement(expr[1]); // +
+				iterator.setElement(exprSplit[1]); // +
 				BTNode<String> iterLeft = new BTNode<String>(null, null, null,
 						iterator);
 				iterator.setLeft(iterLeft);
 				BTNode<String> iterRight = new BTNode<String>(null, null, null,
 						iterator);
 				iterator.setRight(iterRight);
-				loadExpression(expr[0], iterLeft); // 10
-				loadExpression(expr[2], iterRight); // x
+				loadExpression(exprSplit[0], iterLeft); // 10
+				loadExpression(exprSplit[2], iterRight); // x
 			}
 		}
 		else if (expr.length == 2) // sin or cos
 		{
-			iterator.setElement(expr[0]); // sin or cos
+			iterator.setElement(expr[0]); // sin or cos 
 			BTNode<String> iterChild = new BTNode<String>(null, null, null,
 					iterator);
 			iterator.setRight(iterChild);
