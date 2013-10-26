@@ -1,21 +1,32 @@
-/*
- * Author: Benoit Sluysmans
- */
-
 package mission.three;
 
-import java.util.Comparator;
+import java.util.HashMap;
 
-public class Revue implements Comparator<Revue> {
-
-	public String rank;
-	public String title;
-	public int for1;
-	public int for2;
-	public String for2name;
-	public int for3;
-	public String for3name;
-	public String for1name;
+/**
+ * @author Benoit Sluysmans
+ */
+public class Revue implements Comparable<Revue>
+{
+	private static HashMap<String,Integer> rankMap;
+	
+	private String rank;
+	private String title;
+	private int for1;
+	private int for2;
+	private String for2name;
+	private int for3;
+	private String for3name;
+	private String for1name;
+	
+	public Revue()
+	{
+		/* Rank map init */
+		rankMap = new HashMap<>();
+		rankMap.put("A*", 1);
+		rankMap.put("B", 2);
+		rankMap.put("C", 3);
+		rankMap.put("Not ranked", Integer.MAX_VALUE);
+	}
 	
 	/**
 	 * @return the rank
@@ -122,27 +133,19 @@ public class Revue implements Comparator<Revue> {
 	}
 	
 	/**
-	 * @override
-	 * Compare deux revues par rapport a leur rang
+	 * @post Compare deux revues par rapport a leur rang
 	 */
-	public int compare(Revue a, Revue b) {
-		int ra=0, rb=0;
-		if(a.rank == "A*") ra = 3;
-		else if(a.rank == "A") ra = 2;
-		else if(a.rank == "B") ra = 1;
-		
-		if(b.rank == "A*") rb = 3;
-		else if(b.rank == "A") rb = 2;
-		else if(b.rank == "B") rb = 1;
-		
-		return ra-rb;
+	@Override
+	public int compareTo(Revue other)
+	{
+		return rankMap.get(other.rank) - rankMap.get(this.rank);
 	}
 	
 	/**
-	 * @override
-	 * Verifie si le rang de deux revues sont egaux
+	 * @post Verifie si le rang de deux revues sont egaux
 	 */
-	public boolean equals(Revue a) {
-		return this.rank.equals(a.rank);
+	public boolean equals(Revue other)
+	{
+		return this.rank.equals(other.rank);
 	}
 }
