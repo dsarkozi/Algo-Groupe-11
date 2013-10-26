@@ -3,11 +3,11 @@ package mission.three;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class MainRevue
+public class MainJournal
 {
-	public MainRevue()
+	public MainJournal()
 	{
-		Revue.rankMap_init();
+		Journal.rankMap_init();
 	}
 
 	/**
@@ -28,10 +28,10 @@ public class MainRevue
 							+ inputFile);
 			return;
 		}
-		MainRevue mr = new MainRevue();
+		MainJournal mr = new MainJournal();
 		for (String line : lines)
 		{
-			mr.addRevue(line);
+			mr.addJournal(line);
 		}
 	}
 
@@ -40,10 +40,10 @@ public class MainRevue
 	 * @param line
 	 *            The line of the file representing a journal
 	 */
-	public void addRevue(String line)
+	public void addJournal(String line)
 	{
 		String[] data = line.split(",");
-		Revue revue = new Revue(data);
+		Journal journal = new Journal(data);
 		// TODO HashMap.put(revue.name, revue);
 	}
 

@@ -5,7 +5,7 @@ import java.util.HashMap;
 /**
  * @author Benoit Sluysmans
  */
-public class Revue implements Comparable<Revue>
+public class Journal implements Comparable<Journal>
 {
 	private static HashMap<String, Integer> rankMap;
 
@@ -18,7 +18,7 @@ public class Revue implements Comparable<Revue>
 	private int for3;
 	private String for3name;
 
-	public Revue(String[] data)
+	public Journal(String[] data)
 	{
 		int i = 0;
 		rank = data[i++];
@@ -194,7 +194,7 @@ public class Revue implements Comparable<Revue>
 	/**
 	 * @post Retoure un String representant le fichier
 	 */
-	public String toString(Revue r)
+	public String toString(Journal r)
 	{
 		return rank + "," + title + "," + for1 + "," + for1name + "," + for2
 				+ "," + for2name + "," + for3 + "," + for3name;
@@ -204,7 +204,7 @@ public class Revue implements Comparable<Revue>
 	 * @post Compare deux revues par rapport a leur rang
 	 */
 	@Override
-	public int compareTo(Revue other)
+	public int compareTo(Journal other)
 	{
 		return rankMap.get(other.rank) - rankMap.get(this.rank);
 	}
@@ -212,7 +212,7 @@ public class Revue implements Comparable<Revue>
 	/**
 	 * @post Verifie si le rang de deux revues sont egaux
 	 */
-	public boolean equals(Revue other)
+	public boolean equals(Journal other)
 	{
 		return this.rank.equals(other.rank);
 	}
