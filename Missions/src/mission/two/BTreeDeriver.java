@@ -2,8 +2,8 @@ package mission.two;
 
 import java.util.ArrayList;
 
+@SuppressWarnings(value = { "all" })
 public class BTreeDeriver<E> {
-
 	
 	/*
 	 * @Julien
@@ -16,7 +16,7 @@ public class BTreeDeriver<E> {
 		
 		bTnode.setElement((E) "+");
 		bTnode.setLeft(deriveExpression(lChild));
-		bTnode.setRight(deriveExpression(rChild);
+		bTnode.setRight(deriveExpression(rChild));
 	}
 	
 	
@@ -42,8 +42,8 @@ public class BTreeDeriver<E> {
 		BTNode lChild = (BTNode) bTnode.getLeft();
 		BTNode rChild = (BTNode) bTnode.getRight();
 		
-		BTNode mul1 = new BTNode("*", deriveExpression(lChild), lChild, bTnode.element()); //f'*g
-		BTNode mul2 = new BTNode("*", lChild, deriveExpression(rChild), bTnode.element()); // f*g'
+		BTNode mul1 = new BTNode("*", deriveExpression(lChild), lChild, (Position) bTnode.element()); //f'*g
+		BTNode mul2 = new BTNode("*", lChild, deriveExpression(rChild), (Position) bTnode.element()); // f*g'
 		
 		bTnode.setElement((E) "+");
 		bTnode.setLeft(mul1);
@@ -64,7 +64,7 @@ public class BTreeDeriver<E> {
 		BTNode mul1 = new BTNode("*", deriveExpression(lChild), lChild, sub1); // f'*g
 		BTNode mul2 = new BTNode("*", lChild, deriveExpression(rChild), sub1); // f*g'
 
-		BTNode exp1 = new BTNode("^", lChild, deriveExpression(rChild), bTnode.element()); //g^2
+		BTNode exp1 = new BTNode("^", lChild, deriveExpression(rChild), (Position) bTnode.element()); //g^2
 		
 		sub1.setElement("-");
 		sub1.setLeft(mul1);
@@ -74,7 +74,11 @@ public class BTreeDeriver<E> {
 		bTnode.setElement((E) "-");
 		bTnode.setLeft(sub1);
 		bTnode.setRight(exp1);
-	}		
+	}
+	public Position<String> deriveExpression(BTNode<String> node)
+	{
+		return null;
+	}
 }
 
 
