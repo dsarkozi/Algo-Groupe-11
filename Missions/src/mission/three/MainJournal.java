@@ -42,7 +42,7 @@ public class MainJournal
 	 */
 	public void addJournal(String line)
 	{
-		String[] data = line.split(",");
+		String[] data = line.split(",(?=([^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)");
 		Journal journal = new Journal(data);
 		// TODO HashMap.put(revue.name, revue);
 	}
