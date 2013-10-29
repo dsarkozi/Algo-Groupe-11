@@ -12,6 +12,17 @@ public class MainJournal
 		Journal.rankMap_init();
 	}
 
+    
+        public HashMap<String, Journal> fillMap(ArrayList<Journal> journal){
+            int compteur=0;
+            HashMap<String, Journal> map = new HashMap<String, Journal>();
+            for(int i=0;i<=journal.size();i++){
+                map.put(journal.get(i).getTitle(), journal.get(i));
+            }
+            
+            return map;
+        }
+
 	/**
 	 * @author David Sarkozi
 	 */
