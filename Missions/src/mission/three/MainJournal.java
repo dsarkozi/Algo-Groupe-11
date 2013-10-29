@@ -48,7 +48,7 @@ public class MainJournal
 		{
 			mr.addJournal(line);
 		}
-			/*
+		/*
 		 * Génération du matériel de tests de complexité
 		 */
 		
@@ -57,7 +57,7 @@ public class MainJournal
 			testDics.add(new HashMap<String, Journal>());
 		}
 		
-		//Garnir les dicos
+		//Garnir les dictionaires
 		String[] data;
 		Journal journal;
 		//une "fausse" revue
@@ -67,7 +67,7 @@ public class MainJournal
 				new Journal(dummyData.split(",(?=([^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)")
 );
 		for(int i =0; i<testDics.size(); i++){
-			//lire un certain nombre de lignes destinées à chaque dico
+			//lire un certain nombre de lignes destinées à chaque dictionnaire
 			try
 			{	
 			lines = FileManager.readSmallerFile(inputFile, 2071 * (i+1));//TODO hardcoded value!
@@ -87,25 +87,68 @@ public class MainJournal
 				testDics.get(i).put(journal.getTitle(), journal);
 
 			}
-			//rajouter le dummy à la fin de chaque dico
-			testDics.get(i).put(dummy.getTitle(), dummy);
 			
+		}			
 			/*
-			 * TESTS
-			 * 
+			 * TESTS DE COMPLEXITE :
+			 * PUT
+			 * GET
+			 * */
+		
+			/*
+			 * Test de temps d'exécution sur la methode put(Object key, Journal j)
 			 */
+			System.out.println("*Test put(Object key, Journal j)*");
+			for(int i = 0; i< 10; i++){				
+			System.out.println("Put sur dictionnaire"+ i +":"+ putExecTime(testDics.get(i), dummy)+"nano");
+			}
 			
 			/*
 			 *Test de temps d'execution sur la methode get(Object key) 
 			 */
-			System.out.println(getExecTime());
-			
-		}
-
-		
+			System.out.println("*Test get(Object key*)");
+			for(int i = 0; i< 10; i++){				
+				System.out.println("Get sur dictionnaire"+ i +":"+ getExecTime(testDics.get(i))+"nano");
+			}
 	}//fin main
 	
+	/**
+	 * Calcule le temps d'exécution moyen de la methode put 
+	 * sur un dictionnaire.
+	 * @pre  d n'est pas null
+	 * @post le temps d'exécution est renvoyé
+	 * @exceptions -
+	 * @param d
+	 * @return le temps d'execution
+	 */
+	private static long putExecTime(HashMap<String, Journal> d, Journal dummy){
+		long startTime;
+		long estimatedTime;
+		startTime = System.nanoTime() ;
+		//rajouter le dummy à la fin de chaque dico
+		d.put(dummy.getTitle(), dummy);
+		estimatedTime = System.nanoTime() - startTime ;
+		return estimatedTime;
 
+	}
+	
+	/**
+	 * Calcule le temps d'exécution moyen de la methode get 
+	 * sur un dictionnaire. 
+	 * @pre : d n'est pas null
+	 * @post : le temps d'exécution est renvoyé
+	 * @exceptions : -
+	 * @return le temps d'execution
+	 */
+	private static long getExecTime(HashMap<String, Journal> d) {
+		//Récupérer le dummy inséré à la fin de chaque dictionnaire
+		long startTime;
+		long estimatedTime;
+			startTime = System.nanoTime() ;
+			d.get("SINF1121SINF1121SINF1121SINF1121SINF1121");
+			estimatedTime = System.nanoTime() - startTime ;
+			return estimatedTime;
+	}
 	/**
 	 * @pre -
 	 * @param line
