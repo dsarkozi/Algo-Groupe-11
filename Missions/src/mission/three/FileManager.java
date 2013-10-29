@@ -31,7 +31,7 @@ public class FileManager
 
 			BufferedReader bufreader = new BufferedReader(new FileReader(file));
 			ArrayList<String> content = new ArrayList<String>();
-			String currentLine = null;
+			String currentLine = bufreader.readLine();
 			while ((currentLine = bufreader.readLine()) != null)
 			{
 				content.add(currentLine);
