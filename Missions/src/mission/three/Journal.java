@@ -3,7 +3,7 @@ package mission.three;
 import java.util.HashMap;
 
 /**
- * @author Benoit Sluysmans
+ * @author Benoit Sluysmans, Julien De Maeyer
  */
 public class Journal implements Comparable<Journal>
 {
