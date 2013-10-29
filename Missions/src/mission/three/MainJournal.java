@@ -26,7 +26,7 @@ public class MainJournal
         }
 
 	/**
-	 * @author David Sarkozi
+	 * @author David Sarkozi, Clémentine Munyabarenzi
 	 */
 	public static void main(String[] args)
 	{
