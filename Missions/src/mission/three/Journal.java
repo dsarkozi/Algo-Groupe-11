@@ -48,7 +48,7 @@ public class Journal implements Comparable<Journal>
 
 	protected static void rankMap_init()
 	{
-		rankMap = new HashMap<>();
+		rankMap = new HashMap<String,Integer>();
 		rankMap.put("A*", 1);
 		rankMap.put("B", 2);
 		rankMap.put("C", 3);
