@@ -6,8 +6,10 @@ import java.util.HashMap;
 
 public class MainJournal
 {
+	/**
+	 * @author Loic Lacomblez, Alaedine Chatri
+	 */
 	HashMap<String, Journal> dictionary;
-	static ArrayList<HashMap<String, Journal>> testDics;
 
 	public MainJournal()
 	{
@@ -38,53 +40,15 @@ public class MainJournal
 		{
 			mr.addJournal(line);
 		}
-		
+
 	}// fin main
 
 	/**
-	 * Calcule le temps d'exécution moyen de la methode put sur un dictionnaire.
-	 * 
-	 * @pre d n'est pas null
-	 * @post le temps d'exécution est renvoyé
-	 * @exceptions -
-	 * @param d
-	 * @return le temps d'execution
-	 */
-	private static long putExecTime(HashMap<String, Journal> d, Journal dummy)
-	{
-		long startTime;
-		long estimatedTime;
-		startTime = System.nanoTime();
-		// rajouter le dummy à la fin de chaque dico
-		d.put(dummy.getTitle(), dummy);
-		estimatedTime = System.nanoTime() - startTime;
-		return estimatedTime;
-
-	}
-
-	/**
-	 * Calcule le temps d'exécution moyen de la methode get sur un dictionnaire.
-	 * 
-	 * @pre : d n'est pas null
-	 * @post : le temps d'exécution est renvoyé
-	 * @exceptions : -
-	 * @return le temps d'execution
-	 */
-	private static long getExecTime(HashMap<String, Journal> d)
-	{
-		// Récupérer le dummy inséré à la fin de chaque dictionnaire
-		long startTime;
-		long estimatedTime;
-		startTime = System.nanoTime();
-		d.get("SINF1121SINF1121SINF1121SINF1121SINF1121");
-		estimatedTime = System.nanoTime() - startTime;
-		return estimatedTime;
-	}
-
-	/**
+	 * @author Nicolas Marchand
 	 * @pre -
 	 * @param line
 	 *            The line of the file representing a journal
+	 * @post Adds the Journal represented by line to the dictionary
 	 */
 	public void addJournal(String line)
 	{

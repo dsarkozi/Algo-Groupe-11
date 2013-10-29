@@ -42,46 +42,4 @@ public class FileManager
 		else System.err.println("Read failed : File doesn't exist");
 		return null;
 	}
-	
-	/**
-	 * Lit un fichier et en extrait le nombre de lignes spécifiées en paramètre
-	 * @pre : -
-	 * @post :	une ArrayList de Strings contenant les n première lignes du fichier 
-	 * 			a été renvoyée. 
-	 * 			Si le fichier n'existait pas une erreur a été affichée
-	 * 			dans la console.
-	 * 			Si le fichier était vide une ArrayList vide a été renvoyée
-	 * 			Si n > a la longieur du fichier, une ArrayList contenant toutes les
-	 * 			lignes du fichier a été renvoyée.
-	 * @exceptions : IOException
-	 * @param filename : filename, le nom du fichier à lire
-	 * 					 n, nombre de lignes à lire
-	 * @return : une ArrayList des lignes lues
-	 * @throws IOException
-	 */
-	public static ArrayList<String> readSmallerFile(String filename, int n)
-			throws IOException
-	{
-
-		File file = new File(filename);
-		if (file.exists())
-		{
-			int i = 0;
-			BufferedReader bufreader = new BufferedReader(new FileReader(file));
-			ArrayList<String> content = new ArrayList<String>();
-			String currentLine = null;
-			currentLine = bufreader.readLine();
-			while ((i < n) && (currentLine != null))
-			{			
-				content.add(currentLine);
-				i++;
-				currentLine = bufreader.readLine();
-			}
-			bufreader.close();
-			return content;
-		}
-		else System.err.println("Read failed : File doesn't exist");
-		return null;
-	}
-
 }
