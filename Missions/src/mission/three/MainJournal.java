@@ -2,9 +2,11 @@ package mission.three;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainJournal
 {
+	HashMap<String, Journal> dictionary;
 	public MainJournal()
 	{
 		Journal.rankMap_init();
@@ -44,7 +46,7 @@ public class MainJournal
 	{
 		String[] data = line.split(",(?=([^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)");
 		Journal journal = new Journal(data);
-		// TODO HashMap.put(revue.name, revue);
+		dictionary.put(journal.getTitle(), journal);
 	}
 
 }
