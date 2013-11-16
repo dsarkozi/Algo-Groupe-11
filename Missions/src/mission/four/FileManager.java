@@ -16,30 +16,16 @@ public class FileManager
 	/**
 	 * Represente le reader du fichier d'entree
 	 */
-	private BufferedReader reader;
+	private static BufferedReader reader;
 
 	/**
 	 * Represente le chemin vers le fichier d'entree
 	 */
-	private String filename;
-
-	/**
-	 * @param filename
-	 *            Le nom du fichier a lire
-	 * @pre Le fichier pointe par filename existe et est lisible
-	 * @post Cree un objet FileManager avec un reader ouvert et affecte au
-	 *       fichier d'entree en cours de lecture
-	 * @see #openFile(String)
-	 */
-	public FileManager(String filename)
-	{
-		this.openFile(filename);
-		this.filename = filename;
-	}
+	private static String filename;
 
 	/**
 	 * Lit une ligne du fichier d'entree. Est equivalent a
-	 * {@link #readLine(false)}
+	 * {@code readLine(false)}
 	 * 
 	 * @pre Le reader est ouvert et pret a etre lu
 	 * @post Retourne la ligne lue
@@ -48,25 +34,27 @@ public class FileManager
 	 *             Si un evenement inattendu est survenu pendant la lecture
 	 * @see #readLine(boolean)
 	 */
-	public String readLine() throws IOException
+	public static String readLine() throws IOException
 	{
-		return this.reader.readLine();
+		return reader.readLine();
 	}
 
 	/**
-	 * Lit une ligne du fichier d'entree et ferme le reader si specifie
+	 * Lit une ligne du fichier d'entree et ferme {@link #reader} si specifie
 	 * 
 	 * @param closeFile
-	 *            Si defini a true, le reader est ferme apres lecture
-	 * @pre Le reader est ouvert et pret a etre lu
-	 * @post Retourne la ligne lue et ferme le reader si closeFile est a true
+	 *            Si defini a {@code true}, {@link #reader} est ferme apres
+	 *            lecture
+	 * @pre {@link #reader} est ouvert et pret a etre lu
+	 * @post Retourne la ligne lue et ferme {@link #reader} si closeFile est a
+	 *       {@code true}
 	 * @return La ligne lue
 	 * @throws IOException
 	 *             Si un evenement inattendu est survenu pendant la lecture
 	 */
-	public String readLine(boolean closeFile) throws IOException
+	public static String readLine(boolean closeFile) throws IOException
 	{
-		String currentLine = this.reader.readLine();
+		String currentLine = reader.readLine();
 		if (closeFile)
 		{
 			reader.close();
@@ -76,16 +64,16 @@ public class FileManager
 	}
 
 	/**
-	 * Ouvre le fichier d'entree dont le chemin de this est {@link #filename}
+	 * Ouvre le fichier d'entree dont le chemin est {@link #filename}
 	 * 
 	 * @pre {@link #filename} existe et est lisible
 	 * @post {@link #reader} contient le fichier ouvert et est pret a etre lu
 	 */
-	public void openFile()
+	public static void openFile()
 	{
 		try
 		{
-			this.reader = new BufferedReader(new FileReader(filename));
+			reader = new BufferedReader(new FileReader(filename));
 		}
 		catch (FileNotFoundException e)
 		{
@@ -95,20 +83,20 @@ public class FileManager
 	}
 
 	/**
-	 * Ouvre le fichier d'entree specifie par filename
+	 * Ouvre le fichier d'entree specifie par {@code filename}
 	 * 
 	 * @param filename
 	 *            Le fichier a ouvrir
-	 * @pre Le fichier pointe par filename existe et est lisible
+	 * @pre Le fichier pointe par {@code filename} existe et est lisible
 	 * @post {@link #reader} contient le fichier ouvert et est pret a etre lu,
 	 *       et {@link #filename} contient le nouveau fichier d'entree
 	 * @see #openFile()
 	 * @see #setFilename(String)
 	 */
-	public void openFile(String filename)
+	public static void openFile(String filename)
 	{
-		this.setFilename(filename);
-		this.openFile();
+		setFilename(filename);
+		openFile();
 	}
 
 	/**
@@ -116,30 +104,30 @@ public class FileManager
 	 * 
 	 * @pre -
 	 * @post Rouvre le fichier d'entree en le fermant prealablement si
-	 *       {@link #reader} n'est pas null
+	 *       {@link #reader} n'est pas {@code null}
 	 * @throws IOException
 	 *             Si un evenement inattendu est survenu pendant la fermeture
 	 *             prealable du fichier d'entree
 	 * @see #openFile()
 	 */
-	public void reopenFile() throws IOException
+	public static void reopenFile() throws IOException
 	{
 		if (reader != null)
 		{
 			reader.close();
 			reader = null;
 		}
-		this.openFile();
+		openFile();
 	}
 
 	/**
 	 * @param filename
 	 *            Le chemin vers un fichier a lire
 	 * @pre -
-	 * @post Affecte filename a l'attribut de this
+	 * @post Affecte {@code filename} a {@link #filename}
 	 */
-	public void setFilename(String filename)
+	public static void setFilename(String filename)
 	{
-		this.filename = filename;
+		FileManager.filename = filename;
 	}
 }
