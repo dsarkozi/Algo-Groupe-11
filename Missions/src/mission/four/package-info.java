@@ -32,10 +32,10 @@
  * <ul>
  * <li>{@link Tree#remove(String)}</li>
  * <li>{@link Dictionary}</li>
+ * <li>{@link mission.four.FileManager}</li>
  * </ul>
  * <li>Henri Crombe</li>
  * <ul>
- * <li>{@link FileManager}</li>
  * <li>Responsable rapport et analyse de la complexite</li>
  * </ul>
  * <li>Julien De Maeyer</li>
