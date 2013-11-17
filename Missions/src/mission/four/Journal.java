@@ -3,7 +3,7 @@ package mission.four;
 import java.util.HashMap;
 
 /**
- * Classe representant une revue scientifique
+ * Classe representant une revue scientifique.
  * 
  * @author Benoit Sluysmans, Julien De Maeyer
  */
@@ -14,42 +14,159 @@ public class Journal implements Comparable<Journal>
 	 */
 	private static HashMap<String, Integer> rankMap;
 
-	private String rank = null;
-	private String title = null;
-	private String for1 = null;
-	private String for1name = null;
-	private String for2 = null;
-	private String for2name = null;
-	private String for3 = null;
-	private String for3name = null;
+	private String rank;
+	private String title;
+	private String for1;
+	private String for1name;
+	private String for2;
+	private String for2name;
+	private String for3;
+	private String for3name;
 
 	/**
-	 * Constructeur affectant les donnees de data a un nouvel objet Journal
+	 * Classe statique implementant l'interface {@link Builder}. Elle permet
+	 * d'hydrater les attributs de {@link Journal} independamment de l'ordre et
+	 * en distinguant les attributs obligatoires des optionnels.
 	 * 
-	 * @param data
-	 *            Les donnees de la revue a stocker
-	 * @pre data correspond a des donnees d'une revue du fichier d'entree
-	 * @post Stocke les donnees de data dans un nouvel objet Journal
+	 * @author David Sarkozi
+	 * @see Builder
 	 */
-	public Journal(String[] data)
+
+	public static class JournalBuilder implements Builder<Journal>
 	{
-		int i = 0;
-		if (data.length <= i) return;
-		rank = data[i++];
-		if (data.length <= i) return;
-		title = data[i++];
-		if (data.length <= i) return;
-		for1 = data[i++];
-		if (data.length <= i) return;
-		for1name = data[i++];
-		if (data.length <= i) return;
-		for2 = data[i++];
-		if (data.length <= i) return;
-		for2name = data[i++];
-		if (data.length <= i) return;
-		for3 = data[i++];
-		if (data.length <= i) return;
-		for3name = data[i++];
+		private String rank;
+		private String title;
+		private String for1 = null;
+		private String for1name = null;
+		private String for2 = null;
+		private String for2name = null;
+		private String for3 = null;
+		private String for3name = null;
+
+		/**
+		 * Constructeur des attributs obligatoires.
+		 * 
+		 * @param rank
+		 *            Le rang de la revue
+		 * @param title
+		 *            Le titre de la revue
+		 * @see Journal#setRank(String)
+		 * @see Journal#setTitle(String)
+		 */
+		public JournalBuilder(String rank, String title)
+		{
+			this.rank = rank;
+			this.title = title;
+		}
+
+		/**
+		 * 
+		 * @param for1
+		 * @return this
+		 * @see Journal#setFor1(String)
+		 */
+		public JournalBuilder for1(String for1)
+		{
+			this.for1 = for1;
+			return this;
+		}
+
+		/**
+		 * 
+		 * @param for1name
+		 * @return this
+		 * @see Journal#setFor1name(String)
+		 */
+		public JournalBuilder for1name(String for1name)
+		{
+			this.for1name = for1name;
+			return this;
+		}
+
+		/**
+		 * 
+		 * @param for2
+		 * @return this
+		 * @see Journal#setFor2(String)
+		 */
+		public JournalBuilder for2(String for2)
+		{
+			this.for2 = for2;
+			return this;
+		}
+
+		/**
+		 * 
+		 * @param for2name
+		 * @return this
+		 * @see Journal#setFor2name(String)
+		 */
+		public JournalBuilder for2name(String for2name)
+		{
+			this.for2name = for2name;
+			return this;
+		}
+
+		/**
+		 * 
+		 * @param for3
+		 * @return this
+		 * @see Journal#setFor3(String)
+		 */
+		public JournalBuilder for3(String for3)
+		{
+			this.for3 = for3;
+			return this;
+		}
+
+		/**
+		 * 
+		 * @param for3name
+		 * @return this
+		 * @see Journal#setFor3name(String)
+		 */
+		public JournalBuilder for3name(String for3name)
+		{
+			this.for3name = for3name;
+			return this;
+		}
+
+		/**
+		 * Construit une nouvelle instance de {@link Journal}.
+		 * 
+		 * @return Une instance de {@link Journal} hydratee par les attributs du
+		 *         {@code builder}
+		 */
+		@Override
+		public Journal build()
+		{
+			return new Journal(this);
+		}
+
+	}
+
+	/**
+	 * Constructeur prive obligeant le developpeur a passer par
+	 * {@link JournalBuilder} pour construire une instance de {@link Journal}.
+	 * 
+	 * @meth.author David Sarkozi
+	 * @param builder
+	 *            Instance de {@link JournalBuilder} contenant les attributs du
+	 *            nouvel objet {@link Journal}
+	 * @pre -
+	 * @post Cree un nouvel objet {@link Journal} avec les attributs du
+	 *       {@code builder}
+	 */
+	private Journal(JournalBuilder builder)
+	{
+		this.rank = builder.rank;
+		this.title = builder.title;
+		this.for1 = builder.for1;
+		this.for1name = builder.for1name;
+		this.for2 = builder.for2;
+		this.for2name = builder.for2name;
+		this.for3 = builder.for3;
+		this.for3name = builder.for3name;
 	}
 
 	/**
