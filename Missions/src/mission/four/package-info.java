@@ -48,13 +48,7 @@
  * </ul>
  * </ul>
  * 
- * 
  * @author Groupe 11
- * 
- * @throws NullPointerException
- *             Si un ou plusieurs arguments des methodes implementees sont null.
- *             Comportement par defaut, sauf si la specification permet ce type
- *             d'argument.
  * 
  */
 package mission.four;
