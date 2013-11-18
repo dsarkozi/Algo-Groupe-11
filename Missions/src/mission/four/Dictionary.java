@@ -81,6 +81,12 @@ public class Dictionary
 	 */
 	private static void scanInput()
 	{
+		System.out.println("********************************************");
+		System.out.println("*** Bibliothèque de revues scientifiques ***");
+		System.out.println("********************************************");
+		System.out.println();
+		System.out.println("Veuillez entrer une méthode parmi : get remove");
+		System.out.println("Ou tapez exit pour quitter");
 		Scanner in = new Scanner(System.in);
 		boolean exit = false;
 		while (!exit)
