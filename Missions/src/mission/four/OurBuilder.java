@@ -16,34 +16,37 @@ import java.util.List;
 public class OurBuilder {
 	
 	/*the information*/
-	private ArrayList<Journal> values;
+	private ArrayList<Journal> journals;
 	private Tree<Journal> tree;
-	private final int FUTURE_ROOT_IND = 0;
+	private final int FUTURE_ROOT = 0;
 	
 	/**
 	 * Construire une structure T à partir d'une liste
 	 */
-	public OurBuilder(ArrayList<Journal> values) {
+	public OurBuilder(ArrayList<Journal> journals) {
 
-		this.values = values;
+		this.journals = journals;
 	}
 	/**
 	 * Cree un Tree destine a contenir des Journals
-	 * @pre
+	 * @pre	journals ne contient pas de valeur null
 	 * @post
 	 * @exceptions
 	 * @return
 	 */
 	public Tree<Journal> build() {
-
-		tree = new Tree<Journal>(this.values.get(FUTURE_ROOT_IND));
-		//pour chaque journal
-				for(int i = 0; i <values.size(); i++){
-					//l'introduire au bon endroit selon chaque champ
-					
-					
-					
-				}
+		Journal jr;
+		tree = new Tree<Journal>(this.journals.get(FUTURE_ROOT));
+		//pour chaque critère
+		for(int i =0; i < (this.journals.get(FUTURE_ROOT)).numFields(); i++){
+			//ajout selon le critère i
+			tree.setCurrentPutKey(i);
+			//pour chaque journal
+			for(int j = 0; j <journals.size(); j++){
+				jr = journals.get(j);
+				tree.put(jr.getField(i), (journals.get(j)));
+			}
+		}
 		return tree;
 	}
 

@@ -24,10 +24,7 @@ public class Journal extends TreeValue implements Comparable<Journal>//Clem add 
 	private String for3;
 	private String for3name;
 	
-	/**
-	 * Le nombre de champs de tout objet qui est un Journal
-	 */
-	public static int NUM_FIELDS;//TODO serait bien en final
+	
 
 	/**
 	 * Classe statique implementant l'interface {@link Builder}. Elle permet
@@ -59,9 +56,9 @@ public class Journal extends TreeValue implements Comparable<Journal>//Clem add 
 		 * @see Journal#setRank(String)
 		 * @see Journal#setTitle(String)
 		 */
-		public JournalBuilder(String rank, String title,int numFields)
+		public JournalBuilder(String rank, String title)
 		{
-			NUM_FIELDS = numFields;
+			NUM_FIELDS = 8;
 			this.rank = rank;
 			this.title = title;
 		}
@@ -412,7 +409,7 @@ public class Journal extends TreeValue implements Comparable<Journal>//Clem add 
 	@Override
 	public int numFields() {
 	
-		return NUM_FIELDS;
+		return super.numFields();
 	}
 
 	/**
@@ -456,8 +453,50 @@ public class Journal extends TreeValue implements Comparable<Journal>//Clem add 
 		default : return -1;//TODO gestion des erreurs
 		}
 	}
+
+	/**
+	 * Accès générique aux champs
+	 * @pre
+	 * @post
+	 * @exceptions
+	 * @param i
+	 * @return
+	 */
+	public String getField(int index) {
+		switch(index){
+		case 0 : return getRank();
+		case 1 : return getTitle();
+		case 2 : return getFor1();
+		case 3 : return getFor1name();
+		case 4 : return getFor2();
+		case 5 : return getFor2name();
+		case 6 : return getFor3();
+		case 7 : return getFor3name();
+		default : return null;//TODO gestion des erreurs
+		}
+	}
 	
-	
+	/**
+	 * Mise à jour générique des champs
+	 * @pre
+	 * @post
+	 * @exceptions
+	 * @param i
+	 * @return
+	 */
+	public boolean setField(int index, String val) {
+		switch(index){
+		case 0 :   setRank(val); return true; 
+		case 1 :   setTitle(val); return true; 
+		case 2 :   setFor1(val); return true; 
+		case 3 :   setFor1name(val); return true; 
+		case 4 :   setFor2(val); return true; 
+		case 5 :   setFor2name(val); return true; 
+		case 6 :   setFor3(val); return true; 
+		case 7 :   setFor3name(val); return true; 
+		default : return false;//TODO gestion des erreurs
+		}
+	}
 	
 	
 	

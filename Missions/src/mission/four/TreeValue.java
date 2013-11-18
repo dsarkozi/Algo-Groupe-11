@@ -12,16 +12,22 @@ package mission.four;
 public abstract class TreeValue {
 	
 	/**
+	 * Le nombre de champs de l'objet
+	 */
+	protected int NUM_FIELDS;//TODO serait bien en final
+	
+	/**
 	 * Constructeur
 	 */
-	public TreeValue(){
+	public TreeValue(int numFields){
+		NUM_FIELDS = numFields;
 	}
 	
 	/**
 	 * met à jour le nombre de champs
 	 */
 	public int numFields(){
-		return 0;
+		return NUM_FIELDS;
 	}
 	
 	/**
