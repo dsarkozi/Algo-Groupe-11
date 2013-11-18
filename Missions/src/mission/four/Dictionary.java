@@ -1,5 +1,6 @@
 package mission.four;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -13,8 +14,23 @@ public class Dictionary
 {
 	private Tree<Journal> dictionary;
 
-	public Dictionary()
+	public Dictionary(String inputFile)
 	{
+		FileManager.openFile(inputFile);
+		String line = null;
+		line = FileManager.readLine();
+		/*
+		 * Init ArrayList with number of attributes of a Journal as initial
+		 * capacity
+		 */
+		ArrayList<Journal> journals = new ArrayList<Journal>(
+				line.split(",").length);
+
+		line = FileManager.readLine();
+		while ((line != null))
+		{
+		}
+		// TODO Tree building
 	}
 
 	/**
@@ -78,7 +94,12 @@ public class Dictionary
 
 	public static void main(String[] args)
 	{
-		new Dictionary();
+		if (args.length != 1)
+		{
+			System.err.println("Invalid main arguments.");
+			System.exit(-1);
+		}
+		new Dictionary(args[0]);
 		scanInput();
 	}
 
