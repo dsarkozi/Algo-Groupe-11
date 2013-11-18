@@ -5,12 +5,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import mission.two.BTNode;
+import mission.two.Position;
 
 public class Tree<E> {
 	
 	/**
 	 * Benoit Sluysmans
-	 * Retourne toute les valeurs de l'arbre dans l'ordre du ieme crit�re
+	 * Retourne toute les valeurs de l'arbre dans l'ordre du ieme crit�re
 	 * 
 	 */
 	protected BTNode<E> root;
@@ -60,7 +61,7 @@ public class Tree<E> {
 	
 	/**
 	 * Benoit Sluysmans
-	 * Retourne toute les cl�s de l'arbre dans l'ordre du ieme crit�re
+	 * Retourne toute les cl�s de l'arbre dans l'ordre du ieme crit�re
 	 */
 	public ArrayList<E> getAllKeys(int i)
 	{
@@ -87,4 +88,38 @@ public class Tree<E> {
 		}
 		return all;
 	}
+	
+	/**
+	 * @author Clémentine
+	 * Classe qui représentera un noeud de l'arbre
+	 * 
+	 */
+	private class OurNode<E> extends BTNode<E>{
+		
+		/**
+		 * Contructeur
+		 */
+		public OurNode(E element, Position<E> left, Position<E> right, Position<E> parent){
+			super(element, left, right, parent);
+		}
+		
+		/**
+		 * Retourne la clé stockée à l'index i du tableau des membres du node
+		 */
+		public int getValue(int i){
+			return ((ArrayList<Integer>)element()).get(i);
+					
+		}
+		
+		/**
+		 * Remplace la clé stockée à l'index i du tableau des membres du node
+		 * par la clé newKey et renvoie la clé précédente;
+		 */
+		public void setValue(int i, int newKey){
+			((ArrayList<Integer>)element()).set(i, newKey);
+					
+		}
+	}
+	
+	
 }
