@@ -13,24 +13,62 @@ import java.util.Scanner;
 public class Dictionary
 {
 	private Tree<Journal> dictionary;
+	private static int errors = 0;
+
+	/**
+	 * Required amount of fields. Set at compilation time, can be edited by
+	 * developer.
+	 */
+	private static final int REQUIRED = 2;
+
+	/**
+	 * Maximum amount of fields. Set at execution time.
+	 */
+	private static int max;
 
 	public Dictionary(String inputFile)
 	{
 		FileManager.openFile(inputFile);
 		String line = null;
 		line = FileManager.readLine();
+		max = line.split(",").length;
 		/*
 		 * Init ArrayList with number of attributes of a Journal as initial
 		 * capacity
 		 */
-		ArrayList<Journal> journals = new ArrayList<Journal>(
-				line.split(",").length);
+		ArrayList<Journal> journals = new ArrayList<Journal>(max);
 
 		line = FileManager.readLine();
+		Journal j = null;
 		while ((line != null))
 		{
+			j = line2Journal(line);
+			if (j != null) journals.add(line2Journal(line));
+			line = FileManager.readLine();
 		}
+		FileManager.closeFile();
 		// TODO Tree building
+	}
+
+	public static Journal line2Journal(String line)
+	{
+		/*
+		 * Line split sur les virgules, en ignorant celles entre guillemets, qui
+		 * peuvent se trouver dans les titres des revues
+		 */
+		String[] data = line.split(",(?=([^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)");
+		if (data.length < REQUIRED || data.length > max)
+		{
+			errors++;
+			return null;
+		}
+		Journal.JournalBuilder jbuilder = new Journal.JournalBuilder(data[0],
+				data[1]);
+		for (int i = REQUIRED; i < max; i++)
+		{
+			jbuilder.optData(data[i], i);
+		}
+		return jbuilder.build();
 	}
 
 	/**
@@ -100,6 +138,8 @@ public class Dictionary
 			System.exit(-1);
 		}
 		new Dictionary(args[0]);
+		if (errors > 0) System.err.println("There are " + errors
+				+ " invalid lines in the input file.");
 		scanInput();
 	}
 
