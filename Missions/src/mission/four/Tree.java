@@ -14,29 +14,38 @@ public class Tree<E> {
 	 * Retourne toute les valeurs de l'arbre dans l'ordre du ieme crit�re
 	 * 
 	 */
-	protected BTNode<ArrayList<Integer>> root;
+	protected OurNode<ArrayList<Integer>> tableRoot;
     protected int size;
+    /*sélection du champ de l'Objet stoque qui est maintenant valide pour put, get et remove*/
+    protected int currentPutKey ;
+    protected int currentGetKey;
+    protected int currentRemoveKey;
     
     /* Constructeur de base*/
     public Tree(){
-    	this.root = null;
+
+    	currentPutKey = -1;
+    	currentGetKey = -1;
+    	currentRemoveKey = -1;
+    	this.tableRoot = null;
     	this.size=0;
     }
     
     /**
-     * Constructeur1
-     * cree le tableau qui sera membre du node root
-     * pour cela demander au journal combien de champs il a
+     * Constructeur2
+     * cree le tableau qui sera membre du node tableRoot
+     * pour cela demande au journal combien de champs il a.
      * on presume que le tableau est intitialisé à 0=référence de la racine
-     * @param root
+     * quelquesoit le critère de recherhe, le 1er élément est la racine.
+     * @param tableRoot
      */
     public Tree(E root ){//Clementine a change le constructeur de Tree
     	
 		ArrayList<Integer> t = new ArrayList<Integer>(((TreeValue)root).numFields());
-    	this.root = new OurNode<ArrayList<Integer>>(t, null, null, null);
+    	this.tableRoot = new OurNode<ArrayList<Integer>>(t, null, null, null);
     	this.size = 1;
     }
-    
+    	
     /* ADD  METHODES D AJOUT / SUPPRESSION HERE */
     
     
@@ -49,7 +58,7 @@ public class Tree<E> {
 			return null;
 		else {
 			LinkedList<E> all = new LinkedList<E>(); 
-			return (ArrayList<E>) getHelper(root, all, i);
+			return (ArrayList<E>) getHelper(tableRoot, all, i);
 		}
 	}
 	public List<E> getHelper(BTNode<E> current, List all, int i)
@@ -78,7 +87,7 @@ public class Tree<E> {
 			return null;
 		else {
 			LinkedList<E> all = new LinkedList<E>(); 
-			return (ArrayList<E>) getHelper2(root, all, i);
+			return (ArrayList<E>) getHelper2(tableRoot, all, i);
 		}
 	}
 	
@@ -98,6 +107,72 @@ public class Tree<E> {
 		return all;
 	}
 	
+	
+	
+	/**
+	 * @author Clémentine
+	 * @return the currentPutKey
+	 */
+	public int getCurrentPutKey() {
+		return currentPutKey;
+	}
+
+	/**
+	 * @author Clémentine
+	 * @param currentPutKey the currentPutKey to set
+	 */
+	public boolean setCurrentPutKey(int i) {
+		if(i < tableRoot.numFields( )){
+		this.currentPutKey = i;
+		return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @author Clémentine
+	 * @return the currentGetKey
+	 */
+	public int getCurrentGetKey() {
+		return currentGetKey;
+	}
+
+	/**
+	 * @author Clémentine
+	 * @param currentGetKey the currentGetKey to set
+	 */
+	public boolean setCurrentGetKey(int i) {
+		if(i < tableRoot.numFields( )){
+			this.currentGetKey = i;
+			return true;
+		}
+		return false;
+		
+	}
+
+	/**
+	 * @author Clémentine
+	 * @return the currentRemoveKey
+	 */
+	public int getCurrentRemoveKey() {
+		return currentRemoveKey;
+	}
+
+	/**
+	 * @author Clémentine
+	 * @param currentRemoveKey the currentRemoveKey to set
+	 */
+	public boolean setCurrentRemoveKey(int i) {
+		if(i < tableRoot.numFields( )){
+			this.currentRemoveKey = i;
+			return true;
+		}
+		return false;
+		
+	}
+
+
+
 	/**
 	 * @author Clémentine
 	 * Classe qui représentera un noeud de l'arbre.
@@ -131,6 +206,17 @@ public class Tree<E> {
 			((ArrayList<Integer>)element()).set(i, newKey);
 			return oldKey;
 					
+		}
+		/**
+		 * Retourne le nombre de cases du tableau à l'intérieur du OurNode
+		 * @author Clémentine
+		 * @pre
+		 * @post
+		 * @exceptions
+		 * @return
+		 */
+		public int numFields(){
+			return ((ArrayList<Integer>)element()).size();
 		}
 	}
 	
