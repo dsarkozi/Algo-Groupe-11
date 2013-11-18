@@ -64,74 +64,42 @@ public class Journal extends TreeValue implements Comparable<Journal>//Clem add 
 		}
 
 		/**
+		 * Methode d'ajout d'attributs optionnels a un objet {@link Journal} en
+		 * train d'etre construit.
 		 * 
-		 * @param for1
-		 * @return this
-		 * @see Journal#setFor1(String)
+		 * @pre {@code index} est le bon indice du tableau de donnees des
+		 *      attributs d'une revue
+		 * @post Retourne un {@code builder} contenant un attribut dont la
+		 *       valeur a ete correctement affectee a {@code opt}
+		 * @param opt
+		 *            L'attribut optionnel a ajouter a l'objet
+		 * @param index
+		 *            L'indice du tableau de donnees des attributs
+		 * @return Un {@code builder} contenant l'attribut affecte
 		 */
-		public JournalBuilder for1(String for1)
+		public JournalBuilder optData(String opt, int index)
 		{
-			this.for1 = for1;
-			return this;
-		}
-
-		/**
-		 * 
-		 * @param for1name
-		 * @return this
-		 * @see Journal#setFor1name(String)
-		 */
-		public JournalBuilder for1name(String for1name)
-		{
-			this.for1name = for1name;
-			return this;
-		}
-
-		/**
-		 * 
-		 * @param for2
-		 * @return this
-		 * @see Journal#setFor2(String)
-		 */
-		public JournalBuilder for2(String for2)
-		{
-			this.for2 = for2;
-			return this;
-		}
-
-		/**
-		 * 
-		 * @param for2name
-		 * @return this
-		 * @see Journal#setFor2name(String)
-		 */
-		public JournalBuilder for2name(String for2name)
-		{
-			this.for2name = for2name;
-			return this;
-		}
-
-		/**
-		 * 
-		 * @param for3
-		 * @return this
-		 * @see Journal#setFor3(String)
-		 */
-		public JournalBuilder for3(String for3)
-		{
-			this.for3 = for3;
-			return this;
-		}
-
-		/**
-		 * 
-		 * @param for3name
-		 * @return this
-		 * @see Journal#setFor3name(String)
-		 */
-		public JournalBuilder for3name(String for3name)
-		{
-			this.for3name = for3name;
+			switch (index)
+			{
+				case 2:
+					for1 = opt;
+					break;
+				case 3:
+					for1name = opt;
+					break;
+				case 4:
+					for2 = opt;
+					break;
+				case 5:
+					for2name = opt;
+					break;
+				case 6:
+					for3 = opt;
+					break;
+				case 7:
+					for3name = opt;
+					break;
+			}
 			return this;
 		}
 
