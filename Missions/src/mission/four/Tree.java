@@ -118,4 +118,26 @@ public class Tree<E>
 		}
 		return all;
 	}
+	
+	   	/**
+	 * Retourne la taille de l'arbre.
+	 * 
+	 * @meth.author Alaaedine Chatri
+	 *            
+	 * @return La taille de l'arbre.
+	 */
+    	public int sizeOfTree(){
+        	return size;
+        }
+        
+        /**
+     * Méthode qui vérifie si l'arbre est vide.
+     * 
+     * @meth.author Alaaedine Chatri
+     * 
+     * @return Un booléen true si l'arbre est vide, false sinon.
+     */
+    public boolean isEmpty(){
+            return size==0;
+        }
 }
