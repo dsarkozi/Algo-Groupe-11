@@ -7,12 +7,13 @@ import java.util.HashMap;
  * 
  * @author Benoit Sluysmans, Julien De Maeyer
  */
-public class Journal implements Comparable<Journal>
+public class Journal extends TreeValue implements Comparable<Journal>//Clem add TODO
 {
 	/**
 	 * Represente le HashMap permettant de stocker les rangs d'une revue
 	 */
 	private static HashMap<String, Integer> rankMap;
+	
 
 	private String rank;
 	private String title;
@@ -22,6 +23,11 @@ public class Journal implements Comparable<Journal>
 	private String for2name;
 	private String for3;
 	private String for3name;
+	
+	/**
+	 * Le nombre de champs de tout objet qui est un Journal
+	 */
+	public static int NUM_FIELDS;//TODO serait bien en final
 
 	/**
 	 * Classe statique implementant l'interface {@link Builder}. Elle permet
@@ -53,8 +59,9 @@ public class Journal implements Comparable<Journal>
 		 * @see Journal#setRank(String)
 		 * @see Journal#setTitle(String)
 		 */
-		public JournalBuilder(String rank, String title)
+		public JournalBuilder(String rank, String title,int numFields)
 		{
+			NUM_FIELDS = numFields;
 			this.rank = rank;
 			this.title = title;
 		}
@@ -159,6 +166,7 @@ public class Journal implements Comparable<Journal>
 	 */
 	private Journal(JournalBuilder builder)
 	{
+		
 		this.rank = builder.rank;
 		this.title = builder.title;
 		this.for1 = builder.for1;
@@ -396,4 +404,62 @@ public class Journal implements Comparable<Journal>
 	{
 		return this.rank.equals(other.rank);
 	}
+
+	/** (non-Javadoc)
+	 * @see mission.four.TreeValue#numFields()
+	 * @author : Clem
+	 */
+	@Override
+	public int numFields() {
+	
+		return NUM_FIELDS;
+	}
+
+	/**
+	 * Renvoie le nom de chma 
+	 * (non-Javadoc)
+	 * @see mission.four.TreeValue#getFieldName(int)
+	 * @author Clémentine
+	 */
+	@Override
+	public String getFieldName(int index) {
+		switch(index){
+		case 0 : return "rank";
+		case 1 : return "title";
+		case 2 : return "for1";
+		case 3 : return "for1name";
+		case 4 : return "for2";
+		case 5 : return "for2name";
+		case 6 : return "for3";
+		case 7 : return "for3name";
+		default : return null;//TODO gestion des erreurs
+		}
+	}
+
+	/**
+	 * Renvoi le numéro du champ correspondant au nom de champ
+	 *  (non-Javadoc)
+	 * @see mission.four.TreeValue#getFieldIndex()
+	 * @author Clémentine
+	 */
+	@Override
+	public int getFieldIndex(String field) {
+		switch(field){
+		case "rank"	: 	return 0;
+		case "title" : 	return 1;
+		case "for1" : 	return 2;
+		case "for1name" : return 3;
+		case "for2" : 	return 4;
+		case "for2name" : return 5;
+		case "for3" : 	return 6;
+		case "for3name": return 7;
+		default : return -1;//TODO gestion des erreurs
+		}
+	}
+	
+	
+	
+	
+	
+	
 }

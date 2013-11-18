@@ -10,38 +10,41 @@ import java.util.List;
 /**
  * @author Clémentine
  * @param <T>
+ * Decrit une Classe qui construit un Tree à partir de Journals
  *
  */
-public class OurBuilder<T> implements Builder<T> {
+public class OurBuilder {
 	
-	/*default information*/
-	private Object rawData;
-	private List<Object> values;
+	/*the information*/
+	private ArrayList<Journal> values;
+	private Tree<Journal> tree;
+	private final int FUTURE_ROOT_IND = 0;
 	
 	/**
 	 * Construire une structure T à partir d'une liste
 	 */
-	public OurBuilder(List values) {
-		
+	public OurBuilder(ArrayList<Journal> values) {
+
+		this.values = values;
 	}
-	
 	/**
-	 * Construire une structure T sans informations à y stocker
+	 * Cree un Tree destine a contenir des Journals
+	 * @pre
+	 * @post
+	 * @exceptions
+	 * @return
 	 */
-	public OurBuilder() {
-		// TODO Auto-generated constructor stub
-		
-		//par défaut mettra une seule référence dans chaque node
-	}
-	
-	@Override
-	public T build() {
-		// TODO Auto-generated method stub
-		
-		//vérifier combien de champs il ya dans l'objet et construire les nodes
-		//pour instancier les nodes, instancier d'abord les tabeaux de champs puis
-		//instancier des OurNode de ArrayLists
-		return null;
+	public Tree<Journal> build() {
+
+		tree = new Tree<Journal>(this.values.get(FUTURE_ROOT_IND));
+		//pour chaque journal
+				for(int i = 0; i <values.size(); i++){
+					//l'introduire au bon endroit selon chaque champ
+					
+					
+					
+				}
+		return tree;
 	}
 
 }
