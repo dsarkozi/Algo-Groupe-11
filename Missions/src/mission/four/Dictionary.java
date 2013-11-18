@@ -21,9 +21,9 @@ public class Dictionary
 	 * Scanne l'entree cote utilisateur.
 	 * 
 	 * @pre -
-	 * @post Appelle la methode appropriee en fonction de la demande de
-	 *       l'utilisateur, quitte le programme si {@code exit} est entre ou
-	 *       ecrit un message d'erreur si la methode demandee n'existe pas
+	 * @post Appelle la routine d'execution analysant l'entree scannee et ferme
+	 *       le flux de l'entree si l'utilisateur desire quitter le programme
+	 * @see #execute(String)
 	 */
 	private static void scanInput()
 	{
@@ -37,17 +37,19 @@ public class Dictionary
 	}
 
 	/**
-	 * Routine selectionnant la methode a appeler a partir de la demande de
-	 * l'utilisateur.
+	 * Routine d'execution selectionnant la methode a appeler a partir de la
+	 * demande de l'utilisateur.
 	 * 
 	 * @pre {@code cmd} est une ligne tapee de l'utilisateur
 	 * @post Appelle la methode adequate en fonction de la demande de
 	 *       l'utilisateur. Retourne {@code true} s'il desire quitter le
-	 *       programme, {@code false} sinon
+	 *       programme, {@code false} sinon, et ecrit un message d'erreur si la
+	 *       methode demandee n'existe pas
 	 * @param cmd
 	 *            La ligne lue par le scanner
 	 * @return {@code true} si l'utilisateur desire quitter le programme,
 	 *         {@code false} sinon
+	 * @see #scanInput()
 	 */
 	private static boolean execute(String cmd)
 	{
