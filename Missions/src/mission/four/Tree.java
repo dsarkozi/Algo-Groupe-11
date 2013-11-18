@@ -14,7 +14,7 @@ public class Tree<E> {
 	 * Retourne toute les valeurs de l'arbre dans l'ordre du ieme crit�re
 	 * 
 	 */
-	protected BTNode<E> root;
+	protected BTNode<ArrayList<Integer>> root;
     protected int size;
     
     /* Constructeur de base*/
@@ -23,8 +23,17 @@ public class Tree<E> {
     	this.size=0;
     }
     
-    public Tree(BTNode<E> root){
-    	this.root = root;
+    /**
+     * Constructeur1
+     * cree le tableau qui sera membre du node root
+     * pour cela demander au journal combien de champs il a
+     * on presume que le tableau est intitialisé à 0=référence de la racine
+     * @param root
+     */
+    public Tree(E root ){//Clementine a change le constructeur de Tree
+    	
+		ArrayList<Integer> t = new ArrayList<Integer>(((TreeValue)root).numFields());
+    	this.root = new OurNode<ArrayList<Integer>>(t, null, null, null);
     	this.size = 1;
     }
     
@@ -91,15 +100,17 @@ public class Tree<E> {
 	
 	/**
 	 * @author Clémentine
-	 * Classe qui représentera un noeud de l'arbre
+	 * Classe qui représentera un noeud de l'arbre.
+	 * Cette classe sait que le paramètre M est un ArrayList<Interger>
 	 * 
 	 */
-	private class OurNode<E> extends BTNode<E>{
+	private class OurNode<M> extends BTNode<M>{
 		
 		/**
 		 * Contructeur
 		 */
-		public OurNode(E element, Position<E> left, Position<E> right, Position<E> parent){
+		public OurNode(M element, Position<M> left, Position<M> right, Position<M> parent){
+		
 			super(element, left, right, parent);
 		}
 		
@@ -115,8 +126,10 @@ public class Tree<E> {
 		 * Remplace la clé stockée à l'index i du tableau des membres du node
 		 * par la clé newKey et renvoie la clé précédente;
 		 */
-		public void setValue(int i, int newKey){
+		public int setValue(int i, int newKey){
+			int oldKey = ((ArrayList<Integer>)element()).get(i);
 			((ArrayList<Integer>)element()).set(i, newKey);
+			return oldKey;
 					
 		}
 	}
