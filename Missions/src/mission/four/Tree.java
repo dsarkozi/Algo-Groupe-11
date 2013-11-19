@@ -191,8 +191,7 @@ public class Tree<E>
 	 * par le prochain get()
 	 * @return true si i était un index valide
 	 * @author Clémentine
-	 * @param currentGetKey
-	 *            the currentGetKey to set
+	 * @param i the currentGetKey to set
 	 */
 	public boolean setCurrentGetKey(int i)
 	{
@@ -219,8 +218,7 @@ public class Tree<E>
 	 * par le prochain remove()
 	 * @return true si i était un index valide
 	 * @author Clémentine
-	 * @param currentRemoveKey
-	 *            the currentRemoveKey to set
+	 * @param i the currentRemoveKey to set
 	 */
 	public boolean setCurrentRemoveKey(int i)
 	{
@@ -258,8 +256,9 @@ public class Tree<E>
 	}
 
 	/**
-	 * @author Clémentine Classe qui représentera un noeud de l'arbre. Cette
-	 *         classe sait que le paramètre M est un ArrayList<Interger>
+	 * @author Clémentine 
+	 * Classe qui représentera un noeud de l'arbre. Cette
+	 * classe sait que le paramètre M est une ArrayList<WeakReference<E>>
 	 * 
 	 */
 	private class Node<M> extends BTNode<M>
