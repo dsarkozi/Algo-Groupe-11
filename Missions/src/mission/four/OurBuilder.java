@@ -38,7 +38,7 @@ public class OurBuilder {
 	 */
 	public Tree<Journal> build() {
 		Journal jr;
-		tree = new Tree<Journal>(this.journals.get(FUTURE_ROOT), numFields);
+		tree = new Tree<Journal>(numFields);
 		//pour chaque critère
 		for(int i =0; i < (numFields; i++){
 			//ajout selon le critère i
