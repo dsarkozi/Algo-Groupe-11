@@ -20,6 +20,7 @@ public class OurBuilder {
 	private Tree<Journal> tree;
 	/*les données des champs du premier journal du tableau seront décisives pour l'allure de l'arbre*/
 	private final int FUTURE_ROOT = 0;
+	private int numFields;
 	
 	/**
 	 * Construire une structure T à partir d'une liste
@@ -37,9 +38,9 @@ public class OurBuilder {
 	 */
 	public Tree<Journal> build() {
 		Journal jr;
-		tree = new Tree<Journal>(this.journals.get(FUTURE_ROOT), Dictionnary.numFields());
+		tree = new Tree<Journal>(this.journals.get(FUTURE_ROOT), numFields);
 		//pour chaque critère
-		for(int i =0; i < (Dictionnary.numFields(); i++){
+		for(int i =0; i < (numFields; i++){
 			//ajout selon le critère i
 			tree.setCurrentPutKey(i);
 			//pour chaque journal
