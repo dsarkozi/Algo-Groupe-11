@@ -9,7 +9,7 @@
  * <li>Clementine Munyabarenzi</li>
  * <ul>
  * <li>{@link TreeBuilder}</li>
- * <li>{@link TreeNode}</li>
+ * <li>{@link mission.four.Tree}</li>
  * </ul>
  * <li>Loic Lacomblez</li>
  * <ul>
@@ -17,26 +17,26 @@
  * </ul>
  * <li>Alaaedine Chatri</li>
  * <ul>
- * <li>{@link Tree#Tree()}</li>
+ * <li>{@link Tree#Tree(int)}</li>
  * <li>{@link Tree#get(String)}</li>
  * <li>{@link Tree#size()}</li>
  * <li>{@link Tree#isEmpty()}</li>
  * </ul>
  * <li>Benoit Sluysmans</li>
  * <ul>
- * <li>{@link Tree#keySet()}</li>
- * <li>{@link Tree#entrySet()}</li>
- * <li>{@link Tree#values()}</li>
+ * <li>{@link Tree#getAllKeys(int)}</li>
+ * <li>{@link Tree#getAllValues(int)}</li>
+ * <li>{@link Tree#getAllKeysWithRank(String)}</li>
  * </ul>
  * <li>David Sarkozi</li>
  * <ul>
- * <li>{@link Tree#remove(String)}</li>
- * <li>{@link Dictionary}</li>
+ * <li>{@link Tree#remove(Object)}</li>
+ * <li>{@link mission.four.Dictionary}</li>
  * <li>{@link mission.four.FileManager}</li>
  * </ul>
  * <li>Henri Crombe</li>
  * <ul>
- * <li>Responsable rapport et analyse de la complexite</li>
+ * <li>Responsable rapport</li>
  * </ul>
  * <li>Julien De Maeyer</li>
  * <ul>
