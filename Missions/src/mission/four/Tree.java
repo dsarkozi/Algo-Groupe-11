@@ -9,7 +9,8 @@ import mission.two.Position;
 
 public class Tree<E>
 {
-	protected OurNode<ArrayList<Integer>> tableRoot;
+    
+    protected OurNode<ArrayList<E>> tableRoot;
     protected int size;
     /*sélection du champ de l'Objet stoque qui est maintenant valide pour put, get et remove*/
     protected int currentPutKey ;
@@ -34,10 +35,10 @@ public class Tree<E>
      * quelquesoit le critère de recherhe, le 1er élément est la racine.
      * @param tableRoot
      */
-    public Tree(E root ){//Clementine a change le constructeur de Tree
+    public Tree(E root ){
     	
-		ArrayList<Integer> t = new ArrayList<Integer>(((TreeValue)root).numFields());
-    	this.tableRoot = new OurNode<ArrayList<Integer>>(t, null, null, null);
+	ArrayList<E> t = new ArrayList<E>(Dictionary.numFields());//TODO
+    	this.tableRoot = new OurNode<ArrayList<E>>(t, null, null, null);
     	this.size = 1;
     }
     	
@@ -58,21 +59,21 @@ public class Tree<E>
 			return null;
 		else {
 			LinkedList<E> all = new LinkedList<E>(); 
-			return (LinkedList<E>) getHelper(tableRoot, (LinkedList<Integer>) all, i);
+			return (LinkedList<E>) getHelper(tableRoot, (LinkedList<E>) all, i);
 
 		}
 	}
 
-	private LinkedList<Integer> getHelper(OurNode<ArrayList<Integer>> current, LinkedList<Integer> all, int i)
+	private LinkedList<Integer> getHelper(OurNode<ArrayList<E>> current, LinkedList<E> all, int i)
 	{
 		if (current.getLeft() == null && current.getRight() == null) all.add(current.getValue(i));
 		else
 		{
-			if (current.getLeft() != null) getHelper((OurNode<ArrayList<Integer>>) current.getLeft(), all, i);
+			if (current.getLeft() != null) getHelper((OurNode<ArrayList<E>>) current.getLeft(), all, i);
 
 			all.add(current.getValue(i));
 
-			if (current.getRight() != null) getHelper((OurNode<ArrayList<Integer>>) current.getRight(), all,
+			if (current.getRight() != null) getHelper((OurNode<ArrayList<E>>) current.getRight(), all,
 					i);
 		}
 		return all;
@@ -88,21 +89,21 @@ public class Tree<E>
 			return null;
 		else {
 			LinkedList<E> all = new LinkedList<E>(); 
-			return (LinkedList<E>) getHelper2(tableRoot, (LinkedList<Integer>) all, i);
+			return (LinkedList<E>) getHelper2(tableRoot, (LinkedList<E>) all, i);
 
 		}
 	}
 
-	private LinkedList<Integer> getHelper2(OurNode<ArrayList<Integer>> current, LinkedList<Integer> all, int i)
+	private LinkedList<E> getHelper2(OurNode<ArrayList<E>> current, LinkedList<E> all, int i)
 	{
 		if (current.getLeft() == null && current.getRight() == null) all.add(current.getKey(i));
 		else
 		{
-			if (current.getLeft() != null) getHelper((OurNode<ArrayList<Integer>>) current.getLeft(), all, i);
+			if (current.getLeft() != null) getHelper((OurNode<ArrayList<E>>) current.getLeft(), all, i);
 
 			all.add(current.getKey(i));
 
-			if (current.getRight() != null) getHelper((OurNode<ArrayList<Integer>>) current.getRight(), all,
+			if (current.getRight() != null) getHelper((OurNode<ArrayList<E>>) current.getRight(), all,
 					i);
 		}
 		return all;
@@ -210,33 +211,41 @@ public class Tree<E>
 		}
 		
 		/**
-		 * Retourne la clé stockée à l'index i du tableau des membres du node
+		 * Retourne l'objet E stocké à l'index i du tableau des membres du node
+		 * @pre i est un index valide du tableau stocké dans le noeud
+		 * @post 
+		 * @author Clem
 		 */
-		public int getValue(int i){
-			return ((ArrayList<Integer>)element()).get(i);
+		public E getValue(int i){
+			return ((ArrayList<E>)element()).get(i);
 					
 		}
 		
 		/**
-		 * Remplace la clé stockée à l'index i du tableau des membres du node
-		 * par la clé newKey et renvoie la clé précédente;
+		 * Remplace l'objet E stocké à l'index i du tableau des membres du node
+		 * par l'objet  new et renvoie l'objet précédent;
+		 * @pre i est un index valide du tableau stocké dans le noeud
+		 * @post la référence de l'objet E à l'index i du noeud a été mis à jour.
+		 * @author clem
 		 */
-		public int setValue(int i, int newKey){
-			int oldKey = ((ArrayList<Integer>)element()).get(i);
-			((ArrayList<Integer>)element()).set(i, newKey);
-			return oldKey;
+		public E setValue(int i, E new){
+			int old = ((ArrayList<E>)element()).get(i);
+			((ArrayList<E>)element()).set(i, new);
+			return old;
 					
 		}
 		/**
 		 * Retourne le nombre de cases du tableau à l'intérieur du OurNode
 		 * @author Clémentine
-		 * @pre
-		 * @post
-		 * @exceptions
-		 * @return
+		 * @pre - 
+		 * @post - 
+		 * @exceptions -
+		 * @return -1 a ete retourné si le noeud ne contenait pas de valeur
 		 */
 		public int numFields(){
-			return ((ArrayList<Integer>)element()).size();
+			if( element() != null)
+				return ((ArrayList<E>)element()).size();
+			else return -1;
 		}
 		
 		
