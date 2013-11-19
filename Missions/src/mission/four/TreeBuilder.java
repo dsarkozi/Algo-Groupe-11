@@ -3,6 +3,7 @@
  */
 package mission.four;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**
@@ -16,7 +17,7 @@ public class TreeBuilder
 
 	/* the information */
 	private ArrayList<Journal> journals;
-	private Tree<Journal> tree;
+	private Tree<WeakReference<Journal>> tree;
 	/*
 	 * les données des champs du premier journal du tableau seront décisives
 	 * pour l'allure de l'arbre
@@ -28,7 +29,6 @@ public class TreeBuilder
 	 */
 	public TreeBuilder(ArrayList<Journal> journals)
 	{
-
 		this.journals = journals;
 	}
 
@@ -40,10 +40,10 @@ public class TreeBuilder
 	 * @exceptions
 	 * @return
 	 */
-	public Tree<Journal> build()
+	public Tree<WeakReference<Journal>> build()
 	{
 		Journal jr;
-		tree = new Tree<Journal>(numFields);
+		tree = new Tree<WeakReference<Journal>>(numFields);
 		// pour chaque critère
 		for (int i = 0; i < numFields; i++)
 		{
@@ -53,10 +53,14 @@ public class TreeBuilder
 			for (int j = 0; j < journals.size(); j++)
 			{
 				jr = journals.get(j);
-				tree.put(jr.getData(i), (journals.get(j)));
+				tree.put(jr.getData(i), jr);
 			}
 		}
 		return tree;
 	}
-
+	
+	public void strongRemove(Journal j)
+	{
+		journals.remove(j);
+	}
 }

@@ -1,5 +1,6 @@
 package mission.four;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -13,7 +14,8 @@ import java.util.Scanner;
  */
 public class Dictionary
 {
-	private Tree<Journal> dictionary;
+	private Tree<WeakReference<Journal>> dictionary;
+	private TreeBuilder tBuilder;
 	private static int errors = 0;
 	private static final String USAGE = "Syntaxe : <méthode à appeler> "
 			+ "<champ sur lequel opérer> " + "<valeur du champ>";
@@ -51,6 +53,8 @@ public class Dictionary
 		}
 		FileManager.closeFile();
 		// TODO Tree building
+		tBuilder = new TreeBuilder(journals);
+		dictionary = tBuilder.build();
 	}
 
 	public static Journal line2Journal(String line)
@@ -124,13 +128,13 @@ public class Dictionary
 		switch (meth)
 		{
 			case "get":
-				// Call Tree.get();
+				// Call dictionary.get();
 				break;
 			case "put":
-				// Call Tree.put();
+				// Call dictionary.put();
 				break;
 			case "remove":
-				// Call Tree.remove();
+				// Call dictionary.remove();
 				break;
 			case EXIT:
 				// Quit the program
