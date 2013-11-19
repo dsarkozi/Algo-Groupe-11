@@ -134,7 +134,7 @@ public class Tree<E>
 			LinkedList<E> rankI, String rank) 
 	{
 		if (tableRoot2.getLeft() == null && tableRoot2.getRight() == null){
-			if(tableRoot2.getValue(0) == rank) rankI.add(tableRoot2.getValue(1)); // Si le noeud courrant a le rang qui nous interresse, on place le nom de la revue dans la linkedlist
+			if(tableRoot2.getValue(0) == rank) rankI.add((E) tableRoot2.getValue(1)); // Si le noeud courrant a le rang qui nous interresse, on place le nom de la revue dans la linkedlist
 			
 		}
 		else
