@@ -102,6 +102,40 @@ public class Tree<E>
 		}
 		return all;
 	}
+	
+	/**
+	 * Henri Crombe
+	 * getAllKeysWithRank permet de récupérer les noms des révues (dans l'ordre alphabetique) qui ont le rang équivalent à String rank
+	 */
+	public LinkedList<E> getAllKeysWithRank (String rank){
+		
+		
+		if(size == 0 ) 
+			return null;
+		else{
+			LinkedList<E> rankI =  new LinkedList<E>();
+			return getHelper3(tableRoot,rankI,rank);
+		}
+	}
+	public LinkedList<E> getHelper3(Node<ArrayList<E>> current,
+			LinkedList<E> rankI, String rank) 
+	{
+		if (current.getLeft() == null && current.getRight() == null){
+			if(current.getValue(0) == rank) rankI.add(current.getValue(1)); // Si le noeud courrant a le rang qui nous interresse, on place le nom de la revue dans la linkedlist
+			
+		}
+		else
+		{
+			if (current.getLeft() != null) getHelper3(
+					(Node<ArrayList<E>>) current.getLeft(), rankI, rank);
+
+			rankI.add(current.getValue(1));
+
+			if (current.getRight() != null) getHelper3(
+					(Node<ArrayList<E>>) current.getRight(), rankI, rank);
+		}
+		return null;
+	}
 
 	/**
 	 * @author ClÃ©mentine
