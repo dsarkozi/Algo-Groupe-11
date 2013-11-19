@@ -160,6 +160,9 @@ public class Tree<E>
 	}
 
 	/**
+	 * Met à jour l'index de champ de l'objet E qui sera concerné
+	 * par le prochain put()
+	 * @return true si i était un index valide
 	 * @author Clémentine
 	 * @param currentPutKey
 	 *            the currentPutKey to set
@@ -184,6 +187,9 @@ public class Tree<E>
 	}
 
 	/**
+	 * Met à jour l'index de champ de l'objet E qui sera concerné
+	 * par le prochain get()
+	 * @return true si i était un index valide
 	 * @author Clémentine
 	 * @param currentGetKey
 	 *            the currentGetKey to set
@@ -209,6 +215,9 @@ public class Tree<E>
 	}
 
 	/**
+	 * Met à jour l'index de champ de l'objet E qui sera concerné
+	 * par le prochain remove()
+	 * @return true si i était un index valide
 	 * @author Clémentine
 	 * @param currentRemoveKey
 	 *            the currentRemoveKey to set
