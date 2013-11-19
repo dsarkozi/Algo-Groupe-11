@@ -12,35 +12,24 @@ public class Tree<E>
     
     protected OurNode<ArrayList<E>> tableRoot;
     protected int size;
+    protected int numFields;
     /*sélection du champ de l'Objet stoque qui est maintenant valide pour put, get et remove*/
     protected int currentPutKey ;
     protected int currentGetKey;
     protected int currentRemoveKey;
     
     /* Constructeur de base*/
-    public Tree(){
+    public Tree(int numFields){
 
     	currentPutKey = -1;
     	currentGetKey = -1;
     	currentRemoveKey = -1;
     	this.tableRoot = null;
     	this.size=0;
+    	this.numFields = numFields;
     }
     
-    /**
-     * Constructeur2
-     * cree le tableau qui sera membre du node tableRoot
-     * pour cela demande au journal combien de champs il a.
-     * on presume que le tableau est intitialisé à 0=référence de la racine
-     * quelquesoit le critère de recherhe, le 1er élément est la racine.
-     * @param tableRoot
-     */
-    public Tree(E root ){
-    	
-	ArrayList<E> t = new ArrayList<E>(Dictionary.numFields());//TODO
-    	this.tableRoot = new OurNode<ArrayList<E>>(t, null, null, null);
-    	this.size = 1;
-    }
+
     	
     /* ADD  METHODES D AJOUT / SUPPRESSION HERE */
     
@@ -109,7 +98,7 @@ public class Tree<E>
 		return all;
 	}
 	
-
+	
 	/**
 	 * @author Clémentine
 	 * @return the currentPutKey
@@ -123,7 +112,7 @@ public class Tree<E>
 	 * @param currentPutKey the currentPutKey to set
 	 */
 	public boolean setCurrentPutKey(int i) {
-		if(i < tableRoot.numFields( )){
+		if(i < numFields{
 		this.currentPutKey = i;
 		return true;
 		}
@@ -143,7 +132,7 @@ public class Tree<E>
 	 * @param currentGetKey the currentGetKey to set
 	 */
 	public boolean setCurrentGetKey(int i) {
-		if(i < tableRoot.numFields( )){
+		if(i < numFields){
 			this.currentGetKey = i;
 			return true;
 		}
@@ -164,7 +153,7 @@ public class Tree<E>
 	 * @param currentRemoveKey the currentRemoveKey to set
 	 */
 	public boolean setCurrentRemoveKey(int i) {
-		if(i < tableRoot.numFields( )){
+		if(i < numFields){
 			this.currentRemoveKey = i;
 			return true;
 		}
@@ -183,7 +172,7 @@ public class Tree<E>
         	return size;
         }
         
-        /**
+    /**
      * Méthode qui vérifie si l'arbre est vide.
      * 
      * @meth.author Alaaedine Chatri
