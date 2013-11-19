@@ -123,24 +123,24 @@ public class Dictionary
 		String meth = cmdSplit[0];
 		String field = cmdSplit[1];
 		String value = cmdSplit[2];
+		Journal res = null;
+		for (Journal j : journals)
+		{
+			if (j.getData(field).equals(value))
+			{
+				res = j;
+				break;
+			}
+		}
 		switch (meth)
 		{
 			case "get":
 				// Call dictionary.get();
 				break;
 			case "put":
-				// Call dictionary.put();
+				if (res != null) dictionary.put(value, res);
 				break;
 			case "remove":
-				Journal res = null;
-				for (Journal j : journals)
-				{
-					if (j.getData(field).equals(value))
-					{
-						res = j;
-						break;
-					}
-				}
 				if (res != null) dictionary.remove(res);
 				break;
 			case EXIT:

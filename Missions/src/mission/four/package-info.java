@@ -26,7 +26,6 @@
  * <ul>
  * <li>{@link Tree#getAllKeys(int)}</li>
  * <li>{@link Tree#getAllValues(int)}</li>
- * <li>{@link Tree#getAllKeysWithRank(String)}</li>
  * </ul>
  * <li>David Sarkozi</li>
  * <ul>

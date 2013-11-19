@@ -4,9 +4,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-
-
-
 public class Tree<E>
 {
 	protected ArrayList<E> dataRefs;
@@ -33,121 +30,160 @@ public class Tree<E>
 	}
 
 	/**
-	 * Ajoute un nouveau journal dans l'arbre, en respectant l'ordre selon
-	 * le critere specifie par currentPutKey.
+	 * Ajoute un nouveau journal dans l'arbre, en respectant l'ordre selon le
+	 * critere specifie par currentPutKey.
+	 * 
 	 * @author Loic Lacomblez
 	 * @pre une valeur valide est assignee a currentPutKey
-	 * @post L'objet Journal elem a ete ajoute a l'arbre, trie selon l'atribut designe par currentPutKey
+	 * @post L'objet Journal elem a ete ajoute a l'arbre, trie selon l'atribut
+	 *       designe par currentPutKey
 	 */
-	public void put(Journal elem)
+	public void put(String value, E elem)
 	{
-		if(tableRoot == null)
+		if (tableRoot == null)
 		{
-			ArrayList<WeakReference<E>> data = new ArrayList<WeakReference<E>>(numFields);
+			ArrayList<WeakReference<E>> data =
+					new ArrayList<WeakReference<E>>(numFields);
 			data.add(currentPutKey, new WeakReference<E>((E) elem));
-			tableRoot = new Node<ArrayList<WeakReference<E>>>(data, null, null, null);
+			tableRoot =
+					new Node<ArrayList<WeakReference<E>>>(data, null, null,
+							null);
 		}
 		else
 		{
-			putHelper(tableRoot, elem);
+			putHelper(tableRoot, value, elem);
 		}
 	}
-	
+
 	/* Methode secondaire utilisee par put */
-	private void putHelper(Node<ArrayList<WeakReference<E>>> currentNode, Journal jr)
+	private void putHelper(Node<ArrayList<WeakReference<E>>> currentNode,
+			String value, E jr)
 	{
-		String currentString = jr.getData(currentPutKey);
-		
+		String currentString = value;
+
 		/* S'il n'y a pas de journal dans currentNode a cet indice */
-		if(currentNode.getValue(currentPutKey) == null || currentNode.getValue(currentPutKey).get()==null)
+		if (currentNode.getValue(currentPutKey) == null
+				|| currentNode.getValue(currentPutKey).get() == null)
 		{
 			/* Si le noeud n'a pas de fils, on insere l'element la */
-			if(!currentNode.hasChildren())
+			if (!currentNode.hasChildren())
 			{
-				currentNode.setValue(currentPutKey, new WeakReference<E>((E) jr));
+				currentNode.setValue(currentPutKey,
+						new WeakReference<E>((E) jr));
 			}
 			/* Si le noeud n'a pas de fils gauche, on inspecte le fils droit */
-			else if(!currentNode.hasLeft())
+			else if (!currentNode.hasLeft())
 			{
-				WeakReference<E> rightRef = ((Node<ArrayList<WeakReference<E>>>) currentNode.
-						getRight()).getValue(currentPutKey);
-				if(rightRef!=null && rightRef.get()!=null && 
-						((Journal) rightRef.get()).getData(currentPutKey).compareTo(currentString)>0)
+				WeakReference<E> rightRef =
+						((Node<ArrayList<WeakReference<E>>>) currentNode
+								.getRight()).getValue(currentPutKey);
+				if (rightRef != null
+						&& rightRef.get() != null
+						&& ((Journal) rightRef.get()).getData(currentPutKey)
+								.compareTo(currentString) > 0)
 				{
-					currentNode.setValue(currentPutKey, new WeakReference<E>((E) jr));
+					currentNode.setValue(currentPutKey, new WeakReference<E>(
+							(E) jr));
 				}
 				else
 				{
-					putHelper((Node<ArrayList<WeakReference<E>>>) currentNode.getRight(), jr);
+					putHelper((Node<ArrayList<WeakReference<E>>>) currentNode
+							.getRight(), value, jr);
 				}
 			}
 			/* Si le noeud n'a pas de fils droit, on inspecte le noeud gauche */
-			else if(!currentNode.hasRight())
+			else if (!currentNode.hasRight())
 			{
-				WeakReference<E> leftRef = ((Node<ArrayList<WeakReference<E>>>) currentNode.
-						getLeft()).getValue(currentPutKey);
-				if(leftRef!=null && leftRef.get()!=null && 
-						((Journal) leftRef.get()).getData(currentPutKey).compareTo(currentString)<0)
+				WeakReference<E> leftRef =
+						((Node<ArrayList<WeakReference<E>>>) currentNode
+								.getLeft()).getValue(currentPutKey);
+				if (leftRef != null
+						&& leftRef.get() != null
+						&& ((Journal) leftRef.get()).getData(currentPutKey)
+								.compareTo(currentString) < 0)
 				{
-					currentNode.setValue(currentPutKey, new WeakReference<E>((E) jr));
+					currentNode.setValue(currentPutKey,
+							new WeakReference<E>(jr));
 				}
 				else
 				{
-					putHelper((Node<ArrayList<WeakReference<E>>>) currentNode.getLeft(), jr);
+					putHelper((Node<ArrayList<WeakReference<E>>>) currentNode
+							.getLeft(), value, jr);
 				}
 			}
 			else
 			{
-				WeakReference<E> leftRef = ((Node<ArrayList<WeakReference<E>>>) currentNode.
-						getLeft()).getValue(currentPutKey);
-				WeakReference<E> rightRef = ((Node<ArrayList<WeakReference<E>>>) currentNode.
-						getRight()).getValue(currentPutKey);
-				
+				WeakReference<E> leftRef =
+						((Node<ArrayList<WeakReference<E>>>) currentNode
+								.getLeft()).getValue(currentPutKey);
+				WeakReference<E> rightRef =
+						((Node<ArrayList<WeakReference<E>>>) currentNode
+								.getRight()).getValue(currentPutKey);
+
 				/* Si jr < leftChild.getElem, on se propage dans leftChild */
-				if(leftRef!=null && leftRef.get()!=null && 
-						((Journal) leftRef.get()).getData(currentPutKey).compareTo(currentString)>0)
+				if (leftRef != null
+						&& leftRef.get() != null
+						&& ((Journal) leftRef.get()).getData(currentPutKey)
+								.compareTo(currentString) > 0)
 				{
-					putHelper((Node<ArrayList<WeakReference<E>>>) currentNode.getLeft(), jr);
+					putHelper((Node<ArrayList<WeakReference<E>>>) currentNode
+							.getLeft(), value, jr);
 				}
 				/* Si jr > rightChild.getElem, on se propage dans rightChild */
-				else if(rightRef!=null && rightRef.get()!=null && 
-						((Journal) rightRef.get()).getData(currentPutKey).compareTo(currentString)<0)
+				else if (rightRef != null
+						&& rightRef.get() != null
+						&& ((Journal) rightRef.get()).getData(currentPutKey)
+								.compareTo(currentString) < 0)
 				{
-					putHelper((Node<ArrayList<WeakReference<E>>>) currentNode.getRight(), jr);
+					putHelper((Node<ArrayList<WeakReference<E>>>) currentNode
+							.getRight(), value, jr);
 				}
 				/* Sinon, on peut placer le journal dans currentNode */
 				else
 				{
-					currentNode.setValue(currentPutKey, new WeakReference<E>((E) jr));
+					currentNode.setValue(currentPutKey, new WeakReference<E>(
+							(E) jr));
 				}
 			}
-		}	
-		/* Sinon, il y a un journal dans currentNode.getValue(currentPutKey) et on effectue l'appel recursif */
+		}
+		/*
+		 * Sinon, il y a un journal dans currentNode.getValue(currentPutKey) et
+		 * on effectue l'appel recursif
+		 */
 		else
 		{
 			/* appel recursif vers le fils gauche */
-			if(((Journal) currentNode.getValue(currentPutKey).get()).getData(currentPutKey).compareTo(currentString) >= 0)
+			if (((Journal) currentNode.getValue(currentPutKey).get()).getData(
+					currentPutKey).compareTo(currentString) >= 0)
 			{
-				if(currentNode.hasLeft())
-					putHelper((Node<ArrayList<WeakReference<E>>>) currentNode.getLeft(), jr);
+				if (currentNode.hasLeft()) putHelper(
+						(Node<ArrayList<WeakReference<E>>>) currentNode
+								.getLeft(), value, jr);
 				else
 				{
-					ArrayList<WeakReference<E>> data = new ArrayList<WeakReference<E>>(numFields);
-					data.add(currentPutKey, new WeakReference<E>((E) jr));
-					Node<ArrayList<WeakReference<E>>> newNode = new Node<ArrayList<WeakReference<E>>>(data, null, null, currentNode);
+					ArrayList<WeakReference<E>> data =
+							new ArrayList<WeakReference<E>>(numFields);
+					data.add(currentPutKey, new WeakReference<E>(jr));
+					Node<ArrayList<WeakReference<E>>> newNode =
+							new Node<ArrayList<WeakReference<E>>>(data, null,
+									null, currentNode);
 					currentNode.setLeft(newNode);
 				}
 			}
 			/* appel recursif vers le fils droit */
 			else
 			{
-				if(currentNode.hasRight())
-					putHelper((Node<ArrayList<WeakReference<E>>>) currentNode.getRight(), jr);
+				if (currentNode.hasRight()) putHelper(
+						(Node<ArrayList<WeakReference<E>>>) currentNode
+								.getRight(), value, jr);
 				else
 				{
-					ArrayList<WeakReference<E>> data = new ArrayList<WeakReference<E>>(numFields);
+					ArrayList<WeakReference<E>> data =
+							new ArrayList<WeakReference<E>>(numFields);
 					data.add(currentPutKey, new WeakReference<E>((E) jr));
-					Node<ArrayList<WeakReference<E>>> newNode = new Node<ArrayList<WeakReference<E>>>(data, null, null, currentNode);
+					Node<ArrayList<WeakReference<E>>> newNode =
+							new Node<ArrayList<WeakReference<E>>>(data, null,
+									null, currentNode);
 					currentNode.setRight(newNode);
 				}
 			}
@@ -166,30 +202,30 @@ public class Tree<E>
 	 * ieme critere
 	 * 
 	 */
-	public LinkedList<E> getAllValues(int i)
+	public LinkedList<WeakReference<E>> getAllValues(int i)
 	{
 		if (size == 0) return null;
 		else
 		{
-			LinkedList<E> all = new LinkedList<E>();
-			return getHelper(tableRoot, (LinkedList<E>) all, i);
+			LinkedList<WeakReference<E>> all = new LinkedList<WeakReference<E>>();
+			return getHelper(tableRoot, (LinkedList<WeakReference<E>>) all, i);
 
 		}
 	}
 
-	private LinkedList<E> getHelper(
-			Node<ArrayList<WeakReference<E>>> tableRoot2, LinkedList<E> all,
-			int i)
+	private LinkedList<WeakReference<E>> getHelper(
+			Node<ArrayList<WeakReference<E>>> tableRoot2,
+			LinkedList<WeakReference<E>> all, int i)
 	{
 		if (tableRoot2.getLeft() == null && tableRoot2.getRight() == null) all
-				.add((E) tableRoot2.getValue(i));
+				.add(tableRoot2.getValue(i));
 		else
 		{
 			if (tableRoot2.getLeft() != null) getHelper(
 					(Node<ArrayList<WeakReference<E>>>) tableRoot2.getLeft(),
 					all, i);
 
-			all.add((E) tableRoot2.getValue(i));
+			all.add(tableRoot2.getValue(i));
 
 			if (tableRoot2.getRight() != null) getHelper(
 					(Node<ArrayList<WeakReference<E>>>) tableRoot2.getRight(),
@@ -202,72 +238,36 @@ public class Tree<E>
 	 * Benoit Sluysmans Retourne toute les cles de l'arbre dans l'ordre du ieme
 	 * critere
 	 */
-	public LinkedList<E> getAllKeys(int i)
+	public LinkedList<WeakReference<E>> getAllKeys(int i)
 	{
 		if (size == 0) return null;
 		else
 		{
-			LinkedList<E> all = new LinkedList<E>();
-			return (LinkedList<E>) getHelper2(tableRoot, (LinkedList<E>) all, i);
+			LinkedList<WeakReference<E>> all = new LinkedList<WeakReference<E>>();
+			return getHelper2(tableRoot, (LinkedList<WeakReference<E>>) all, i);
 
 		}
 	}
 
-	private LinkedList<E> getHelper2(
-			Node<ArrayList<WeakReference<E>>> tableRoot2, LinkedList<E> all,
-			int i)
+	private LinkedList<WeakReference<E>> getHelper2(
+			Node<ArrayList<WeakReference<E>>> tableRoot2,
+			LinkedList<WeakReference<E>> all, int i)
 	{
 		if (tableRoot2.getLeft() == null && tableRoot2.getRight() == null) all
-				.add((E) tableRoot2.getValue(i));
+				.add(tableRoot2.getValue(i));
 		else
 		{
 			if (tableRoot2.getLeft() != null) getHelper(
 					(Node<ArrayList<WeakReference<E>>>) tableRoot2.getLeft(),
 					all, i);
 
-			all.add((E) tableRoot2.getValue(i));
+			all.add(tableRoot2.getValue(i));
 
 			if (tableRoot2.getRight() != null) getHelper(
 					(Node<ArrayList<WeakReference<E>>>) tableRoot2.getRight(),
 					all, i);
 		}
 		return all;
-	}
-	
-	/**
-	 * Henri Crombe
-	 * getAllKeysWithRank/getHelper3 permet de r�cup�rer les noms des r�vues (dans l'ordre alphabetique) qui ont le rang �quivalent � String rank
-	 * @PRE: String rank est un rang compris entre A* et C
-	 * @POST: Retourne une LinkedList contenant les noms des revues qui ont le rang �quivalent � String rank
-	 */
-	public LinkedList<E> getAllKeysWithRank (String rank){
-		
-		
-		if(size == 0 ) 
-			return null;
-		else{
-			LinkedList<E> rankI =  new LinkedList<E>();
-			return getHelper3(tableRoot,rankI,rank);
-		}
-	}
-	public LinkedList<E> getHelper3(Node<ArrayList<WeakReference<E>>> tableRoot2,
-			LinkedList<E> rankI, String rank) 
-	{
-		if (tableRoot2.getLeft() == null && tableRoot2.getRight() == null){
-			if(tableRoot2.getValue(0) == rank) rankI.add((E) tableRoot2.getValue(1)); // Si le noeud courrant a le rang qui nous interresse, on place le nom de la revue dans la linkedlist
-			
-		}
-		else
-		{
-			if (tableRoot2.getLeft() != null) getHelper3(
-					(Node<ArrayList<WeakReference<E>>>) tableRoot2.getLeft(), rankI, rank);
-
-			rankI.add(tableRoot2.getValue(1));
-
-			if (tableRoot2.getRight() != null) getHelper3(
-					(Node<ArrayList<WeakReference<E>>>) tableRoot2.getRight(), rankI, rank);
-		}
-		return null;
 	}
 
 	/**
@@ -280,8 +280,9 @@ public class Tree<E>
 	}
 
 	/**
-	 * Met à jour l'index de champ de l'objet E qui sera concerné
-	 * par le prochain put()
+	 * Met à jour l'index de champ de l'objet E qui sera concerné par le
+	 * prochain put()
+	 * 
 	 * @return true si i était un index valide
 	 * @author Clémentine
 	 * @param currentPutKey
@@ -307,11 +308,13 @@ public class Tree<E>
 	}
 
 	/**
-	 * Met à jour l'index de champ de l'objet E qui sera concerné
-	 * par le prochain get()
+	 * Met à jour l'index de champ de l'objet E qui sera concerné par le
+	 * prochain get()
+	 * 
 	 * @return true si i était un index valide
 	 * @author Clémentine
-	 * @param i the currentGetKey to set
+	 * @param i
+	 *            the currentGetKey to set
 	 */
 	public boolean setCurrentGetKey(int i)
 	{
@@ -334,11 +337,13 @@ public class Tree<E>
 	}
 
 	/**
-	 * Met à jour l'index de champ de l'objet E qui sera concerné
-	 * par le prochain remove()
+	 * Met à jour l'index de champ de l'objet E qui sera concerné par le
+	 * prochain remove()
+	 * 
 	 * @return true si i était un index valide
 	 * @author Clémentine
-	 * @param i the currentRemoveKey to set
+	 * @param i
+	 *            the currentRemoveKey to set
 	 */
 	public boolean setCurrentRemoveKey(int i)
 	{
@@ -376,9 +381,9 @@ public class Tree<E>
 	}
 
 	/**
-	 * @author Clémentine 
-	 * Classe qui représentera un noeud de l'arbre. Cette
-	 * classe sait que le paramètre M est une ArrayList<WeakReference<E>>
+	 * @author Clémentine Classe qui représentera un noeud de l'arbre. Cette
+	 *         classe sait que le paramètre M est une
+	 *         ArrayList<WeakReference<E>>
 	 * 
 	 */
 	private class Node<M> extends BTNode<M>
@@ -418,7 +423,8 @@ public class Tree<E>
 		 */
 		public WeakReference<E> setValue(int i, WeakReference<E> value)
 		{
-			WeakReference<E> old = ((ArrayList<WeakReference<E>>) element()).get(i);
+			WeakReference<E> old =
+					((ArrayList<WeakReference<E>>) element()).get(i);
 			((ArrayList<WeakReference<E>>) element()).set(i, value);
 			return old;
 		}
