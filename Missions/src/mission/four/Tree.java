@@ -4,8 +4,8 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import mission.two.BTNode;
-import mission.two.Position;
+
+
 
 public class Tree<E>
 {
@@ -273,9 +273,9 @@ public class Tree<E>
 		 * @post
 		 * @author Clem
 		 */
-		public E getValue(int i)
+		public WeakReference<E> getValue(int i)
 		{
-			return ((ArrayList<E>) element()).get(i);
+			return ((ArrayList<WeakReference<E>>) element()).get(i);
 
 		}
 
@@ -288,10 +288,10 @@ public class Tree<E>
 		 *       jour.
 		 * @author clem
 		 */
-		public E setValue(int i, E value)
+		public WeakReference<E> setValue(int i, WeakReference<E> value)
 		{
-			E old = ((ArrayList<E>) element()).get(i);
-			((ArrayList<E>) element()).set(i, value);
+			WeakReference<E> old = ((ArrayList<WeakReference<E>>) element()).get(i);
+			((ArrayList<WeakReference<E>>) element()).set(i, value);
 			return old;
 		}
 	}
