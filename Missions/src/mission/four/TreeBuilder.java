@@ -53,7 +53,7 @@ public class TreeBuilder
 			for (int j = 0; j < journals.size(); j++)
 			{
 				jr = journals.get(j);
-				tree.put(jr.getData(i), jr);
+				tree.put(jr);
 			}
 		}
 		return tree;
