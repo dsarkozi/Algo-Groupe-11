@@ -11,16 +11,11 @@ public class Tree<E>
 {
 
 	/**
-<<<<<<< HEAD
-	 * Benoit Sluysmans
-	 * Retourne toute les valeurs de l'arbre dans l'ordre du ieme crit�re
-=======
 	 * Benoit Sluysmans Retourne toute les valeurs de l'arbre dans l'ordre du
 	 * ieme critere
->>>>>>> branch 'master' of https://github.com/dsarkozi/Algo-Groupe-11.git
 	 * 
 	 */
-<<<<<<< HEAD
+
 	protected OurNode<ArrayList<Integer>> tableRoot;
     protected int size;
     /*sélection du champ de l'Objet stoque qui est maintenant valide pour put, get et remove*/
@@ -59,72 +54,15 @@ public class Tree<E>
     
     /* METHODES DE RECHERCHE */
     
-=======
-	protected BTNode<E> root;
-	protected int size;
-
-	/* Constructeur de base */
-	public Tree()
-	{
-		this.root = null;
-		this.size = 0;
-	}
-
-	public Tree(BTNode<E> root)
-	{
-		this.root = root;
-		this.size = 1;
-	}
-
-	/**
-	 * Ajoute la revue a partir de l'attribut reference par {@code str}.
-	 * 
-	 * @pre -
-	 * @post La revue referencee par {@code journal} a ete ajoutee a la
-	 *       structure de donnees
-	 * @meth.author Loic Lacomblez
-	 * @param str
-	 *            ?
-	 * @param journal
-	 *            La revue a ajouter a la structure de donnees
-	 */
-	public void put(String str, Journal journal)
-	{
-		// TODO put(String,Journal)
-	}
-
-	/**
-	 * Enleve la revue referencee par son titre et la retourne.
-	 * 
-	 * @meth.author David Sarkozi
-	 * @param title
-	 *            Le titre de la revue a enlever de la structure de donnees
-	 * @return La revue enlevee
-	 */
-	public Journal remove(String title)
-	{
-		// TODO remove(String)
-		return null;
-	}
-
-	/* METHODES DE RECHERCHE */
-
->>>>>>> branch 'master' of https://github.com/dsarkozi/Algo-Groupe-11.git
 	public ArrayList<E> getAllValues(int i)
 	{
-<<<<<<< HEAD
+
 		if(size==0)
 			return null;
 		else {
 			LinkedList<E> all = new LinkedList<E>(); 
 			return (ArrayList<E>) getHelper(tableRoot, all, i);
-=======
-		if (size == 0) return null;
-		else
-		{
-			LinkedList<E> all = new LinkedList<E>();
-			return (ArrayList<E>) getHelper(root, all, i);
->>>>>>> branch 'master' of https://github.com/dsarkozi/Algo-Groupe-11.git
+
 		}
 	}
 
@@ -145,29 +83,16 @@ public class Tree<E>
 	}
 
 	/**
-<<<<<<< HEAD
 	 * Benoit Sluysmans
 	 * Retourne toute les cl�s de l'arbre dans l'ordre du ieme crit�re
-=======
-	 * Benoit Sluysmans Retourne toute les cles de l'arbre dans l'ordre du ieme
-	 * critere
->>>>>>> branch 'master' of https://github.com/dsarkozi/Algo-Groupe-11.git
 	 */
 	public ArrayList<E> getAllKeys(int i)
-	{
-<<<<<<< HEAD
 		if(size==0)
 			return null;
 		else {
 			LinkedList<E> all = new LinkedList<E>(); 
 			return (ArrayList<E>) getHelper2(tableRoot, all, i);
-=======
-		if (size == 0) return null;
-		else
-		{
-			LinkedList<E> all = new LinkedList<E>();
-			return (ArrayList<E>) getHelper2(root, all, i);
->>>>>>> branch 'master' of https://github.com/dsarkozi/Algo-Groupe-11.git
+
 		}
 	}
 
@@ -187,9 +112,7 @@ public class Tree<E>
 		return all;
 	}
 	
-<<<<<<< HEAD
-	
-	
+
 	/**
 	 * @author Clémentine
 	 * @return the currentPutKey
@@ -252,7 +175,27 @@ public class Tree<E>
 		
 	}
 
-
+ 	/**
+	 * Retourne la taille de l'arbre.
+	 * 
+	 * @meth.author Alaaedine Chatri
+	 *            
+	 * @return La taille de l'arbre.
+	 */
+    	public int sizeOfTree(){
+        	return size;
+        }
+        
+        /**
+     * Méthode qui vérifie si l'arbre est vide.
+     * 
+     * @meth.author Alaaedine Chatri
+     * 
+     * @return Un booléen true si l'arbre est vide, false sinon.
+     */
+    public boolean isEmpty(){
+            return size==0;
+        }
 
 	/**
 	 * @author Clémentine
@@ -299,30 +242,9 @@ public class Tree<E>
 		public int numFields(){
 			return ((ArrayList<Integer>)element()).size();
 		}
+		
+		
 	}
 	
-	
-=======
-	   	/**
-	 * Retourne la taille de l'arbre.
-	 * 
-	 * @meth.author Alaaedine Chatri
-	 *            
-	 * @return La taille de l'arbre.
-	 */
-    	public int sizeOfTree(){
-        	return size;
-        }
-        
-        /**
-     * Méthode qui vérifie si l'arbre est vide.
-     * 
-     * @meth.author Alaaedine Chatri
-     * 
-     * @return Un booléen true si l'arbre est vide, false sinon.
-     */
-    public boolean isEmpty(){
-            return size==0;
-        }
->>>>>>> branch 'master' of https://github.com/dsarkozi/Algo-Groupe-11.git
+  
 }
