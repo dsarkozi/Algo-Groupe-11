@@ -18,14 +18,10 @@ public class TreeBuilder
 	/* the information */
 	private ArrayList<Journal> journals;
 	private Tree<Journal> tree;
-	/*
-	 * les données des champs du premier journal du tableau seront décisives
-	 * pour l'allure de l'arbre
-	 */
 	private int numFields;
 
 	/**
-	 * Construire une structure T à partir d'une liste
+	 * Constructeur
 	 */
 	public TreeBuilder(ArrayList<Journal> journals)
 	{
@@ -36,9 +32,9 @@ public class TreeBuilder
 	 * Cree un Tree destine a contenir des Journals
 	 * 
 	 * @pre journals ne contient pas de valeur null
-	 * @post
-	 * @exceptions
-	 * @return
+	 * @post -
+	 * @exceptions -
+	 * @return un Tree<Journal>
 	 */
 	public Tree<Journal> build()
 	{
