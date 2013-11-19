@@ -3,7 +3,6 @@
  */
 package mission.four;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**
@@ -49,7 +48,7 @@ public class TreeBuilder
 			for (int j = 0; j < journals.size(); j++)
 			{
 				jr = journals.get(j);
-				tree.put(jr);
+				tree.put(jr.getData(i), jr);
 			}
 		}
 		return tree;

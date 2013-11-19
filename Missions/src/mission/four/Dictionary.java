@@ -118,11 +118,25 @@ public class Dictionary
 	{
 		// Removing leading and trailing whitespaces
 		cmd = cmd.trim();
-		String[] cmdSplit = cmd.split(" ");
-		// Separating the method to call from the rest
-		String meth = cmdSplit[0];
-		String field = cmdSplit[1];
-		String value = cmdSplit[2];
+		String[] cmdSplit = cmd.split(" ", 3);
+		if (cmdSplit.length > 3 || cmdSplit.length < 1 || cmdSplit.length == 2)
+		{
+			System.out.println(USAGE);
+			return false;
+		}
+		String meth;
+		String field;
+		String value;
+		if (cmdSplit.length > 1)
+		{
+			// Separating the method to call from the rest
+			meth = cmdSplit[0];
+			field = cmdSplit[1];
+			value = cmdSplit[2];
+		}
+		// quit
+		else return true;
+		
 		Journal res = null;
 		for (Journal j : journals)
 		{
@@ -143,9 +157,6 @@ public class Dictionary
 			case "remove":
 				if (res != null) dictionary.remove(res);
 				break;
-			case EXIT:
-				// Quit the program
-				return true;
 			default:
 				// Error, no such method
 				System.err.println("No such method.");
