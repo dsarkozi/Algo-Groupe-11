@@ -17,7 +17,7 @@ public class TreeBuilder
 
 	/* the information */
 	private ArrayList<Journal> journals;
-	private Tree<WeakReference<Journal>> tree;
+	private Tree<Journal> tree;
 	/*
 	 * les données des champs du premier journal du tableau seront décisives
 	 * pour l'allure de l'arbre
@@ -40,10 +40,10 @@ public class TreeBuilder
 	 * @exceptions
 	 * @return
 	 */
-	public Tree<WeakReference<Journal>> build()
+	public Tree<Journal> build()
 	{
 		Journal jr;
-		tree = new Tree<WeakReference<Journal>>(numFields);
+		tree = new Tree<Journal>(numFields);
 		// pour chaque critère
 		for (int i = 0; i < numFields; i++)
 		{
@@ -57,10 +57,5 @@ public class TreeBuilder
 			}
 		}
 		return tree;
-	}
-	
-	public void strongRemove(Journal j)
-	{
-		journals.remove(j);
 	}
 }

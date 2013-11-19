@@ -14,8 +14,8 @@ import java.util.Scanner;
  */
 public class Dictionary
 {
-	private Tree<WeakReference<Journal>> dictionary;
-	private TreeBuilder tBuilder;
+	private static Tree<Journal> dictionary;
+	private ArrayList<Journal> journals;
 	private static int errors = 0;
 	private static final String USAGE = "Syntaxe : <méthode à appeler> "
 			+ "<champ sur lequel opérer> " + "<valeur du champ>";
@@ -41,7 +41,7 @@ public class Dictionary
 		 */
 		Journal.rankMap_init();
 		Journal.fieldMaps_init(fields);
-		ArrayList<Journal> journals = new ArrayList<Journal>(numFields);
+		journals = new ArrayList<Journal>(numFields);
 
 		line = FileManager.readLine();
 		Journal j = null;
@@ -53,8 +53,7 @@ public class Dictionary
 		}
 		FileManager.closeFile();
 		// TODO Tree building
-		tBuilder = new TreeBuilder(journals);
-		dictionary = tBuilder.build();
+		dictionary = new TreeBuilder(journals).build();
 	}
 
 	public static Journal line2Journal(String line)
@@ -80,7 +79,7 @@ public class Dictionary
 	 *       le flux de l'entree si l'utilisateur desire quitter le programme
 	 * @see #execute(String)
 	 */
-	private static void scanInput()
+	private void scanInput()
 	{
 		System.out.println("********************************************");
 		System.out.println("*** Bibliothèque de revues scientifiques ***");
@@ -116,7 +115,7 @@ public class Dictionary
 	 *         {@code false} sinon
 	 * @see #scanInput()
 	 */
-	private static boolean execute(String cmd)
+	private boolean execute(String cmd)
 	{
 		// Removing leading and trailing whitespaces
 		cmd = cmd.trim();
@@ -134,7 +133,16 @@ public class Dictionary
 				// Call dictionary.put();
 				break;
 			case "remove":
-				// Call dictionary.remove();
+				Journal res = null;
+				for (Journal j : journals)
+				{
+					if (j.getData(field).equals(value))
+					{
+						res = j;
+						break;
+					}
+				}
+				if (res != null) dictionary.remove(res);
 				break;
 			case EXIT:
 				// Quit the program
@@ -155,10 +163,10 @@ public class Dictionary
 			System.err.println("Invalid main arguments.");
 			System.exit(-1);
 		}
-		new Dictionary(args[0]);
+		Dictionary dico = new Dictionary(args[0]);
 		if (errors > 0) System.err.println("There are " + errors
 				+ " invalid lines in the input file.");
-		scanInput();
+		dico.scanInput();
 	}
 
 }

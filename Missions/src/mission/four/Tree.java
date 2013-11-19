@@ -1,5 +1,6 @@
 package mission.four;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -8,8 +9,8 @@ import mission.two.Position;
 
 public class Tree<E>
 {
-
-	protected Node<ArrayList<E>> tableRoot;
+	protected ArrayList<E> dataRefs;
+	protected Node<ArrayList<WeakReference<E>>> tableRoot;
 	protected int size;
 	protected int numFields;
 	/*
@@ -23,7 +24,6 @@ public class Tree<E>
 	/* Constructeur de base */
 	public Tree(int numFields)
 	{
-
 		currentPutKey = -1;
 		currentGetKey = -1;
 		currentRemoveKey = -1;
@@ -33,6 +33,11 @@ public class Tree<E>
 	}
 
 	/* ADD METHODES D AJOUT / SUPPRESSION HERE */
+
+	public void remove(E elem)
+	{
+		dataRefs.remove(elem);
+	}
 
 	/* METHODES DE RECHERCHE */
 
@@ -52,20 +57,23 @@ public class Tree<E>
 		}
 	}
 
-	private LinkedList<E> getHelper(Node<ArrayList<E>> current,
-			LinkedList<E> all, int i)
+	private LinkedList<E> getHelper(
+			Node<ArrayList<WeakReference<E>>> tableRoot2, LinkedList<E> all,
+			int i)
 	{
-		if (current.getLeft() == null && current.getRight() == null) all
-				.add(current.getValue(i));
+		if (tableRoot2.getLeft() == null && tableRoot2.getRight() == null) all
+				.add(tableRoot2.getValue(i));
 		else
 		{
-			if (current.getLeft() != null) getHelper(
-					(Node<ArrayList<E>>) current.getLeft(), all, i);
+			if (tableRoot2.getLeft() != null) getHelper(
+					(Node<ArrayList<WeakReference<E>>>) tableRoot2.getLeft(),
+					all, i);
 
-			all.add(current.getValue(i));
+			all.add(tableRoot2.getValue(i));
 
-			if (current.getRight() != null) getHelper(
-					(Node<ArrayList<E>>) current.getRight(), all, i);
+			if (tableRoot2.getRight() != null) getHelper(
+					(Node<ArrayList<WeakReference<E>>>) tableRoot2.getRight(),
+					all, i);
 		}
 		return all;
 	}
@@ -85,20 +93,23 @@ public class Tree<E>
 		}
 	}
 
-	private LinkedList<E> getHelper2(Node<ArrayList<E>> current,
-			LinkedList<E> all, int i)
+	private LinkedList<E> getHelper2(
+			Node<ArrayList<WeakReference<E>>> tableRoot2, LinkedList<E> all,
+			int i)
 	{
-		if (current.getLeft() == null && current.getRight() == null) all
-				.add(current.getValue(i));
+		if (tableRoot2.getLeft() == null && tableRoot2.getRight() == null) all
+				.add(tableRoot2.getValue(i));
 		else
 		{
-			if (current.getLeft() != null) getHelper(
-					(Node<ArrayList<E>>) current.getLeft(), all, i);
+			if (tableRoot2.getLeft() != null) getHelper(
+					(Node<ArrayList<WeakReference<E>>>) tableRoot2.getLeft(),
+					all, i);
 
-			all.add(current.getValue(i));
+			all.add(tableRoot2.getValue(i));
 
-			if (current.getRight() != null) getHelper(
-					(Node<ArrayList<E>>) current.getRight(), all, i);
+			if (tableRoot2.getRight() != null) getHelper(
+					(Node<ArrayList<WeakReference<E>>>) tableRoot2.getRight(),
+					all, i);
 		}
 		return all;
 	}
@@ -220,7 +231,7 @@ public class Tree<E>
 	 * 
 	 * @return La taille de l'arbre.
 	 */
-	public int sizeOfTree()
+	public int size()
 	{
 		return size;
 	}
