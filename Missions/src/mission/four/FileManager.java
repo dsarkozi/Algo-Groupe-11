@@ -34,9 +34,18 @@ public class FileManager
 	 *             Si un evenement inattendu est survenu pendant la lecture
 	 * @see #readLine(boolean)
 	 */
-	public static String readLine() throws IOException
+	public static String readLine()
 	{
-		return reader.readLine();
+		try
+		{
+			return reader.readLine();
+		}
+		catch (IOException e)
+		{
+			System.err.println("Error in reading the file.");
+			System.exit(-1);
+		}
+		return null;
 	}
 
 	/**
@@ -51,15 +60,12 @@ public class FileManager
 	 * @return La ligne lue
 	 * @throws IOException
 	 *             Si un evenement inattendu est survenu pendant la lecture
+	 * @see #closeFile()
 	 */
-	public static String readLine(boolean closeFile) throws IOException
+	public static String readLine(boolean closeFile)
 	{
-		String currentLine = reader.readLine();
-		if (closeFile)
-		{
-			reader.close();
-			reader = null;
-		}
+		String currentLine = readLine();
+		if (closeFile) closeFile();
 		return currentLine;
 	}
 
@@ -109,15 +115,33 @@ public class FileManager
 	 *             Si un evenement inattendu est survenu pendant la fermeture
 	 *             prealable du fichier d'entree
 	 * @see #openFile()
+	 * @see #closeFile()
 	 */
 	public static void reopenFile() throws IOException
 	{
-		if (reader != null)
+		if (reader != null) closeFile();
+		openFile();
+	}
+
+	/**
+	 * Ferme le flux du fichier d'entree.
+	 * 
+	 * @pre -
+	 * @post Ferme le flux du fichier d'entree et met {@link #reader} a
+	 *       {@code null}
+	 */
+	public static void closeFile()
+	{
+		try
 		{
 			reader.close();
-			reader = null;
 		}
-		openFile();
+		catch (IOException e)
+		{
+			System.err.println("Error in reading the file.");
+			System.exit(-1);
+		}
+		reader = null;
 	}
 
 	/**
