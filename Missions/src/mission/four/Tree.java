@@ -116,9 +116,9 @@ public class Tree<E>
 	
 	/**
 	 * Henri Crombe
-	 * getAllKeysWithRank/getHelper3 permet de récupérer les noms des révues (dans l'ordre alphabetique) qui ont le rang équivalent à String rank
+	 * getAllKeysWithRank/getHelper3 permet de rï¿½cupï¿½rer les noms des rï¿½vues (dans l'ordre alphabetique) qui ont le rang ï¿½quivalent ï¿½ String rank
 	 * @PRE: String rank est un rang compris entre A* et C
-	 * @POST: Retourne une LinkedList contenant les noms des revues qui ont le rang équivalent à String rank
+	 * @POST: Retourne une LinkedList contenant les noms des revues qui ont le rang ï¿½quivalent ï¿½ String rank
 	 */
 	public LinkedList<E> getAllKeysWithRank (String rank){
 		
@@ -130,22 +130,22 @@ public class Tree<E>
 			return getHelper3(tableRoot,rankI,rank);
 		}
 	}
-	public LinkedList<E> getHelper3(Node<ArrayList<E>> current,
+	public LinkedList<E> getHelper3(Node<ArrayList<WeakReference<E>>> tableRoot2,
 			LinkedList<E> rankI, String rank) 
 	{
-		if (current.getLeft() == null && current.getRight() == null){
-			if(current.getValue(0) == rank) rankI.add(current.getValue(1)); // Si le noeud courrant a le rang qui nous interresse, on place le nom de la revue dans la linkedlist
+		if (tableRoot2.getLeft() == null && tableRoot2.getRight() == null){
+			if(tableRoot2.getValue(0) == rank) rankI.add(tableRoot2.getValue(1)); // Si le noeud courrant a le rang qui nous interresse, on place le nom de la revue dans la linkedlist
 			
 		}
 		else
 		{
-			if (current.getLeft() != null) getHelper3(
-					(Node<ArrayList<E>>) current.getLeft(), rankI, rank);
+			if (tableRoot2.getLeft() != null) getHelper3(
+					(Node<ArrayList<WeakReference<E>>>) tableRoot2.getLeft(), rankI, rank);
 
-			rankI.add(current.getValue(1));
+			rankI.add(tableRoot2.getValue(1));
 
-			if (current.getRight() != null) getHelper3(
-					(Node<ArrayList<E>>) current.getRight(), rankI, rank);
+			if (tableRoot2.getRight() != null) getHelper3(
+					(Node<ArrayList<WeakReference<E>>>) tableRoot2.getRight(), rankI, rank);
 		}
 		return null;
 	}
