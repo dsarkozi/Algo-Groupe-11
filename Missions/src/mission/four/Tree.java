@@ -33,7 +33,7 @@ public class Tree<E>
 	 * Ajoute un nouveau journal dans l'arbre, en respectant l'ordre selon le
 	 * critere specifie par currentPutKey.
 	 * 
-	 * @author Loic Lacomblez
+	 * @meth.author Loic Lacomblez
 	 * @pre une valeur valide est assignee a currentPutKey
 	 * @post L'objet Journal elem a ete ajoute a l'arbre, trie selon l'atribut
 	 *       designe par currentPutKey
@@ -271,7 +271,7 @@ public class Tree<E>
 	}
 
 	/**
-	 * @author Clémentine
+	 * @meth.author Clémentine
 	 * @return the currentPutKey
 	 */
 	public int getCurrentPutKey()
@@ -284,9 +284,7 @@ public class Tree<E>
 	 * prochain put()
 	 * 
 	 * @return true si i était un index valide
-	 * @author Clémentine
-	 * @param currentPutKey
-	 *            the currentPutKey to set
+	 * @meth.author Clémentine
 	 */
 	public boolean setCurrentPutKey(int i)
 	{
@@ -299,7 +297,7 @@ public class Tree<E>
 	}
 
 	/**
-	 * @author Clémentine
+	 * @meth.author Clémentine
 	 * @return the currentGetKey
 	 */
 	public int getCurrentGetKey()
@@ -312,7 +310,7 @@ public class Tree<E>
 	 * prochain get()
 	 * 
 	 * @return true si i était un index valide
-	 * @author Clémentine
+	 * @meth.author Clémentine
 	 * @param i
 	 *            the currentGetKey to set
 	 */
@@ -328,7 +326,7 @@ public class Tree<E>
 	}
 
 	/**
-	 * @author Clémentine
+	 * @meth.author Clémentine
 	 * @return the currentRemoveKey
 	 */
 	public int getCurrentRemoveKey()
@@ -341,7 +339,7 @@ public class Tree<E>
 	 * prochain remove()
 	 * 
 	 * @return true si i était un index valide
-	 * @author Clémentine
+	 * @meth.author Clémentine
 	 * @param i
 	 *            the currentRemoveKey to set
 	 */
@@ -404,7 +402,7 @@ public class Tree<E>
 		 * 
 		 * @pre i est un index valide du tableau stocké dans le noeud
 		 * @post
-		 * @author Clem
+		 * @meth.author Clem
 		 */
 		public WeakReference<E> getValue(int i)
 		{
@@ -419,7 +417,7 @@ public class Tree<E>
 		 * @pre i est un index valide du tableau stocké dans le noeud
 		 * @post la référence de l'objet E à l'index i du noeud a été mis à
 		 *       jour.
-		 * @author clem
+		 * @meth.author clem
 		 */
 		public WeakReference<E> setValue(int i, WeakReference<E> value)
 		{

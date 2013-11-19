@@ -8,28 +8,28 @@
  * <ul>
  * <li>Clementine Munyabarenzi</li>
  * <ul>
- * <li>{@link TreeBuilder}</li>
+ * <li>{@link mission.four.TreeBuilder}</li>
  * <li>{@link mission.four.Tree}</li>
  * </ul>
  * <li>Loic Lacomblez</li>
  * <ul>
- * <li>{@link Tree#put(String, Journal)}</li>
+ * <li>{@link mission.four.Tree#put(String, Object)}</li>
  * </ul>
  * <li>Alaaedine Chatri</li>
  * <ul>
- * <li>{@link Tree#Tree(int)}</li>
- * <li>{@link Tree#get(String)}</li>
- * <li>{@link Tree#size()}</li>
- * <li>{@link Tree#isEmpty()}</li>
+ * <li>{@link mission.four.Tree#Tree(int)}</li>
+ * <li>{@link mission.four.Tree#get(String)}</li>
+ * <li>{@link mission.four.Tree#size()}</li>
+ * <li>{@link mission.four.Tree#isEmpty()}</li>
  * </ul>
  * <li>Benoit Sluysmans</li>
  * <ul>
- * <li>{@link Tree#getAllKeys(int)}</li>
- * <li>{@link Tree#getAllValues(int)}</li>
+ * <li>{@link mission.four.Tree#getAllKeys(int)}</li>
+ * <li>{@link mission.four.Tree#getAllValues(int)}</li>
  * </ul>
  * <li>David Sarkozi</li>
  * <ul>
- * <li>{@link Tree#remove(Object)}</li>
+ * <li>{@link mission.four.Tree#remove(Object)}</li>
  * <li>{@link mission.four.Dictionary}</li>
  * <li>{@link mission.four.FileManager}</li>
  * </ul>
