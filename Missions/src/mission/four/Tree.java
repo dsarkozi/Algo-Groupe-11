@@ -32,7 +32,127 @@ public class Tree<E>
 		this.numFields = numFields;
 	}
 
-	/* ADD METHODES D AJOUT / SUPPRESSION HERE */
+	/**
+	 * Ajoute un nouveau journal dans l'arbre, en respectant l'ordre selon
+	 * le critere specifie par currentPutKey.
+	 * @author Loic Lacomblez
+	 * @pre une valeur valide est assignee a currentPutKey
+	 * @post L'objet Journal elem a ete ajoute a l'arbre, trie selon l'atribut designe par currentPutKey
+	 */
+	public void put(Journal elem)
+	{
+		if(tableRoot == null)
+		{
+			ArrayList<WeakReference<E>> data = new ArrayList<WeakReference<E>>(numFields);
+			data.add(currentPutKey, new WeakReference<E>((E) elem));
+			tableRoot = new Node<ArrayList<WeakReference<E>>>(data, null, null, null);
+		}
+		else
+		{
+			putHelper(tableRoot, elem);
+		}
+	}
+	
+	/* Methode secondaire utilisee par put */
+	private void putHelper(Node<ArrayList<WeakReference<E>>> currentNode, Journal jr)
+	{
+		String currentString = jr.getData(currentPutKey);
+		
+		/* S'il n'y a pas de journal dans currentNode a cet indice */
+		if(currentNode.getValue(currentPutKey) == null || currentNode.getValue(currentPutKey).get()==null)
+		{
+			/* Si le noeud n'a pas de fils, on insere l'element la */
+			if(!currentNode.hasChildren())
+			{
+				currentNode.setValue(currentPutKey, new WeakReference<E>((E) jr));
+			}
+			/* Si le noeud n'a pas de fils gauche, on inspecte le fils droit */
+			else if(!currentNode.hasLeft())
+			{
+				WeakReference<E> rightRef = ((Node<ArrayList<WeakReference<E>>>) currentNode.
+						getRight()).getValue(currentPutKey);
+				if(rightRef!=null && rightRef.get()!=null && 
+						((Journal) rightRef.get()).getData(currentPutKey).compareTo(currentString)>0)
+				{
+					currentNode.setValue(currentPutKey, new WeakReference<E>((E) jr));
+				}
+				else
+				{
+					putHelper((Node<ArrayList<WeakReference<E>>>) currentNode.getRight(), jr);
+				}
+			}
+			/* Si le noeud n'a pas de fils droit, on inspecte le noeud gauche */
+			else if(!currentNode.hasRight())
+			{
+				WeakReference<E> leftRef = ((Node<ArrayList<WeakReference<E>>>) currentNode.
+						getLeft()).getValue(currentPutKey);
+				if(leftRef!=null && leftRef.get()!=null && 
+						((Journal) leftRef.get()).getData(currentPutKey).compareTo(currentString)<0)
+				{
+					currentNode.setValue(currentPutKey, new WeakReference<E>((E) jr));
+				}
+				else
+				{
+					putHelper((Node<ArrayList<WeakReference<E>>>) currentNode.getLeft(), jr);
+				}
+			}
+			else
+			{
+				WeakReference<E> leftRef = ((Node<ArrayList<WeakReference<E>>>) currentNode.
+						getLeft()).getValue(currentPutKey);
+				WeakReference<E> rightRef = ((Node<ArrayList<WeakReference<E>>>) currentNode.
+						getRight()).getValue(currentPutKey);
+				
+				/* Si jr < leftChild.getElem, on se propage dans leftChild */
+				if(leftRef!=null && leftRef.get()!=null && 
+						((Journal) leftRef.get()).getData(currentPutKey).compareTo(currentString)>0)
+				{
+					putHelper((Node<ArrayList<WeakReference<E>>>) currentNode.getLeft(), jr);
+				}
+				/* Si jr > rightChild.getElem, on se propage dans rightChild */
+				else if(rightRef!=null && rightRef.get()!=null && 
+						((Journal) rightRef.get()).getData(currentPutKey).compareTo(currentString)<0)
+				{
+					putHelper((Node<ArrayList<WeakReference<E>>>) currentNode.getRight(), jr);
+				}
+				/* Sinon, on peut placer le journal dans currentNode */
+				else
+				{
+					currentNode.setValue(currentPutKey, new WeakReference<E>((E) jr));
+				}
+			}
+		}	
+		/* Sinon, il y a un journal dans currentNode.getValue(currentPutKey) et on effectue l'appel recursif */
+		else
+		{
+			/* appel recursif vers le fils gauche */
+			if(((Journal) currentNode.getValue(currentPutKey).get()).getData(currentPutKey).compareTo(currentString) >= 0)
+			{
+				if(currentNode.hasLeft())
+					putHelper((Node<ArrayList<WeakReference<E>>>) currentNode.getLeft(), jr);
+				else
+				{
+					ArrayList<WeakReference<E>> data = new ArrayList<WeakReference<E>>(numFields);
+					data.add(currentPutKey, new WeakReference<E>((E) jr));
+					Node<ArrayList<WeakReference<E>>> newNode = new Node<ArrayList<WeakReference<E>>>(data, null, null, currentNode);
+					currentNode.setLeft(newNode);
+				}
+			}
+			/* appel recursif vers le fils droit */
+			else
+			{
+				if(currentNode.hasRight())
+					putHelper((Node<ArrayList<WeakReference<E>>>) currentNode.getRight(), jr);
+				else
+				{
+					ArrayList<WeakReference<E>> data = new ArrayList<WeakReference<E>>(numFields);
+					data.add(currentPutKey, new WeakReference<E>((E) jr));
+					Node<ArrayList<WeakReference<E>>> newNode = new Node<ArrayList<WeakReference<E>>>(data, null, null, currentNode);
+					currentNode.setRight(newNode);
+				}
+			}
+		}
+	}
 
 	public void remove(E elem)
 	{
