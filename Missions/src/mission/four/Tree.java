@@ -105,7 +105,9 @@ public class Tree<E>
 	
 	/**
 	 * Henri Crombe
-	 * getAllKeysWithRank permet de récupérer les noms des révues (dans l'ordre alphabetique) qui ont le rang équivalent à String rank
+	 * getAllKeysWithRank/getHelper3 permet de récupérer les noms des révues (dans l'ordre alphabetique) qui ont le rang équivalent à String rank
+	 * @PRE: String rank est un rang compris entre A* et C
+	 * @POST: Retourne une LinkedList contenant les noms des revues qui ont le rang équivalent à String rank
 	 */
 	public LinkedList<E> getAllKeysWithRank (String rank){
 		
