@@ -9,13 +9,6 @@ import mission.two.Position;
 
 public class Tree<E>
 {
-
-	/**
-	 * Benoit Sluysmans Retourne toute les valeurs de l'arbre dans l'ordre du
-	 * ieme critere
-	 * 
-	 */
-
 	protected OurNode<ArrayList<Integer>> tableRoot;
     protected int size;
     /*sélection du champ de l'Objet stoque qui est maintenant valide pour put, get et remove*/
@@ -54,29 +47,32 @@ public class Tree<E>
     
     /* METHODES DE RECHERCHE */
     
-	public ArrayList<E> getAllValues(int i)
+    /**
+	 * Benoit Sluysmans Retourne toute les valeurs de l'arbre dans l'ordre du
+	 * ieme critere
+	 * 
+	 */
+	public LinkedList<E> getAllValues(int i)
 	{
-
 		if(size==0)
 			return null;
 		else {
 			LinkedList<E> all = new LinkedList<E>(); 
-			return (ArrayList<E>) getHelper(tableRoot, all, i);
+			return (LinkedList<E>) getHelper(tableRoot, (LinkedList<Integer>) all, i);
 
 		}
 	}
 
-	public List<E> getHelper(BTNode<E> current, List all, int i)
+	private LinkedList<Integer> getHelper(OurNode<ArrayList<Integer>> current, LinkedList<Integer> all, int i)
 	{
-		if (current.getLeft() == null && current.getRight() == null) all
-				.add(current.getList().getValue(i));
+		if (current.getLeft() == null && current.getRight() == null) all.add(current.getValue(i));
 		else
 		{
-			if (current.getLeft() != null) getHelper(current.getLeft(), all, i);
+			if (current.getLeft() != null) getHelper((OurNode<ArrayList<Integer>>) current.getLeft(), all, i);
 
-			all.add(current.getList().getValue(i), i);
+			all.add(current.getValue(i));
 
-			if (current.getRight() != null) getHelper(current.getRight(), all,
+			if (current.getRight() != null) getHelper((OurNode<ArrayList<Integer>>) current.getRight(), all,
 					i);
 		}
 		return all;
@@ -84,29 +80,29 @@ public class Tree<E>
 
 	/**
 	 * Benoit Sluysmans
-	 * Retourne toute les cl�s de l'arbre dans l'ordre du ieme crit�re
+	 * Retourne toute les cles de l'arbre dans l'ordre du ieme critere
 	 */
-	public ArrayList<E> getAllKeys(int i)
+	public LinkedList<E> getAllKeys(int i)
+	{
 		if(size==0)
 			return null;
 		else {
 			LinkedList<E> all = new LinkedList<E>(); 
-			return (ArrayList<E>) getHelper2(tableRoot, all, i);
+			return (LinkedList<E>) getHelper2(tableRoot, (LinkedList<Integer>) all, i);
 
 		}
 	}
 
-	public List<E> getHelper2(BTNode<E> current, List all, int i)
+	private LinkedList<Integer> getHelper2(OurNode<ArrayList<Integer>> current, LinkedList<Integer> all, int i)
 	{
-		if (current.getLeft() == null && current.getRight() == null) all
-				.add(current.getList().getKey(i));
+		if (current.getLeft() == null && current.getRight() == null) all.add(current.getKey(i));
 		else
 		{
-			if (current.getLeft() != null) getHelper(current.getLeft(), all, i);
+			if (current.getLeft() != null) getHelper((OurNode<ArrayList<Integer>>) current.getLeft(), all, i);
 
-			all.add(current.getList().getKey(i));
+			all.add(current.getKey(i));
 
-			if (current.getRight() != null) getHelper(current.getRight(), all,
+			if (current.getRight() != null) getHelper((OurNode<ArrayList<Integer>>) current.getRight(), all,
 					i);
 		}
 		return all;
