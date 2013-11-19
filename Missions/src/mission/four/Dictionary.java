@@ -1,6 +1,7 @@
 package mission.four;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -14,29 +15,31 @@ public class Dictionary
 {
 	private Tree<Journal> dictionary;
 	private static int errors = 0;
-
-	/**
-	 * Required amount of fields. Set at compilation time, can be edited by
-	 * developer.
-	 */
-	private static final int REQUIRED = 2;
+	private static final String USAGE = "Syntaxe : <méthode à appeler> "
+			+ "<champ sur lequel opérer> " + "<valeur du champ>";
+	private static final String[] METHODS = { "get", "put", "remove" };
+	private static String[] fields;
+	private static final String EXIT = "exit";
 
 	/**
 	 * Maximum amount of fields. Set at execution time.
 	 */
-	private static int max;
+	private static int numFields;
 
 	public Dictionary(String inputFile)
 	{
 		FileManager.openFile(inputFile);
 		String line = null;
 		line = FileManager.readLine();
-		max = line.split(",").length;
+		fields = line.split(",");
+		numFields = fields.length;
 		/*
 		 * Init ArrayList with number of attributes of a Journal as initial
 		 * capacity
 		 */
-		ArrayList<Journal> journals = new ArrayList<Journal>(max);
+		Journal.rankMap_init();
+		Journal.fieldMaps_init(fields);
+		ArrayList<Journal> journals = new ArrayList<Journal>(numFields);
 
 		line = FileManager.readLine();
 		Journal j = null;
@@ -57,18 +60,12 @@ public class Dictionary
 		 * peuvent se trouver dans les titres des revues
 		 */
 		String[] data = line.split(",(?=([^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)");
-		if (data.length < REQUIRED || data.length > max)
+		if (data.length > numFields)
 		{
 			errors++;
 			return null;
 		}
-		Journal.JournalBuilder jbuilder = new Journal.JournalBuilder(data[0],
-				data[1]);
-		for (int i = REQUIRED; i < max; i++)
-		{
-			jbuilder.optData(data[i], i);
-		}
-		return jbuilder.build();
+		return new Journal(data);
 	}
 
 	/**
@@ -85,8 +82,12 @@ public class Dictionary
 		System.out.println("*** Bibliothèque de revues scientifiques ***");
 		System.out.println("********************************************");
 		System.out.println();
-		System.out.println("Veuillez entrer une méthode parmi : get remove");
-		System.out.println("Ou tapez exit pour quitter");
+		System.out.println(USAGE);
+		System.out.println("Où la méthode se trouve parmi : "
+				+ Arrays.toString(METHODS));
+		System.out.println("Et où le champ se trouve parmi : "
+				+ Arrays.toString(fields));
+		System.out.println("Sinon, tapez " + EXIT + " pour quitter");
 		Scanner in = new Scanner(System.in);
 		boolean exit = false;
 		while (!exit)
@@ -115,22 +116,29 @@ public class Dictionary
 	{
 		// Removing leading and trailing whitespaces
 		cmd = cmd.trim();
+		String[] cmdSplit = cmd.split(" ");
 		// Separating the method to call from the rest
-		String meth = (cmd.split(" ", 2))[0];
+		String meth = cmdSplit[0];
+		String field = cmdSplit[1];
+		String value = cmdSplit[2];
 		switch (meth)
 		{
 			case "get":
 				// Call Tree.get();
 				break;
+			case "put":
+				// Call Tree.put();
+				break;
 			case "remove":
 				// Call Tree.remove();
 				break;
-			case "quit":
+			case EXIT:
 				// Quit the program
 				return true;
 			default:
 				// Error, no such method
 				System.err.println("No such method.");
+				System.out.println(USAGE);
 				break;
 		}
 		return false;
