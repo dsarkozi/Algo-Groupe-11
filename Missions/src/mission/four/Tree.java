@@ -62,14 +62,14 @@ public class Tree<E>
 			int i)
 	{
 		if (tableRoot2.getLeft() == null && tableRoot2.getRight() == null) all
-				.add(tableRoot2.getValue(i));
+				.add((E) tableRoot2.getValue(i));
 		else
 		{
 			if (tableRoot2.getLeft() != null) getHelper(
 					(Node<ArrayList<WeakReference<E>>>) tableRoot2.getLeft(),
 					all, i);
 
-			all.add(tableRoot2.getValue(i));
+			all.add((E) tableRoot2.getValue(i));
 
 			if (tableRoot2.getRight() != null) getHelper(
 					(Node<ArrayList<WeakReference<E>>>) tableRoot2.getRight(),
@@ -98,14 +98,14 @@ public class Tree<E>
 			int i)
 	{
 		if (tableRoot2.getLeft() == null && tableRoot2.getRight() == null) all
-				.add(tableRoot2.getValue(i));
+				.add((E) tableRoot2.getValue(i));
 		else
 		{
 			if (tableRoot2.getLeft() != null) getHelper(
 					(Node<ArrayList<WeakReference<E>>>) tableRoot2.getLeft(),
 					all, i);
 
-			all.add(tableRoot2.getValue(i));
+			all.add((E) tableRoot2.getValue(i));
 
 			if (tableRoot2.getRight() != null) getHelper(
 					(Node<ArrayList<WeakReference<E>>>) tableRoot2.getRight(),
