@@ -51,14 +51,24 @@ public class Journal implements Comparable<Journal>
 		}
 	}
 
+	public String getData(int index)
+	{
+		return this.data[index];
+	}
+	
 	public String getData(String field)
 	{
-		return this.data[indexMap.get(field)];
+		return getData(indexMap.get(field));
 	}
 
+	public void setData(int index, String value)
+	{
+		this.data[index] = value;
+	}
+	
 	public void setData(String field, String value)
 	{
-		this.data[indexMap.get(field)] = value;
+		setData(indexMap.get(field), value);
 	}
 
 	/**
