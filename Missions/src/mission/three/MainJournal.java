@@ -3,7 +3,7 @@ package mission.three;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+@SuppressWarnings("all")
 public class MainJournal
 {
 	HashMap<String, Journal> dictionary;

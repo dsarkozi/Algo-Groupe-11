@@ -3,7 +3,7 @@ package mission.four;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.LinkedList;
-
+@SuppressWarnings("all")
 public class Tree<E>
 {
 	protected ArrayList<E> dataRefs;
