@@ -21,6 +21,11 @@
  * </ul>
  * <li>David Sarkozi</li>
  * <ul>
+ * <li>{@link mission.five.Compress}</li>
+ * <li>{@link mission.five.Decompress}</li>
+ * <li>Javadoc</li>
+ * </ul>
+ * <ul>
  * 
  * </ul>
  * <li>Henri Crombe</li>
@@ -28,6 +33,10 @@
  * 
  * </ul>
  * <li>Julien De Maeyer</li>
+ * <ul>
+ * <li>{@link mission.five.Compress}</li>
+ * <li>{@link mission.five.Decompress}</li>
+ * </ul>
  * <ul>
  * 
  * </ul>
