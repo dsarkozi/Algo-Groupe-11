@@ -2,7 +2,9 @@ package mission.five;
 import java.util.*;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 
 import mission.five.HuffmanCoder;
 
@@ -114,18 +116,25 @@ public class Compress
 	public String FileToString(File in){
 		
 		if (in.exists())
-		{
-
-			BufferedReader bufreader = new BufferedReader(new FileReader(file));
-			String text = "";
-			String currentLine = null;
-			while ((currentLine = bufreader.readLine()) != null)
-			{
-				text += currentLine;
+			try {
+				
+					
+					BufferedReader bufreader = new BufferedReader(new FileReader(in));
+					String text = "";
+					String currentLine = null;
+					while ((currentLine = bufreader.readLine()) != null)
+					{
+						text += currentLine;
+					}
+					bufreader.close();
+					return text;
 			}
-			bufreader.close();
-			return text;
-		}
+			 catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		
 		else System.out.println("Read failed : File doesn't exist");
 		return null;
 	}
