@@ -69,6 +69,7 @@ public class HuffmanCoder
 	 * chaque caractere de l'arbre
 	 * @author Loic Lacomblez
 	 */
+	
 	private void codeTraversal(HashMap<Character,Code> result, ArrayList<Boolean> prevCode, Tree t)
 	{
 		// arrivee a un caractere final
@@ -95,4 +96,47 @@ public class HuffmanCoder
 			prevCode.remove(prevCode.size() -1);
 		}
 	}
+	
+	/**
+	 *
+	 * Fonction permettant de savoir si CodeToCheck correspond à un caractère ( noued externe ), ou simplement un code intermediaire 
+	 * Henri Crombé
+	 */
+	
+	private boolean checkCode(ArrayList<Boolean> code, Tree t){
+		
+		int code_size = code.size();
+		if(code_size==0 ){
+			if(t.isLeaf()) return true;
+			else return false;
+		}
+		
+		if(t.isLeaf()){
+				if(code_size == 0){
+					return true;
+				}
+				else{
+					return false;
+				}
+		}
+		
+		if(code.get(0) == true){ // aller a droite dans l'arbre
+			if(t.hasRight()){
+				code.remove(0);
+				checkCode(code, ((Node)t).droit);	
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			if(t.hasLeft()){
+				code.remove(0);
+				checkCode(code, ((Node)t).gauche);	
+			}
+		}
+		return false;
+		
+	}
+	
 }

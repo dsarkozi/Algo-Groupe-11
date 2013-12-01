@@ -1,5 +1,9 @@
 package mission.five;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * Class taking care of file decompression.
  * 
@@ -25,6 +29,76 @@ public class Decompress
 		this.outputFile = outputFile;
 	}
 
+	public String huff_decompress(Decompress unzip) throws IOException{
+		
+		
+		
+		// Lecture du fichier compresse
+		
+		InputBitStream in = new InputBitStream(unzip.inputFile);
+		
+		HashMap<Character,Integer> occurences = new HashMap<Character,Integer>();
+		/*
+		 * Le format du fichier compressé :
+		 * 1) Nombre de caractères contenus dans le fichier d'entrée
+		 * 2) Nombre de caractères codés ( nombre de couples caractère-occurence)
+		 * 3) Alphabet de décryptage : char - occurences
+		 * 4) Texte codés
+		 */
+		
+		int n_total_char = in.readInt(); // 1
+		int n_coded_char = in.readInt(); // 2
+		
+		// remplissage des occurences.   // 3 
+		
+		for(int i; i < n_coded_char ; i++){
+			char c = in.readChar();
+			int x = in.readInt();
+			occurences.put(c,x);
+		}
+		// build huffman tree pour recuperer les caractère liés aux codes
+		
+		HuffmanCoder hc = new HuffmanCoder(occurences);
+
+		
+		
+		// Lecture du texte codé (4)
+		
+		boolean[] text_coded = new boolean[n_total_char]; // brace yourself, array outofbound excecption coming !
+		/*
+		for(int i; i < n_total_char ; i++){
+				
+			
+		}
+		*/
+		
+		// On va utiliser un Code temporaire pour la lecture binaire. 
+		
+		ArrayList<Boolean> temp_code;
+		boolean new_code = true;
+		while(/* condition a déterminer ? in.hasSomethingtoRead*/){
+		   
+			if(new_code == true){
+				temp_code  = new ArrayList<Boolean>();
+				new_code = false;
+			}
+			
+			boolean temp = in.readBoolean();
+			temp_code.add(temp);
+			
+			
+			
+		   
+		  
+		   
+		   
+		   
+		   
+		   
+	   }
+		
+		
+	}
 	/**
 	 * 
 	 * @param args

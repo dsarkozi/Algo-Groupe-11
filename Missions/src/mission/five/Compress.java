@@ -105,7 +105,7 @@ public class Compress
 		}
 
 		
-		for(int i;i<textc_tocompress.length;i++){
+		for(int i=0;i<textc_tocompress.length;i++){
 			// Ajout de la suite de boolean ( texte codé ) dans le fichier compressé
 			out_compressed.write((boolean) text_encoded.get(i));
 		}
