@@ -4,6 +4,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
+import mission.five.HuffmanCoder;
+
+import com.sun.org.apache.bcel.internal.classfile.Code;
+
+
 /**
  * Class taking care of file compression.
  * 
@@ -29,8 +34,15 @@ public class Compress
 		this.outputFile = outputFile;
 	}
 	
-	
-	public void huff_compress(Compress zip){
+	/**
+	 * Huff_compress compresses the zip.inputfile into zip.outputfile
+	 * @param zip
+	 * 			zip contains references to the input/output file
+	 * 
+	 * Henri Crombé
+	 * 
+	 */
+	public void Huff_compress(Compress zip){
 		
 		File in = new File(zip.inputFile);
 		File out = new File(zip.outputFile);
@@ -50,13 +62,53 @@ public class Compress
 				else{	
 						// Nouvelle occurence du caractere c
 						occurences.put(c, 1);	
+					
 				}
 			
 		}
-		
+		// Création de l'arbre de huffman au moyen du hashmap des occurences
 		HuffmanCoder hc = new HuffmanCoder(occurences);
+		// On transforme le HashMap<char,int> en HashMap<char,code> au moyen d'un parcours de l'arbre de Huffman
+		HashMap<Character, mission.five.Code> char_map = hc.generateCodes();
+		
+		/* 
+		 * Transformation du texte en suite de boolean ( 1 bit = 1 bool )
+		 */
+		
+		ArrayList<Boolean> text_encoded = new ArrayList<Boolean>();
+		
+		for(Character c : textc_tocompress){
+			// On place la suite d'array
+			text_encoded.addAll(char_map.get(c).getCode());
+		}
+		
+		/*
+		 * Le format du fichier compressé :
+		 * 1) Nombre de caractères contenus dans le fichier d'entrée
+		 * 2) Nombre de caractères codés ( nombre de couples caractère-occurence)
+		 * 3) Alphabet de décryptage : char - occurences
+		 * 4) Texte codés
+		 */
 		
 		
+		
+		OutputBitStream out_compressed = new OutputBitStream(zip.outputFile);
+		out_compressed.write(textc_tocompress.length);
+		out_compressed.write(occurences.size());
+		/* pas sur de la syntaxe java pour cette partie */
+		for(Character c  : occurences.keySet() ){
+				// On imprime l'alphabet de décryptage
+				out_compressed.write((char) c); 
+				out_compressed.write((int) occurences.get(c));	
+		}
+
+		
+		for(int i;i<textc_tocompress.length;i++){
+			// Ajout de la suite de boolean ( texte codé ) dans le fichier compressé
+			out_compressed.write((boolean) text_encoded.get(i));
+		}
+		
+			
 	}
 	
 	public String FileToString(File in){
