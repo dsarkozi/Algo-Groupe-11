@@ -21,6 +21,10 @@ public class HuffmanCoder
 		codeTree = buildTree(occurences);
 	}
 	
+	public Tree getTree(){
+		return codeTree;
+	}
+	
 	/**
 	 * 
 	 * @pre _
@@ -31,7 +35,7 @@ public class HuffmanCoder
 		//Creation de la priorityQueue de Tree
 		PriorityQueue<Tree> tas = new PriorityQueue<Tree>();
 		//Recuperation des occurences des caracteres
-		Set<Character>chars = occurences.keySet();
+		Set<Character> chars = occurences.keySet();
 
 		for(char letter:chars)
 		{
