@@ -65,6 +65,90 @@ public class HuffmanCoder
 	}
 	
 	/**
+	 *
+	 * Fonction permettant de savoir si CodeToCheck correspond à un caractère ( noued externe ), ou simplement un code intermediaire 
+	 * Henri Crombé
+	 */
+	
+	public static boolean checkCode(ArrayList<Boolean> code, Tree t){
+		
+		int code_size = code.size();
+		if(code_size==0 ){
+			if(t.isLeaf()) return true;
+			else return false;
+		}
+		
+		if(t.isLeaf()){
+				if(code_size == 0){
+					return true;
+				}
+				else{
+					return false;
+				}
+		}
+		
+		if(code.get(0) == true){ // aller a droite dans l'arbre
+			if(t.hasRight()){
+				code.remove(0);
+				checkCode(code, ((Node)t).droit);	
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			if(t.hasLeft()){
+				code.remove(0);
+				checkCode(code, ((Node)t).gauche);	
+			}
+			else{
+				return false;
+			}
+		}
+		return false;
+		
+	}
+	
+	public static char getCharacter(ArrayList<Boolean> code,Tree t){
+		char char_eq ;
+		
+		int code_size = code.size();
+		if(code_size==0 ){
+			if(t.isLeaf()) return ((Leaf) t).lettre;
+			else return '1';
+		}
+		
+		if(t.isLeaf()){
+				if(code_size == 0){
+					return ((Leaf) t).lettre;
+				}
+				else{
+					return '2';
+				}
+		}
+		
+		if(code.get(0) == true){ // aller a droite dans l'arbre
+			if(t.hasRight()){
+				code.remove(0);
+				checkCode(code, ((Node)t).droit);	
+			}
+			else{
+				return '3';
+			}
+		}
+		else{
+			if(t.hasLeft()){
+				code.remove(0);
+				checkCode(code, ((Node)t).gauche);	
+			}
+			else{
+				return '4';
+			}
+		}
+		return '5';
+	}
+	
+	/**
 	 * Fonction recursive permettant de recuperer les codes lies a
 	 * chaque caractere de l'arbre
 	 * @author Loic Lacomblez
@@ -97,46 +181,6 @@ public class HuffmanCoder
 		}
 	}
 	
-	/**
-	 *
-	 * Fonction permettant de savoir si CodeToCheck correspond à un caractère ( noued externe ), ou simplement un code intermediaire 
-	 * Henri Crombé
-	 */
-	
-	private boolean checkCode(ArrayList<Boolean> code, Tree t){
-		
-		int code_size = code.size();
-		if(code_size==0 ){
-			if(t.isLeaf()) return true;
-			else return false;
-		}
-		
-		if(t.isLeaf()){
-				if(code_size == 0){
-					return true;
-				}
-				else{
-					return false;
-				}
-		}
-		
-		if(code.get(0) == true){ // aller a droite dans l'arbre
-			if(t.hasRight()){
-				code.remove(0);
-				checkCode(code, ((Node)t).droit);	
-			}
-			else{
-				return false;
-			}
-		}
-		else{
-			if(t.hasLeft()){
-				code.remove(0);
-				checkCode(code, ((Node)t).gauche);	
-			}
-		}
-		return false;
-		
-	}
+
 	
 }

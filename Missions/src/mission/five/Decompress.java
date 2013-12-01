@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.sun.org.apache.bcel.internal.generic.CHECKCAST;
+
 /**
  * Class taking care of file decompression.
  * 
@@ -40,7 +42,7 @@ public class Decompress
 		HashMap<Character,Integer> occurences = new HashMap<Character,Integer>();
 		/*
 		 * Le format du fichier compressé :
-		 * 1) Nombre de caractères contenus dans le fichier d'entrée
+		 * 1) Nombre de caractères contenus dans le fichier d'entrée 
 		 * 2) Nombre de caractères codés ( nombre de couples caractère-occurence)
 		 * 3) Alphabet de décryptage : char - occurences
 		 * 4) Texte codés
@@ -59,22 +61,14 @@ public class Decompress
 		// build huffman tree pour recuperer les caractère liés aux codes
 		
 		HuffmanCoder hc = new HuffmanCoder(occurences);
-
-		
 		
 		// Lecture du texte codé (4)
 		
-		boolean[] text_coded = new boolean[n_total_char]; // brace yourself, array outofbound excecption coming !
-		/*
-		for(int i; i < n_total_char ; i++){
-				
-			
-		}
-		*/
-		
 		// On va utiliser un Code temporaire pour la lecture binaire. 
+		ArrayList<Boolean> temp_code; // code temporaire, permet la recherche dans l'arbre de huffman
 		
-		ArrayList<Boolean> temp_code;
+		String text_final = "";
+		
 		boolean new_code = true;
 		while(/* condition a déterminer ? in.hasSomethingtoRead*/){
 		   
@@ -85,19 +79,31 @@ public class Decompress
 			
 			boolean temp = in.readBoolean();
 			temp_code.add(temp);
-			
-			
-			
-		   
-		  
-		   
-		   
-		   
-		   
-		   
-	   }
+			// est ce que le code courant existe dans l'arbre de huffman ? Est-il un Code concluant ?
+			boolean test = HuffmanCoder.checkCode(temp_code, hc.getTree());
 		
+			if(test == true ){
+				// Le code courant correspond à un caractère dans l'arbre de huffman. On ajoute le caractere au texte final.
+				char cur_char = HuffmanCoder.getCharacter(temp_code, hc.getTree());
+				text_final += cur_char;
+				new_code = true;
+			}
 		
+			else{
+				// Si le code courant n'existe pas dans l'arbre de huffman, on ajoute un bit au code et on recommence
+				temp_code.add(in.readBoolean());
+			}
+		     
+		}
+		
+		if(text_final.length() != n_total_char){
+			
+			System.out.println("Le fichier décompressé ne contient pas le même nombre de caractères que le fichier d'entrée : ERREUR \n");
+			return text_final;
+		}
+		return text_final;
+		
+	
 	}
 	/**
 	 * 
