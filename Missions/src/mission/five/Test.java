@@ -1,6 +1,7 @@
 package mission.five;
 
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * 
@@ -12,16 +13,27 @@ public class Test {
 	public static void main (String[] args)
 	{
 		HashMap<Character,Integer> occurences = new HashMap<Character,Integer>();
-		occurences.put('a',400);
-		occurences.put('b',300);
-		occurences.put('c',200);
-		occurences.put('d',100);
+		char[] tab = {'a','b','c','d','e','f','g','h','i','j'};
+		int[] numb = {1000, 450, 300, 200, 150, 100, 85, 76, 56, 11}; 
+		for(int i=0; i < tab.length; i++)
+		{
+			occurences.put(tab[i], numb[i]);
+		}
 		
 		HuffmanCoder HcodeTree = new HuffmanCoder(occurences);
 		Tree codeTree = HcodeTree.getTree();
-
+		
+		// Inspection sur l'arbre
         System.out.println("Lettre\tfreq\tcode");
         printHuffman(codeTree, new StringBuffer());
+        
+        // Inspection sur Generate_Codes
+        HashMap<Character,Code> res = HcodeTree.generateCodes();
+		Set<Character> set = res.keySet();
+		for(char letter : set)
+		{
+			System.out.println("char : " + letter + " - code : " + res.get(letter).toString());
+		}
     }
 	
 	

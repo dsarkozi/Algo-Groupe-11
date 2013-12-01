@@ -83,16 +83,16 @@ public class HuffmanCoder
 		// appel recursif a gauche
 		if(t.hasLeft())
 		{
-			ArrayList<Boolean> leftCode = prevCode;
-			leftCode.add(false);
-			codeTraversal(result, leftCode, ((Node) t).gauche);
+			prevCode.add(false);
+			codeTraversal(result, prevCode, ((Node) t).gauche);
+			prevCode.remove(prevCode.size() - 1);
 		}
 		// appel recursif a droite
 		if(t.hasRight())
 		{
-			ArrayList<Boolean> rightCode = prevCode;
-			rightCode.add(true);
-			codeTraversal(result, rightCode, ((Node) t).droit);
+			prevCode.add(true);
+			codeTraversal(result, prevCode, ((Node) t).droit);
+			prevCode.remove(prevCode.size() -1);
 		}
 	}
 }
