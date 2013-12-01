@@ -22,15 +22,6 @@ public class HuffmanCoder
 	}
 	
 	/**
-	 * Retourne les codes lies a chaque caractere de l'arbre codeTree
-	 * @author Loic Lacomblez
-	 */
-	public HashMap<Character, Code> generateCodes()
-	{
-		// TODO
-	}
-
-	/**
 	 * 
 	 * @pre _
 	 * @post un arbre binaire representant l'arbre utilise dans l'algorithme de Huffman
@@ -56,5 +47,48 @@ public class HuffmanCoder
 		}
 
 		return tas.poll();
+	}
+	
+	/**
+	 * Retourne les codes lies a chaque caractere de l'arbre codeTree
+	 * @author Loic Lacomblez
+	 */
+	public HashMap<Character,Code> generateCodes()
+	{
+		HashMap<Character,Code> result = new HashMap<Character,Code>();
+		codeTraversal(result, new ArrayList<Boolean>(), codeTree);
+		return result;
+	}
+	
+	/**
+	 * Fonction recursive permettant de recuperer les codes lies a
+	 * chaque caractere de l'arbre
+	 * @author Loic Lacomblez
+	 */
+	private void codeTraversal(HashMap<Character,Code> result, ArrayList<Boolean> prevCode, Tree t)
+	{
+		// arrivee a un caractere final
+		if(t.isLeaf())
+		{
+			/* Le clone evite de corrompre les codes des anciens caracteres a cause du passage
+			 * par reference de java.
+			 */
+			Code finalCode = new Code((ArrayList<Boolean>) prevCode.clone());
+			result.put(((Leaf) t).lettre, finalCode);
+		}
+		// appel recursif a gauche
+		if(t.hasLeft())
+		{
+			ArrayList<Boolean> leftCode = prevCode;
+			leftCode.add(false);
+			codeTraversal(result, leftCode, ((Node) t).gauche);
+		}
+		// appel recursif a droite
+		if(t.hasRight())
+		{
+			ArrayList<Boolean> rightCode = prevCode;
+			rightCode.add(true);
+			codeTraversal(result, rightCode, ((Node) t).droit);
+		}
 	}
 }

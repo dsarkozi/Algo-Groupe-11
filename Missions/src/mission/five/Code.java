@@ -20,6 +20,14 @@ public class Code
 	}
 	
 	/**
+	 * Cree un nouvel objet code contenant kes bits de 'bits'
+	 */
+	public Code(ArrayList<Boolean> bits)
+	{
+		this.bits = bits;
+	}
+	
+	/**
 	 * Configure le (i+1)-eme bit du code a la valeur 'bit'
 	 * @pre _
 	 * @post le code a une longueur >= index+1, dont le (i+1)-eme bit a la valeur
@@ -40,5 +48,33 @@ public class Code
 	public ArrayList<Boolean> getCode()
 	{
 		return bits;
+	}
+	
+	/**
+	 * Retourne la taille du code binaire
+	 * @pre _
+	 * @post une taile >=0 est retournee
+	 */
+	public int getSize()
+	{
+		return bits.size();
+	}
+	
+	/**
+	 * Retourne la representation textuelle du code binaire
+	 * @pre _
+	 * @post un String contenant des '0' et des '1' est retourne
+	 */
+	public String toString()
+	{
+		String result = new String();
+		for(boolean bit : bits)
+		{
+			if(bit)
+				result += '1';
+			else
+				result += '0';
+		}
+		return result;
 	}
 }
