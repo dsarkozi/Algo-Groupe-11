@@ -30,10 +30,15 @@ public class Decompress
 		this.inputFile = inputFile;
 		this.outputFile = outputFile;
 	}
-
-	public String huff_decompress(Decompress unzip) throws IOException{
-		
-		
+	/**
+	 * 
+	 * @param unzip
+	 * @return Texte final decompressé 
+	 * @throws IOException
+	 * 
+	 * Henri Crombé
+	 */
+	public String Huff_decompress(Decompress unzip) throws IOException{
 		
 		// Lecture du fichier compresse
 		
@@ -70,7 +75,8 @@ public class Decompress
 		String text_final = "";
 		
 		boolean new_code = true;
-		while(/* condition a déterminer ? in.hasSomethingtoRead*/){
+		
+		while(/* condition a déterminer !!!!!!  ? in.hasSomethingtoRead*/){
 		   
 			if(new_code == true){
 				temp_code  = new ArrayList<Boolean>();
@@ -122,5 +128,6 @@ public class Decompress
 			return;
 		}
 		Decompress unzip = new Decompress(args[0], args[1]);
+		
 	}
 }
