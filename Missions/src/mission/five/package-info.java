@@ -16,11 +16,13 @@
  * 
  * </ul>
  * <li>Benoit Sluysmans</li>
+ * <ul>
  * <li>{@link mission.five.Tree}</li>
  * <li>{@link mission.five.Leaf}</li>
  * <li>{@link mission.five.Node}</li>
  * <li>{@link mission.five.HuffmanCoder}</li>
  * <li>{@link mission.five.Test}</li>
+ * </ul>
  * <ul>
  * 
  * </ul>
