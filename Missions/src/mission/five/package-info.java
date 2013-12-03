@@ -13,6 +13,7 @@
  * <li>Loic Lacomblez</li>
  * <ul>
  * <li>{@link mission.five.HuffmanCoder}</li>
+ * <li>{@link mission.five.Code}</li>
  * </ul>
  * <ul>
  * 
