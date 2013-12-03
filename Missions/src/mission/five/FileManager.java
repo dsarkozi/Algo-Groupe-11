@@ -45,6 +45,10 @@ public class FileManager
 			System.err.println("Error in reading the file.");
 			System.exit(-1);
 		}
+		finally
+		{
+			closeFile();
+		}
 		return null;
 	}
 
@@ -67,6 +71,18 @@ public class FileManager
 		String currentLine = readLine();
 		if (closeFile) closeFile();
 		return currentLine;
+	}
+	
+	public static String readFile()
+	{
+		StringBuilder sb = new StringBuilder();
+		String line = readLine();
+		while (line != null)
+		{
+			sb.append(line).append("\n");
+			line = readLine();
+		}
+		return sb.toString();
 	}
 
 	/**
@@ -138,7 +154,7 @@ public class FileManager
 		}
 		catch (IOException e)
 		{
-			System.err.println("Error in reading the file.");
+			System.err.println("Error in closing the file.");
 			System.exit(-1);
 		}
 		reader = null;
