@@ -20,12 +20,20 @@ public class FileManager
 
 	public static final int WRITING = 2;
 
+	public static final int READ_BITSTREAM = 3;
+
+	public static final int WRITE_BITSTREAM = 4;
+
 	/**
 	 * Represente le reader du fichier d'entree
 	 */
 	private static BufferedReader reader;
 
 	private static PrintWriter writer;
+
+	protected static InputBitStream ibs;
+
+	protected static OutputBitStream obs;
 
 	/**
 	 * Represente le chemin vers le fichier d'entree
@@ -81,6 +89,8 @@ public class FileManager
 		if (closeFile) closeFile();
 		return currentLine;
 	}
+	
+	
 
 	public static void writeLine(String line)
 	{
@@ -97,17 +107,12 @@ public class FileManager
 	 * 
 	 * @return
 	 */
-	public static String readFile()
-	{
-		StringBuilder sb = new StringBuilder();
-		String line = readLine();
-		while (line != null)
-		{
-			sb.append(line).append("\n");
-			line = readLine();
-		}
-		return sb.toString();
-	}
+	/*
+	 * public static String readFile() { StringBuilder sb = new StringBuilder();
+	 * String line = readLine(); while (line != null) {
+	 * sb.append(line).append("\n"); line = readLine(); } return sb.toString();
+	 * }
+	 */
 
 	/**
 	 * Ouvre le fichier d'entree dont le chemin est {@link #filename}
@@ -174,6 +179,27 @@ public class FileManager
 					System.exit(-1);
 				}
 				break;
+			case READ_BITSTREAM:
+				try
+				{
+					ibs = new InputBitStream(filename);
+				}
+				catch (IOException e)
+				{
+					System.err.println("Readable bit stream open failed");
+					System.exit(-1);
+				}
+				break;
+			case WRITE_BITSTREAM:
+				try
+				{
+					obs = new OutputBitStream(filename);
+				}
+				catch (IOException e)
+				{
+					System.err.println("Writable bit stream open failed");
+					System.exit(-1);
+				}
 			default:
 				throw new IllegalArgumentException(
 						"Unhandled operation on file");
@@ -198,7 +224,7 @@ public class FileManager
 	 * @see #openFile()
 	 * @see #closeFile()
 	 */
-	public static void reopenFile() throws IOException
+	public static void reopenFile()
 	{
 		if (reader != null) closeFile();
 		openFile();
@@ -235,6 +261,32 @@ public class FileManager
 				System.exit(-1);
 			}
 			writer = null;
+		}
+		if (ibs != null)
+		{
+			try
+			{
+				ibs.close();
+			}
+			catch (IOException e)
+			{
+				System.err.println("Readable bit stream close failed");
+				System.exit(-1);
+			}
+			ibs = null;
+		}
+		if (obs != null)
+		{
+			try
+			{
+				obs.close();
+			}
+			catch (IOException e)
+			{
+				System.err.println("Writable bit stream close failed");
+				System.exit(-1);
+			}
+			obs = null;
 		}
 	}
 
