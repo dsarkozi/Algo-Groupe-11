@@ -5,9 +5,15 @@
  * <ul>
  * <li>Clementine Munyabarenzi</li>
  * <ul>
+ * <li>Responsable question 9</li>
+ * </ul>
+ * <ul>
  * 
  * </ul>
  * <li>Loic Lacomblez</li>
+ * <ul>
+ * <li>{@link mission.five.HuffmanCoder}</li>
+ * </ul>
  * <ul>
  * 
  * </ul>
@@ -30,12 +36,17 @@
  * <ul>
  * <li>{@link mission.five.Compress}</li>
  * <li>{@link mission.five.Decompress}</li>
+ * <li>{@link mission.five.FileManager}</li>
  * <li>Javadoc</li>
  * </ul>
  * <ul>
  * 
  * </ul>
  * <li>Henri Crombe</li>
+ * <ul>
+ * <li>{@link mission.five.Compress}</li>
+ * <li>{@link mission.five.Decompress}</li>
+ * </ul>
  * <ul>
  * 
  * </ul>
@@ -48,6 +59,9 @@
  * 
  * </ul>
  * <li>Nicolas Marchand</li>
+ * <ul>
+ * <li>Responsable question 10</li>
+ * </ul>
  * <ul>
  * 
  * </ul>
