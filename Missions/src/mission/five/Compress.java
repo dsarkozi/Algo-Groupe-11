@@ -1,15 +1,8 @@
 package mission.five;
-import java.util.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+
 import java.io.IOException;
-
-import mission.five.HuffmanCoder;
-
-import com.sun.org.apache.bcel.internal.classfile.Code;
-
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Class taking care of file compression.
@@ -19,8 +12,11 @@ import com.sun.org.apache.bcel.internal.classfile.Code;
  */
 public class Compress
 {
-	private String inputFile;
-	private String outputFile;
+	private HashMap<Character, Code> char_map;
+	
+	private HashMap<Character, Integer> occurences;
+	
+	private int text_length = 0;
 
 	/**
 	 * Constructor of the class.
@@ -30,116 +26,118 @@ public class Compress
 	 * @param outputFile
 	 *            The output file that will contain the compressed input file.
 	 */
-	public Compress(String inputFile, String outputFile)
-	{
-		this.inputFile = inputFile;
-		this.outputFile = outputFile;
-	}
-	
+	/*
+	 * public Compress(String inputFile, String outputFile) { this.inputFile =
+	 * inputFile; this.outputFile = outputFile; }
+	 */
+
 	/**
 	 * Huff_compress compresses the zip.inputfile into zip.outputfile
-	 * @param zip
-	 * 			zip contains references to the input/output file
 	 * 
-	 * Henri Crombé
+	 * @param zip
+	 *            zip contains references to the input/output file
+	 * 
+	 *            Henri Crombï¿½
 	 * 
 	 */
-	public void Huff_compress(Compress zip){
-		
-		File in = new File(zip.inputFile);
-		File out = new File(zip.outputFile);
-		// On place tout le contenu du fichier dans un String, histoire de pouvori travailler char par char
-		String text_tocompress = FileToString(in);
-		char[] textc_tocompress = text_tocompress.toCharArray();
-		
-		HashMap<Character,Integer> occurences = new HashMap<Character,Integer>();
-		
-		for(Character c : textc_tocompress){
-				// On vérifie que le caractère courrant n'existe pas deja dans le HashMap
-				boolean alreadyInHash = occurences.containsKey(c);
-				if(alreadyInHash){
-						// On incremente l'occurence du caractere c
-						occurences.put(c, occurences.get(c) + 1);
-				}
-				else{	
-						// Nouvelle occurence du caractere c
-						occurences.put(c, 1);	
-					
-				}
-			
-		}
-		// Création de l'arbre de huffman au moyen du hashmap des occurences
+	public void compressFile()
+	{
+		occurences = analyzeFile();
+
+		// Crï¿½ation de l'arbre de huffman au moyen du hashmap des occurences
 		HuffmanCoder hc = new HuffmanCoder(occurences);
-		// On transforme le HashMap<char,int> en HashMap<char,code> au moyen d'un parcours de l'arbre de Huffman
-		HashMap<Character, mission.five.Code> char_map = hc.generateCodes();
-		
-		/* 
+		// On transforme le HashMap<char,int> en HashMap<char,code> au moyen
+		// d'un parcours de l'arbre de Huffman
+		char_map = hc.generateCodes();
+
+		/*
+		 * Le format du fichier compresse : 1) Nombre de caracteres contenus
+		 * dans le fichier d'entree 2) Nombre de caracteres codes ( nombre de
+		 * couples caractere-occurence) 3) Alphabet de decryptage : char -
+		 * occurences 4) Texte codes
+		 */
+		try
+		{
+			writeResult();
+		}
+		catch (IOException e)
+		{
+			System.err.println("Writable bit stream write error");
+			System.exit(-1);
+		}
+		finally
+		{
+			FileManager.closeFile();
+		}
+	}
+
+	private HashMap<Character, Integer> analyzeFile()
+	{
+		String line = FileManager.readLine();
+		char[] charLine;
+		HashMap<Character, Integer> occurences =
+				new HashMap<Character, Integer>();
+		while (line != null)
+		{
+			charLine = line.toCharArray();
+			for (Character c : charLine)
+			{
+				// On vï¿½rifie que le caractï¿½re courrant n'existe pas deja dans
+				// le
+				// HashMap
+				if (occurences.containsKey(c))
+				{
+					// On incremente l'occurence du caractere c
+					occurences.put(c, occurences.get(c) + 1);
+				}
+				else
+				{
+					// Nouvelle occurence du caractere c
+					occurences.put(c, 1);
+
+				}
+				text_length++;
+			}
+			line = FileManager.readLine();
+		}
+		return occurences;
+	}
+
+	private void writeResult() throws IOException
+	{
+		/*
 		 * Transformation du texte en suite de boolean ( 1 bit = 1 bool )
 		 */
-		
-		ArrayList<Boolean> text_encoded = new ArrayList<Boolean>();
-		
-		for(Character c : textc_tocompress){
-			// On place la suite d'array
-			text_encoded.addAll(char_map.get(c).getCode());
-		}
-		
-		/*
-		 * Le format du fichier compressé :
-		 * 1) Nombre de caractères contenus dans le fichier d'entrée
-		 * 2) Nombre de caractères codés ( nombre de couples caractère-occurence)
-		 * 3) Alphabet de décryptage : char - occurences
-		 * 4) Texte codés
-		 */
-		
-		
-		
-		OutputBitStream out_compressed = new OutputBitStream(zip.outputFile);
-		out_compressed.write(textc_tocompress.length);
-		out_compressed.write(occurences.size());
-		/* pas sur de la syntaxe java pour cette partie */
-		for(Character c  : occurences.keySet() ){
-				// On imprime l'alphabet de décryptage
-				out_compressed.write((char) c); 
-				out_compressed.write((int) occurences.get(c));	
-		}
 
-		
-		for(int i=0;i<textc_tocompress.length;i++){
-			// Ajout de la suite de boolean ( texte codé ) dans le fichier compressé
-			out_compressed.write((boolean) text_encoded.get(i));
+		ArrayList<Boolean> text_encoded = new ArrayList<Boolean>();
+		FileManager.reopenFile();
+		String line = FileManager.readLine();
+		char[] charLine;
+		FileManager.obs.write(text_length);
+		FileManager.obs.write('\n');
+		FileManager.obs.write(occurences.size());
+		FileManager.obs.write('\n');
+		for (Character c : occurences.keySet())
+		{
+			// On imprime l'alphabet de decryptage
+			FileManager.obs.write((char) c);
+			FileManager.obs.write((int) occurences.get(c));
 		}
-		
-			
-	}
-	
-	public String FileToString(File in){
-		
-		if (in.exists())
-			try {
-				
-					
-					BufferedReader bufreader = new BufferedReader(new FileReader(in));
-					String text = "";
-					String currentLine = null;
-					while ((currentLine = bufreader.readLine()) != null)
-					{
-						text += currentLine;
-					}
-					bufreader.close();
-					return text;
+		while (line != null)
+		{
+			charLine = line.toCharArray();
+			for (Character c : charLine)
+			{
+				// On place la suite d'array
+				text_encoded.addAll(char_map.get(c).getCode());
+				for (Boolean item : text_encoded)
+				{
+					FileManager.obs.write(item);
+				}
 			}
-			 catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		
-		else System.out.println("Read failed : File doesn't exist");
-		return null;
+			line = FileManager.readLine();
+		}
 	}
-		
-		
 
 	/**
 	 * 
@@ -157,11 +155,10 @@ public class Compress
 			System.err.println("Invalid number of arguments.");
 			return;
 		}
-		Compress zip = new Compress(args[0], args[1]);
-		
-
-		
+		Compress zip = new Compress();
+		FileManager.openFile(FileManager.READING, args[0]);
+		FileManager.openFile(FileManager.WRITE_BITSTREAM, args[1]);
+		zip.compressFile();
 	}
-	
-	
+
 }
