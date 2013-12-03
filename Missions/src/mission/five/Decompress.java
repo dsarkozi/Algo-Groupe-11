@@ -7,7 +7,7 @@ import java.util.HashMap;
 /**
  * Class taking care of file decompression.
  * 
- * @author
+ * @author Henri Crombe, revised by David Sarkozi
  * @see Compress
  */
 public class Decompress

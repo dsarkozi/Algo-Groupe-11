@@ -6,12 +6,12 @@ package mission.five;
  */
 class Node extends Tree
 {
-    public Tree gauche, droit;
- 
-    public Node(Tree g, Tree d) 
-    {
-        super(g.frequence + d.frequence);
-        gauche = g;
-        droit = d;
-    }
+	public Tree gauche, droit;
+
+	public Node(Tree g, Tree d)
+	{
+		super(g.frequence + d.frequence);
+		gauche = g;
+		droit = d;
+	}
 }

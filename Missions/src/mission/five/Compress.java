@@ -7,7 +7,7 @@ import java.util.HashMap;
 /**
  * Class taking care of file compression.
  * 
- * @author
+ * @author Henri Crombe, revised by David Sarkozi
  * @see Decompress
  */
 public class Compress
@@ -37,12 +37,7 @@ public class Compress
 	}
 
 	/**
-	 * Huff_compress compresses the zip.inputfile into zip.outputfile
-	 * 
-	 * @param zip
-	 *            zip contains references to the input/output file
-	 * 
-	 *            Henri Cromb�
+	 * Compresses the zip.inputfile into zip.outputfile
 	 * 
 	 */
 	public void compressFile()
@@ -110,9 +105,9 @@ public class Compress
 		/*
 		 * Transformation du texte en suite de boolean ( 1 bit = 1 bool )
 		 */
-		
+
 		ArrayList<Boolean> text_encoded = new ArrayList<Boolean>();
-		FileManager.reopenFile();
+		FileManager.reopenFile(FileManager.READING);
 		String line = FileManager.readLine();
 		char[] charLine;
 		FileManager.obs.write(text_length);

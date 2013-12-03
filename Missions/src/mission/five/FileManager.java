@@ -16,31 +16,55 @@ import java.io.PrintWriter;
 
 public class FileManager
 {
+	/**
+	 * Mode set to read from an input file.
+	 */
 	public static final int READING = 1;
 
+	/**
+	 * Mode set to write to an output file.
+	 */
 	public static final int WRITING = 2;
 
+	/**
+	 * Mode set to read from an input bitstream.
+	 */
 	public static final int READ_BITSTREAM = 3;
 
+	/**
+	 * Mode set to write to an output bitstream.
+	 */
 	public static final int WRITE_BITSTREAM = 4;
 
 	/**
-	 * Represente le reader du fichier d'entree
+	 * Input file reader.
 	 */
 	protected static BufferedReader reader;
 
+	/**
+	 * Output file writer.
+	 */
 	protected static PrintWriter writer;
 
+	/**
+	 * Input bitstream reader.
+	 */
 	protected static InputBitStream ibs;
 
+	/**
+	 * Output bitstream writer.
+	 */
 	protected static OutputBitStream obs;
 
 	/**
-	 * Represente le chemin vers le fichier d'entree
+	 * Input filename.
 	 */
-	private static String inputFile;
-	
-	private static String outputFile;
+	private static String inputFile = null;
+
+	/**
+	 * Output filename.
+	 */
+	private static String outputFile = null;
 
 	/**
 	 * Lit une ligne du fichier d'entree. Est equivalent a
@@ -112,21 +136,40 @@ public class FileManager
 	 */
 
 	/**
-	 * Ouvre le fichier d'entree dont le chemin est {@link #inputFile}
+	 * Opens the input and/or output file(s) whose paths are {@link #inputFile}/
+	 * {@link #outputFile}.
 	 * 
-	 * @pre {@link #inputFile} existe et est lisible
-	 * @post {@link #reader} contient le fichier ouvert et est pret a etre lu
+	 * @pre -
+	 * @post {@link #reader} et/ou {@link #writer} contient le fichier ouvert et
+	 *       est pret a etre utilise.
 	 */
 	public static void openFile()
 	{
-		try
+		if (inputFile != null)
 		{
-			reader = new BufferedReader(new FileReader(inputFile));
+			try
+			{
+				reader = new BufferedReader(new FileReader(inputFile));
+			}
+			catch (FileNotFoundException e)
+			{
+				System.err.println("Open failed : File doesn't exist");
+				System.exit(-1);
+			}
 		}
-		catch (FileNotFoundException e)
+		if (outputFile != null)
 		{
-			System.err.println("Open failed : File doesn't exist");
-			System.exit(-1);
+			try
+			{
+				writer =
+						new PrintWriter(new BufferedWriter(new FileWriter(
+								outputFile)));
+			}
+			catch (IOException e)
+			{
+				System.err.println("Write failed : File doesn't exist");
+				System.exit(-1);
+			}
 		}
 	}
 
@@ -148,12 +191,14 @@ public class FileManager
 	}
 
 	/**
-	 * Opens the file under the specified mode ({@link #READING} or
-	 * {@link #WRITING}). If the mode is set to {@link #READING}, the result is
-	 * equivalent to the call to {@link #openFile()}.
+	 * Opens the file under the specified mode. If the mode is set to
+	 * {@link #READING} or {@link #WRITING}, the result is equivalent to the
+	 * call to {@link #openFile()}.
 	 * 
 	 * @param mode
 	 *            The mode the file has to be opened under.
+	 * @pre -
+	 * @post The stream specified by {@code mode} is opened.
 	 * @see #openFile()
 	 */
 	public static void openFile(int mode)
@@ -161,20 +206,8 @@ public class FileManager
 		switch (mode)
 		{
 			case READING:
-				openFile();
-				break;
 			case WRITING:
-				try
-				{
-					writer =
-							new PrintWriter(new BufferedWriter(new FileWriter(
-									outputFile)));
-				}
-				catch (IOException e)
-				{
-					System.err.println("Write failed : File doesn't exist");
-					System.exit(-1);
-				}
+				openFile();
 				break;
 			case READ_BITSTREAM:
 				try
@@ -204,12 +237,21 @@ public class FileManager
 		}
 	}
 
+	/**
+	 * Opens the stream specified by {@code mode} and {@code filename}. As soon
+	 * as the filename is set as an input file or an output file, it is
+	 * equivalent to {@link #openFile(int)}.
+	 * 
+	 * @param mode
+	 *            The mode the file has to be opened under.
+	 * @param filename
+	 *            the file to be opened.
+	 * @see #openFile(int)
+	 */
 	public static void openFile(int mode, String filename)
 	{
-		if (mode == READING || mode == READ_BITSTREAM)
-			setInputFile(filename);
-		else if (mode == WRITING || mode == WRITE_BITSTREAM)
-			setOutputFile(filename);
+		if (mode == READING || mode == READ_BITSTREAM) setInputFile(filename);
+		else if (mode == WRITING || mode == WRITE_BITSTREAM) setOutputFile(filename);
 		openFile(mode);
 	}
 
@@ -223,31 +265,20 @@ public class FileManager
 	 *             Si un evenement inattendu est survenu pendant la fermeture
 	 *             prealable du fichier d'entree
 	 * @see #openFile()
-	 * @see #closeFile()
+	 * @see #closeFile(int)
 	 */
-	public static void reopenFile()
+	public static void reopenFile(int mode)
 	{
-		if (reader != null)
-		{
-			try
-			{
-				reader.close();
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-			reader = null;
-		}
-		openFile();
+		closeFile(mode);
+		openFile(mode);
 	}
 
 	/**
-	 * Ferme le flux du fichier d'entree.
+	 * Ferme tous les flux.
 	 * 
 	 * @pre -
-	 * @post Ferme le flux du fichier d'entree et met {@link #reader} et/ou
-	 *       {@link #writer} a {@code null}
+	 * @post Ferme tous les flux et met leurs identificateurs respectifs a
+	 *       {@code null}.
 	 */
 	public static void closeFile()
 	{
@@ -264,16 +295,6 @@ public class FileManager
 			}
 			reader = null;
 		}
-		if (writer != null)
-		{
-			writer.close();
-			if (writer.checkError())
-			{
-				System.err.println("Error in closing the file.");
-				System.exit(-1);
-			}
-			writer = null;
-		}
 		if (ibs != null)
 		{
 			try
@@ -286,6 +307,16 @@ public class FileManager
 				System.exit(-1);
 			}
 			ibs = null;
+		}
+		if (writer != null)
+		{
+			writer.close();
+			if (writer.checkError())
+			{
+				System.err.println("Error in closing the file.");
+				System.exit(-1);
+			}
+			writer = null;
 		}
 		if (obs != null)
 		{
@@ -303,16 +334,98 @@ public class FileManager
 	}
 
 	/**
+	 * Closes the filestream specified by {@code mode}.
+	 * 
+	 * @param mode
+	 *            The mode whose identificator has to be closed.
+	 * @pre -
+	 * @post Closes the specified filestream and sets its identificator to
+	 *       {@code null}.
+	 */
+	public static void closeFile(int mode)
+	{
+		switch (mode)
+		{
+			case READING:
+				if (reader != null)
+				{
+					try
+					{
+						reader.close();
+					}
+					catch (IOException e)
+					{
+						System.err.println("Error in closing the file.");
+						System.exit(-1);
+					}
+					reader = null;
+				}
+				break;
+			case READ_BITSTREAM:
+				if (ibs != null)
+				{
+					try
+					{
+						ibs.close();
+					}
+					catch (IOException e)
+					{
+						System.err.println("Readable bit stream close failed");
+						System.exit(-1);
+					}
+					ibs = null;
+				}
+				break;
+			case WRITING:
+				if (writer != null)
+				{
+					writer.close();
+					if (writer.checkError())
+					{
+						System.err.println("Error in closing the file.");
+						System.exit(-1);
+					}
+					writer = null;
+				}
+				break;
+			case WRITE_BITSTREAM:
+				if (obs != null)
+				{
+					try
+					{
+						obs.close();
+					}
+					catch (IOException e)
+					{
+						System.err.println("Writable bit stream close failed");
+						System.exit(-1);
+					}
+					obs = null;
+				}
+				break;
+			default:
+				throw new IllegalArgumentException(
+						"Unhandled operation on file");
+		}
+	}
+
+	/**
 	 * @param inputFile
 	 *            Le chemin vers un fichier a lire
 	 * @pre -
-	 * @post Affecte {@code filename} a {@link #inputFile}
+	 * @post Affecte {@code inputFile} a {@link #inputFile}
 	 */
 	public static void setInputFile(String inputFile)
 	{
 		FileManager.inputFile = inputFile;
 	}
-	
+
+	/**
+	 * @param outputFile
+	 *            Le chemin vers un fichier dans lequel ecrire.
+	 * @pre -
+	 * @post Affecte {@code outputFile} a {@link #outputFile}.
+	 */
 	public static void setOutputFile(String outputFile)
 	{
 		FileManager.outputFile = outputFile;
