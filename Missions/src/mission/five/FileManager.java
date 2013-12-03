@@ -1,9 +1,12 @@
 package mission.five;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Class managing input and output files.
@@ -13,10 +16,16 @@ import java.io.IOException;
 
 public class FileManager
 {
+	public static final int READING = 1;
+
+	public static final int WRITING = 2;
+
 	/**
 	 * Represente le reader du fichier d'entree
 	 */
 	private static BufferedReader reader;
+
+	private static PrintWriter writer;
 
 	/**
 	 * Represente le chemin vers le fichier d'entree
@@ -72,7 +81,22 @@ public class FileManager
 		if (closeFile) closeFile();
 		return currentLine;
 	}
-	
+
+	public static void writeLine(String line)
+	{
+		writer.println(line);
+		if (writer.checkError())
+		{
+			System.err.println("Error in writing in the file.");
+			closeFile();
+			System.exit(-1);
+		}
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
 	public static String readFile()
 	{
 		StringBuilder sb = new StringBuilder();
@@ -99,7 +123,7 @@ public class FileManager
 		}
 		catch (FileNotFoundException e)
 		{
-			System.err.println("Read failed : File doesn't exist");
+			System.err.println("Open failed : File doesn't exist");
 			System.exit(-1);
 		}
 	}
@@ -119,6 +143,47 @@ public class FileManager
 	{
 		setFilename(filename);
 		openFile();
+	}
+
+	/**
+	 * Opens the file under the specified mode ({@link #READING} or
+	 * {@link #WRITING}). If the mode is set to {@link #READING}, the result is
+	 * equivalent to the call to {@link #openFile()}.
+	 * 
+	 * @param mode
+	 *            The mode the file has to be opened under.
+	 * @see #openFile()
+	 */
+	public static void openFile(int mode)
+	{
+		switch (mode)
+		{
+			case READING:
+				openFile();
+				break;
+			case WRITING:
+				try
+				{
+					writer =
+							new PrintWriter(new BufferedWriter(new FileWriter(
+									filename)));
+				}
+				catch (IOException e)
+				{
+					System.err.println("Read failed : File doesn't exist");
+					System.exit(-1);
+				}
+				break;
+			default:
+				throw new IllegalArgumentException(
+						"Unhandled operation on file");
+		}
+	}
+
+	public static void openFile(int mode, String filename)
+	{
+		setFilename(filename);
+		openFile(mode);
 	}
 
 	/**
@@ -143,21 +208,34 @@ public class FileManager
 	 * Ferme le flux du fichier d'entree.
 	 * 
 	 * @pre -
-	 * @post Ferme le flux du fichier d'entree et met {@link #reader} a
-	 *       {@code null}
+	 * @post Ferme le flux du fichier d'entree et met {@link #reader} et/ou
+	 *       {@link #writer} a {@code null}
 	 */
 	public static void closeFile()
 	{
-		try
+		if (reader != null)
 		{
-			reader.close();
+			try
+			{
+				reader.close();
+			}
+			catch (IOException e)
+			{
+				System.err.println("Error in closing the file.");
+				System.exit(-1);
+			}
+			reader = null;
 		}
-		catch (IOException e)
+		if (writer != null)
 		{
-			System.err.println("Error in closing the file.");
-			System.exit(-1);
+			writer.close();
+			if (writer.checkError())
+			{
+				System.err.println("Error in closing the file.");
+				System.exit(-1);
+			}
+			writer = null;
 		}
-		reader = null;
 	}
 
 	/**
