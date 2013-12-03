@@ -27,7 +27,7 @@ public class FileManager
 	/**
 	 * Represente le reader du fichier d'entree
 	 */
-	private static BufferedReader reader;
+	protected static BufferedReader reader;
 
 	protected static PrintWriter writer;
 
@@ -38,7 +38,9 @@ public class FileManager
 	/**
 	 * Represente le chemin vers le fichier d'entree
 	 */
-	private static String filename;
+	private static String inputFile;
+	
+	private static String outputFile;
 
 	/**
 	 * Lit une ligne du fichier d'entree. Est equivalent a
@@ -60,11 +62,8 @@ public class FileManager
 		catch (IOException e)
 		{
 			System.err.println("Error in reading the file.");
-			System.exit(-1);
-		}
-		finally
-		{
 			closeFile();
+			System.exit(-1);
 		}
 		return null;
 	}
@@ -113,16 +112,16 @@ public class FileManager
 	 */
 
 	/**
-	 * Ouvre le fichier d'entree dont le chemin est {@link #filename}
+	 * Ouvre le fichier d'entree dont le chemin est {@link #inputFile}
 	 * 
-	 * @pre {@link #filename} existe et est lisible
+	 * @pre {@link #inputFile} existe et est lisible
 	 * @post {@link #reader} contient le fichier ouvert et est pret a etre lu
 	 */
 	public static void openFile()
 	{
 		try
 		{
-			reader = new BufferedReader(new FileReader(filename));
+			reader = new BufferedReader(new FileReader(inputFile));
 		}
 		catch (FileNotFoundException e)
 		{
@@ -138,13 +137,13 @@ public class FileManager
 	 *            Le fichier a ouvrir
 	 * @pre Le fichier pointe par {@code filename} existe et est lisible
 	 * @post {@link #reader} contient le fichier ouvert et est pret a etre lu,
-	 *       et {@link #filename} contient le nouveau fichier d'entree
+	 *       et {@link #inputFile} contient le nouveau fichier d'entree
 	 * @see #openFile()
-	 * @see #setFilename(String)
+	 * @see #setInputFile(String)
 	 */
 	public static void openFile(String filename)
 	{
-		setFilename(filename);
+		setInputFile(filename);
 		openFile();
 	}
 
@@ -169,18 +168,18 @@ public class FileManager
 				{
 					writer =
 							new PrintWriter(new BufferedWriter(new FileWriter(
-									filename)));
+									outputFile)));
 				}
 				catch (IOException e)
 				{
-					System.err.println("Read failed : File doesn't exist");
+					System.err.println("Write failed : File doesn't exist");
 					System.exit(-1);
 				}
 				break;
 			case READ_BITSTREAM:
 				try
 				{
-					ibs = new InputBitStream(filename);
+					ibs = new InputBitStream(inputFile);
 				}
 				catch (IOException e)
 				{
@@ -191,13 +190,14 @@ public class FileManager
 			case WRITE_BITSTREAM:
 				try
 				{
-					obs = new OutputBitStream(filename);
+					obs = new OutputBitStream(outputFile);
 				}
 				catch (IOException e)
 				{
 					System.err.println("Writable bit stream open failed");
 					System.exit(-1);
 				}
+				break;
 			default:
 				throw new IllegalArgumentException(
 						"Unhandled operation on file");
@@ -206,12 +206,15 @@ public class FileManager
 
 	public static void openFile(int mode, String filename)
 	{
-		setFilename(filename);
+		if (mode == READING || mode == READ_BITSTREAM)
+			setInputFile(filename);
+		else if (mode == WRITING || mode == WRITE_BITSTREAM)
+			setOutputFile(filename);
 		openFile(mode);
 	}
 
 	/**
-	 * Rouvre le fichier d'entree pointe par {@link #filename}
+	 * Rouvre le fichier d'entree pointe par {@link #inputFile}
 	 * 
 	 * @pre -
 	 * @post Rouvre le fichier d'entree en le fermant prealablement si
@@ -224,7 +227,18 @@ public class FileManager
 	 */
 	public static void reopenFile()
 	{
-		if (reader != null) closeFile();
+		if (reader != null)
+		{
+			try
+			{
+				reader.close();
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+			reader = null;
+		}
 		openFile();
 	}
 
@@ -289,13 +303,18 @@ public class FileManager
 	}
 
 	/**
-	 * @param filename
+	 * @param inputFile
 	 *            Le chemin vers un fichier a lire
 	 * @pre -
-	 * @post Affecte {@code filename} a {@link #filename}
+	 * @post Affecte {@code filename} a {@link #inputFile}
 	 */
-	public static void setFilename(String filename)
+	public static void setInputFile(String inputFile)
 	{
-		FileManager.filename = filename;
+		FileManager.inputFile = inputFile;
+	}
+	
+	public static void setOutputFile(String outputFile)
+	{
+		FileManager.outputFile = outputFile;
 	}
 }

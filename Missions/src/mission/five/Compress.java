@@ -68,11 +68,8 @@ public class Compress
 		catch (IOException e)
 		{
 			System.err.println("Writable bit stream write error");
-			System.exit(-1);
-		}
-		finally
-		{
 			FileManager.closeFile();
+			System.exit(-1);
 		}
 	}
 
@@ -113,7 +110,7 @@ public class Compress
 		/*
 		 * Transformation du texte en suite de boolean ( 1 bit = 1 bool )
 		 */
-
+		
 		ArrayList<Boolean> text_encoded = new ArrayList<Boolean>();
 		FileManager.reopenFile();
 		String line = FileManager.readLine();
@@ -164,6 +161,7 @@ public class Compress
 		FileManager.openFile(FileManager.READING, zip.inputFile);
 		FileManager.openFile(FileManager.WRITE_BITSTREAM, zip.outputFile);
 		zip.compressFile();
+		FileManager.closeFile();
 	}
 
 }

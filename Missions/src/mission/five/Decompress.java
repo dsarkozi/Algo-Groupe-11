@@ -96,14 +96,14 @@ public class Decompress
 				temp_code.clear();
 				new_code = false;
 			}
-
 			temp = FileManager.ibs.readBoolean();
 			temp_code.add(temp);
+			ArrayList<Boolean> temp_temp_code =
+					new ArrayList<Boolean>(temp_code);
 
 			// est ce que le code courant existe dans l'arbre de huffman ?
 			// Est-il un Code concluant ?
-			boolean test = HuffmanCoder.checkCode(temp_code, hc.getTree());
-
+			boolean test = HuffmanCoder.checkCode(temp_temp_code, hc.getTree());
 			if (test)
 			{
 				// Le code courant correspond � un caract�re dans l'arbre de
@@ -116,7 +116,6 @@ public class Decompress
 			// Si le code courant n'existe pas dans l'arbre de huffman, on
 			// ajoute un bit au code et on recommence
 		}
-
 		if (text_final != char_amount)
 		{
 			System.out
