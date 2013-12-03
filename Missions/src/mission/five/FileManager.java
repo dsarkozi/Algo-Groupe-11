@@ -29,7 +29,7 @@ public class FileManager
 	 */
 	private static BufferedReader reader;
 
-	private static PrintWriter writer;
+	protected static PrintWriter writer;
 
 	protected static InputBitStream ibs;
 
@@ -89,8 +89,6 @@ public class FileManager
 		if (closeFile) closeFile();
 		return currentLine;
 	}
-	
-	
 
 	public static void writeLine(String line)
 	{

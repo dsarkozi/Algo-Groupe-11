@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.sun.org.apache.bcel.internal.generic.CHECKCAST;
-
 /**
  * Class taking care of file decompression.
  * 
@@ -16,6 +14,12 @@ public class Decompress
 {
 	private String inputFile;
 	private String outputFile;
+
+	HashMap<Character, Integer> occurences;
+
+	private int char_amount;
+
+	private int char_coded_amount;
 
 	/**
 	 * Constructor of the class.
@@ -29,88 +33,97 @@ public class Decompress
 	{
 		this.inputFile = inputFile;
 		this.outputFile = outputFile;
+		occurences = new HashMap<Character, Integer>();
 	}
+
 	/**
 	 * 
 	 * @param unzip
-	 * @return Texte final decompressé 
+	 * @return Texte final decompressï¿½
 	 * @throws IOException
 	 * 
-	 * Henri Crombé
+	 *             Henri Crombï¿½
 	 */
-	public String Huff_decompress(Decompress unzip) throws IOException{
-		
-		// Lecture du fichier compresse
-		
-		InputBitStream in = new InputBitStream(unzip.inputFile);
-		
-		HashMap<Character,Integer> occurences = new HashMap<Character,Integer>();
-		/*
-		 * Le format du fichier compressé :
-		 * 1) Nombre de caractères contenus dans le fichier d'entrée 
-		 * 2) Nombre de caractères codés ( nombre de couples caractère-occurence)
-		 * 3) Alphabet de décryptage : char - occurences
-		 * 4) Texte codés
-		 */
-		
-		int n_total_char = in.readInt(); // 1
-		int n_coded_char = in.readInt(); // 2
-		
-		// remplissage des occurences.   // 3 
-		
-		for(int i; i < n_coded_char ; i++){
-			char c = in.readChar();
-			int x = in.readInt();
-			occurences.put(c,x);
+	public void decompressFile()
+	{
+		try
+		{
+			processHeader();
+			writeResult(new HuffmanCoder(occurences));
 		}
-		// build huffman tree pour recuperer les caractère liés aux codes
-		
-		HuffmanCoder hc = new HuffmanCoder(occurences);
-		
-		// Lecture du texte codé (4)
-		
-		// On va utiliser un Code temporaire pour la lecture binaire. 
-		ArrayList<Boolean> temp_code; // code temporaire, permet la recherche dans l'arbre de huffman
-		
-		String text_final = "";
-		
+		catch (IOException e)
+		{
+			System.err.println("Readable bit stream read error");
+			System.exit(-1);
+		}
+		finally
+		{
+			FileManager.closeFile();
+		}
+	}
+
+	private void processHeader() throws IOException
+	{
+		char_amount = FileManager.ibs.readInt();
+		char_coded_amount = FileManager.ibs.readInt();
+		for (int i = 0; i < char_coded_amount; i++)
+		{
+			char c = FileManager.ibs.readChar();
+			int x = FileManager.ibs.readInt();
+			occurences.put(c, x);
+		}
+	}
+
+	private void writeResult(HuffmanCoder hc) throws IOException
+	{
+		// On va utiliser un Code temporaire pour la lecture binaire.
+		ArrayList<Boolean> temp_code = new ArrayList<Boolean>(); // code
+																	// temporaire,
+																	// permet la
+																	// recherche
+		// dans l'arbre de huffman
+
+		int text_final = 0;
+
 		boolean new_code = true;
-		
-		while(/* condition a déterminer !!!!!!  ? in.hasSomethingtoRead*/){
-		   
-			if(new_code == true){
-				temp_code  = new ArrayList<Boolean>();
+
+		boolean temp;
+
+		for (int i = 0; i < char_amount; i++)
+		{
+			if (new_code)
+			{
+				temp_code.clear();
 				new_code = false;
 			}
-			
-			boolean temp = in.readBoolean();
+
+			temp = FileManager.ibs.readBoolean();
 			temp_code.add(temp);
-			// est ce que le code courant existe dans l'arbre de huffman ? Est-il un Code concluant ?
+
+			// est ce que le code courant existe dans l'arbre de huffman ?
+			// Est-il un Code concluant ?
 			boolean test = HuffmanCoder.checkCode(temp_code, hc.getTree());
-		
-			if(test == true ){
-				// Le code courant correspond à un caractère dans l'arbre de huffman. On ajoute le caractere au texte final.
-				char cur_char = HuffmanCoder.getCharacter(temp_code, hc.getTree());
-				text_final += cur_char;
+
+			if (test)
+			{
+				// Le code courant correspond ï¿½ un caractï¿½re dans l'arbre de
+				// huffman. On ajoute le caractere au texte final.
+				FileManager.writer.print(HuffmanCoder.getCharacter(temp_code,
+						hc.getTree()));
+				text_final++;
 				new_code = true;
 			}
-		
-			else{
-				// Si le code courant n'existe pas dans l'arbre de huffman, on ajoute un bit au code et on recommence
-				temp_code.add(in.readBoolean());
-			}
-		     
+			// Si le code courant n'existe pas dans l'arbre de huffman, on
+			// ajoute un bit au code et on recommence
 		}
-		
-		if(text_final.length() != n_total_char){
-			
-			System.out.println("Le fichier décompressé ne contient pas le même nombre de caractères que le fichier d'entrée : ERREUR \n");
-			return text_final;
+
+		if (text_final != char_amount)
+		{
+			System.out
+					.println("Le fichier decompresse ne contient pas le meme nombre de caracteres que le fichier d'entree : ERREUR");
 		}
-		return text_final;
-		
-	
 	}
+
 	/**
 	 * 
 	 * @param args
@@ -128,6 +141,8 @@ public class Decompress
 			return;
 		}
 		Decompress unzip = new Decompress(args[0], args[1]);
-		
+		FileManager.openFile(FileManager.READ_BITSTREAM, unzip.inputFile);
+		FileManager.openFile(FileManager.WRITING, unzip.outputFile);
+		unzip.decompressFile();
 	}
 }

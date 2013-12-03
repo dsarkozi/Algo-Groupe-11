@@ -12,10 +12,14 @@ import java.util.HashMap;
  */
 public class Compress
 {
+	private String inputFile;
+
+	private String outputFile;
+
 	private HashMap<Character, Code> char_map;
-	
+
 	private HashMap<Character, Integer> occurences;
-	
+
 	private int text_length = 0;
 
 	/**
@@ -26,10 +30,11 @@ public class Compress
 	 * @param outputFile
 	 *            The output file that will contain the compressed input file.
 	 */
-	/*
-	 * public Compress(String inputFile, String outputFile) { this.inputFile =
-	 * inputFile; this.outputFile = outputFile; }
-	 */
+	public Compress(String inputFile, String outputFile)
+	{
+		this.inputFile = inputFile;
+		this.outputFile = outputFile;
+	}
 
 	/**
 	 * Huff_compress compresses the zip.inputfile into zip.outputfile
@@ -114,9 +119,9 @@ public class Compress
 		String line = FileManager.readLine();
 		char[] charLine;
 		FileManager.obs.write(text_length);
-		FileManager.obs.write('\n');
+		// FileManager.obs.write('\n');
 		FileManager.obs.write(occurences.size());
-		FileManager.obs.write('\n');
+		// FileManager.obs.write('\n');
 		for (Character c : occurences.keySet())
 		{
 			// On imprime l'alphabet de decryptage
@@ -155,9 +160,9 @@ public class Compress
 			System.err.println("Invalid number of arguments.");
 			return;
 		}
-		Compress zip = new Compress();
-		FileManager.openFile(FileManager.READING, args[0]);
-		FileManager.openFile(FileManager.WRITE_BITSTREAM, args[1]);
+		Compress zip = new Compress(args[0], args[1]);
+		FileManager.openFile(FileManager.READING, zip.inputFile);
+		FileManager.openFile(FileManager.WRITE_BITSTREAM, zip.outputFile);
 		zip.compressFile();
 	}
 
