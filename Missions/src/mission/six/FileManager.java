@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * Classe de gestion des fichiers d'entree
+ * Input file manager class.
  * 
  * @author David Sarkozi
  */
@@ -14,12 +14,12 @@ import java.io.IOException;
 public class FileManager
 {
 	/**
-	 * Represente le reader du fichier d'entree
+	 * Input file reader.
 	 */
 	private BufferedReader reader;
 
 	/**
-	 * Represente le chemin vers le fichier d'entree
+	 * Input file path.
 	 */
 	private String filename;
 
@@ -36,14 +36,13 @@ public class FileManager
 	}
 
 	/**
-	 * Lit une ligne du fichier d'entree. Est equivalent a
-	 * {@code readLine(false)}
+	 * Reads a line of the input file. Equivalent to {@code readLine(false)}.
 	 * 
-	 * @pre Le reader est ouvert et pret a etre lu
-	 * @post Retourne la ligne lue
-	 * @return La ligne lue
+	 * @pre {@link #reader} is open and ready to be read.
+	 * @post Returns the line read.
+	 * @return The line read.
 	 * @throws IOException
-	 *             Si un evenement inattendu est survenu pendant la lecture
+	 *             If an unknown event occurs while reading.
 	 * @see #readLine(boolean)
 	 */
 	public String readLine() throws IOException
@@ -52,18 +51,17 @@ public class FileManager
 	}
 
 	/**
-	 * Lit une ligne du fichier d'entree et ferme {@link #reader} si specifie
+	 * Reads a line of the input file and closes {@link #reader} if
+	 * {@code closeFile} is set to {@code true}.
 	 * 
 	 * @param closeFile
-	 *            Si defini a {@code true}, {@link #reader} est ferme apres
-	 *            lecture
-	 * @pre {@link #reader} est ouvert et pret a etre lu
-	 * @post Retourne la ligne lue et ferme {@link #reader} si closeFile est a
-	 *       {@code true}
-	 * @return La ligne lue
+	 *            If {@code true}, {@link #reader} is closed after reading.
+	 * @pre {@link #reader} is opened and ready to be read.
+	 * @post Returns the line read and closes {@link #reader} if
+	 *       {@code closeFile} is set to {@code true}.
+	 * @return The line read.
 	 * @throws IOException
-	 *             Si un evenement inattendu est survenu pendant la lecture ou
-	 *             la fermeture du fichier le cas echeant.
+	 *             If an unknown event occurs while reading or closing the file.
 	 * @see #closeFile()
 	 */
 	public String readLine(boolean closeFile) throws IOException
@@ -76,7 +74,7 @@ public class FileManager
 	/**
 	 * Opens the input file whose path is {@link #filename}.
 	 * 
-	 * @return this
+	 * @return {@code this}
 	 * @pre {@link #filename} exists and is readable.
 	 * @post {@link #reader} contains the opened file and is ready to be read.
 	 * @throws FileNotFoundException
@@ -90,12 +88,12 @@ public class FileManager
 	}
 
 	/**
-	 * Rouvre le fichier d'entree pointe par {@link #filename}
+	 * Reopens the input file whose path is {@link #filename}.
 	 * 
-	 * @return this
+	 * @return {@code this}
 	 * @pre -
-	 * @post Rouvre le fichier d'entree en le fermant prealablement si
-	 *       {@link #reader} n'est pas {@code null}
+	 * @post Reopens the input file after closing {@link #reader} first if it
+	 *       isn't {@code null}.
 	 * @see #openFile()
 	 * @see #closeFile()
 	 */
@@ -106,13 +104,12 @@ public class FileManager
 	}
 
 	/**
-	 * Ferme le flux du fichier d'entree.
+	 * Closes the input file.
 	 * 
 	 * @pre -
-	 * @post Ferme le flux du fichier d'entree et met {@link #reader} a
-	 *       {@code null}
+	 * @post Closes and sets {@link #reader} to {@code null}.
 	 * @throws IOException
-	 *             If it failed to close the file.
+	 *             If it failed to close {@link #reader}.
 	 */
 	public void closeFile() throws IOException
 	{
@@ -121,10 +118,12 @@ public class FileManager
 	}
 
 	/**
+	 * Sets the new file path to {@code this}.
+	 * 
 	 * @param filename
-	 *            Le chemin vers un fichier a lire
+	 *            The new file path to set.
 	 * @pre -
-	 * @post Affecte {@code filename} a {@link #filename}
+	 * @post Sets {@code filename} to {@link #filename} of {@code this}.
 	 * @see #filename
 	 */
 	public void setFilename(String filename)
