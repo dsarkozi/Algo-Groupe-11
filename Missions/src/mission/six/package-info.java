@@ -12,7 +12,8 @@
  * </ul>
  * <li>Loic Lacomblez</li>
  * <ul>
- * <li></li>
+ * <li>Class diagram</li>
+ * <li>Graph structure</li>
  * </ul>
  * <ul>
  * 
@@ -56,7 +57,7 @@
  * </ul>
  * <li>Nicolas Marchand</li>
  * <ul>
- * <li></li>
+ * <li>Questions 2 and 3</li>
  * </ul>
  * <ul>
  * 
