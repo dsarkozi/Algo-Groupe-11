@@ -1,5 +1,6 @@
 /**
- * Mission 6 - 
+ * Mission 6 - Graphs manipulation algorithms : Optimal airports
+ * network by minimizing flight costs.
  * 
  * <ul>
  * <li>Clementine Munyabarenzi</li>
@@ -32,6 +33,8 @@
  * </ul>
  * <li>David Sarkozi</li>
  * <ul>
+ * <li>{@link mission.six.Main}
+ * <li>{@link mission.six.FileManager}</li>
  * <li>Javadoc</li>
  * </ul>
  * <ul>
