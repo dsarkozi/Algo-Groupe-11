@@ -26,7 +26,7 @@
  * 
  * </ul>
  * <li>Benoit Sluysmans</li>
- * <ul>
+ * <ul>{@link mission.six.UnionFind}
  * <li></li>
  * </ul>
  * <ul>
