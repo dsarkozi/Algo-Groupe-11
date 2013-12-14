@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.regex.Pattern;
 
 /**
@@ -119,9 +120,11 @@ public class AirportNetwork
 		}
 		airnet.printNetwork(System.out);
 		PrintStream ps = null;
+		PrintStream psSort = null;
 		try
 		{
 			ps = new PrintStream("output.txt");
+			psSort = new PrintStream("output-sorted.txt");
 		}
 		catch (FileNotFoundException e1)
 		{
@@ -136,5 +139,7 @@ public class AirportNetwork
 			System.exit(-1);
 		}
 		airnet.printNetwork(ps);
+		Collections.sort(airnet.network.getEdge());
+		airnet.printNetwork(psSort);
 	}
 }
