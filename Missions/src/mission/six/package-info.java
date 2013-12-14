@@ -29,9 +29,10 @@
  * </ul>
  * <li>Benoit Sluysmans</li>
  * <ul>
- * <ul>{@link mission.six.UnionFind}
- * <ul>{@link mission.six.Node}
- * <ul>{@link mission.six.vertex}
+ * <li>{@link mission.six.UnionFind}
+ * <li>{@link mission.six.Node}
+ * <li>{@link mission.six.vertex}
+ * <li>{@link mission.six.Graph}
  * <li>{@link mission.six.AirportNetwork}</li>
  * <li>Javadoc</li>
  * </ul>
