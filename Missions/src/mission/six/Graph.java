@@ -65,7 +65,7 @@ public class Graph<E,F extends Comparable<F>>
 	 * @post les noueds 'vertex1' et 'vertex2' sont maintenant lies par une arrete stockant
 	 * 		l'element 'elem'.
 	 */
-	public void connextVertex(Vertex<E,F> vertex1, Vertex<E,F> vertex2, F weight)
+	public void connectVertex(Vertex<E,F> vertex1, Vertex<E,F> vertex2, F weight)
 	{
 		/* creation de l'arrete */
 		Edge<E,F> newEdge = new Edge<E,F>(vertex1, vertex2, weight);
