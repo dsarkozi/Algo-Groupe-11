@@ -79,6 +79,7 @@ public class Edge<E,F extends Comparable<F>> implements Comparable<Edge<E,F>>
 	 * 									=0 si 'this.elem' == 'edge.elem'
 	 * 									>0 si 'this.elem' > 'edge.elem'
 	 */
+	@Override
 	public int compareTo(Edge<E,F> edge)
 	{
 		return this.getElement().compareTo(edge.getElement());
