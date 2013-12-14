@@ -10,7 +10,7 @@ import java.util.NoSuchElementException;
  * @param <E> type d'element stocke par le noeud
  * @param <F> type d'elemnt stocke par les arretes liant les noeuds
  */
-public class Vertex<E,F>
+public class Vertex<E,F extends Comparable<F>>
 {
 	private E element;
 	private ArrayList<Edge<E,F>> adjacent;

@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @param <E> type d'elment stocke dans les noueds connectes aux arretes
  * @param <F> type d'element stocke dans les arretes ('poids') 
  */
-public class Edge<E,F> implements Comparable<Edge<E,F>>
+public class Edge<E,F extends Comparable<F>> implements Comparable<Edge<E,F>>
 {
 	private ArrayList<Vertex<E,F>> ends;
 	private F element;
@@ -81,6 +81,6 @@ public class Edge<E,F> implements Comparable<Edge<E,F>>
 	 */
 	public int compareTo(Edge<E,F> edge)
 	{
-		return ((Comparable<F>) this.getElement()).compareTo(edge.getElement());
+		return this.getElement().compareTo(edge.getElement());
 	}
 }
