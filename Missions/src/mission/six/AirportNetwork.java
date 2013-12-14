@@ -9,8 +9,9 @@ import java.io.FileNotFoundException;
  * @author David Sarkozi
  * 
  */
-public class Main
+public class AirportNetwork
 {
+	private Graph<Integer, Integer> network;
 	
 	/**
 	 * @param args

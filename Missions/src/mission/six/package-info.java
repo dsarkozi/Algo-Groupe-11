@@ -36,7 +36,7 @@
  * </ul>
  * <li>David Sarkozi</li>
  * <ul>
- * <li>{@link mission.six.Main}
+ * <li>{@link mission.six.AirportNetwork}
  * <li>{@link mission.six.FileManager}</li>
  * <li>Javadoc</li>
  * </ul>
