@@ -75,6 +75,7 @@ public class AirportNetwork
 		if (args.length != 1)
 		{
 			System.err.println("Invalid number of args.");
+			System.exit(-1);
 		}
 		FileManager inputFile = new FileManager(args[0]);
 		try
