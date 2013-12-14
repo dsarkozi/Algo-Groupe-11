@@ -67,6 +67,13 @@ public class Graph<E,F>
 	 */
 	public void connextVertex(Vertex<E,F> vertex1, Vertex<E,F> vertex2, F weight)
 	{
-		edge.add(new Edge<E,F>(vertex1, vertex2, weight));
+		/* creation de l'arrete */
+		Edge<E,F> newEdge = new Edge<E,F>(vertex1, vertex2, weight);
+		
+		/* update des vertex */
+		vertex1.addAdjacent(newEdge);
+		vertex2.addAdjacent(newEdge);
+		
+		edge.add(newEdge);
 	}
 }
