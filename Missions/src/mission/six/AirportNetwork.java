@@ -63,16 +63,9 @@ public class AirportNetwork
 	{
 		if (out == null) out = System.out;
 		ArrayList<Edge<Integer, Integer>> edges = network.getEdge();
-		ArrayList<Vertex<Integer, Integer>> vertex = null;
 		for (Edge<Integer, Integer> edge : edges)
 		{
-			vertex = edge.getEnds();
-			for (Vertex<Integer, Integer> v : vertex)
-			{
-				out.print(v.getElement());
-				out.print("\t");
-			}
-			out.println(edge.getElement());
+			out.println(edge.toString());
 		}
 	}
 

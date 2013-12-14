@@ -67,6 +67,7 @@ public class Edge<E,F extends Comparable<F>> implements Comparable<Edge<E,F>>
 	 * @post un String est retourne : reprenant les deux noeuds connectes ainsi que l'element
 	 * 		stocke dans cette arrete (format : "vertex1 \t vertex2 \t element")
 	 */
+	@Override
 	public String toString()
 	{
 		return ends.get(0).toString() + '\t' + ends.get(1).toString() + '\t' + element.toString();
