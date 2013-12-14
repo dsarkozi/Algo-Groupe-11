@@ -13,7 +13,9 @@
  * <li>Loic Lacomblez</li>
  * <ul>
  * <li>Class diagram</li>
- * <li>Graph structure</li>
+ * <li>{@link mission.six.Graph}</li>
+ * <li>{@link mission.six.Edge}</li>
+ * <li>{@link mission.six.Vertex}</li>
  * </ul>
  * <ul>
  * 
