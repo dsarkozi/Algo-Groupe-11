@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * @param <E> Type d'objet dans le noeud (Vertex)
  * @param <F> Type d'objet dans les arretes (Edge). Doit implementer comparable !
  */
-public class Graph<E,F>
+public class Graph<E,F extends Comparable<F>>
 {
 	private ArrayList<Vertex<E,F>> vertex;
 	private ArrayList<Edge<E,F>> edge;
