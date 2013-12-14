@@ -28,8 +28,12 @@
  * 
  * </ul>
  * <li>Benoit Sluysmans</li>
+ * <ul>
  * <ul>{@link mission.six.UnionFind}
- * <li></li>
+ * <ul>{@link mission.six.Node}
+ * <ul>{@link mission.six.vertex}
+ * <li>{@link mission.six.AirportNetwork}</li>
+ * <li>Javadoc</li>
  * </ul>
  * <ul>
  * 

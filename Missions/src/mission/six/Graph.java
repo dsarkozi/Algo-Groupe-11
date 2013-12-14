@@ -1,11 +1,13 @@
 package mission.six;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Une classe permettant de representer un graphe non-dirige
- * 
+ * @author Benoit Sluysmans
  * @author Loic Lacomblez
+ * 
  * 
  * @param <E>
  *            Type d'objet dans le noeud (Vertex)
@@ -28,6 +30,12 @@ public class Graph<E, F extends Comparable<F>>
 	{
 		vertex = new ArrayList<Vertex<E, F>>();
 		edge = new ArrayList<Edge<E, F>>();
+	}
+	
+	public Graph(ArrayList<Vertex<E, F>> v, ArrayList<Edge<E, F>> e)
+	{
+		vertex = v;
+		edge = e;
 	}
 
 	/**
@@ -90,5 +98,49 @@ public class Graph<E, F extends Comparable<F>>
 		vertex2.addAdjacent(newEdge);
 
 		edge.add(newEdge);
+	}
+	
+	/**
+	 * Applique l'algo de Kruskal sur g
+	 * 
+	 * @pre 
+	 * @post l'arbre sous-tendant de g de poids minimum
+	 */
+	public static Graph kruskal(Graph g)
+	{
+	    ArrayList<Vertex> vertices = g.getVertex();
+	    ArrayList<Edge> edges = g.getEdge();
+		
+	    //UnionFind pour runner l'algo
+		UnionFind u = new UnionFind(vertices);
+		
+		//edges et vertices du graphe retourne
+		ArrayList<Edge> outEdges = new ArrayList<Edge>();
+		ArrayList<Vertex> outVertices = new ArrayList<Vertex>();
+		
+		//KRUSKAL
+		Collections.sort(edges);
+		
+	    for (Edge e : edges) {
+	    	//Noeuds lies a cette arete
+	    	Vertex a = (Vertex) e.getEnds().get(0);
+	        Vertex b = (Vertex) e.getEnds().get(1);
+	        
+	        //Si ils ne sont pas dans le meme set, on lie leur set
+	        if (u.find(a.getNode()) != u.find(b.getNode())) {
+	        	
+	        	//On ajoute l'arete et les noeuds au graphe retourne
+	        	outEdges.add(e);
+	        	if (!outVertices.contains(a))
+	        		outVertices.add(a);
+	        	if (!outVertices.contains(b))
+	        		outVertices.add(b);
+	        	
+	        	//On lie leur set
+	        	u.union(a.getNode(), b.getNode());
+	        }
+	    }
+	    
+	    return new Graph(outVertices,outEdges);
 	}
 }

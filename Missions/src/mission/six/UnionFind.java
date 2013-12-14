@@ -2,8 +2,9 @@ package mission.six;
 
 import java.util.*;
 
-/*
- * Author: Benoit Sluysmans
+/**
+ * @author: Benoit Sluysmans
+ * 
  * Union-find structure based on nodes
  */
 
@@ -16,11 +17,12 @@ public class UnionFind {
 	 * Create n sets, each one with one node
 	 * @param list = node's list of the graph
 	 */
-	public UnionFind(ArrayList<Node> list) {
+	public UnionFind(ArrayList<Vertex> list) {
 		nodeCount = 0;
 		setCount = 0;
-		for (Node n : list)
-		      makeSet(n);
+		this.rootNodes = new ArrayList<Node>(list.size());
+		for (Vertex v : list)
+		      makeSet(v);
 	}
 
 	/**
@@ -78,7 +80,9 @@ public class UnionFind {
 	 * Creates a singleton set containing one node
 	 * @pre n is in the graph
 	 */
-	public void makeSet(Node n) {
+	public void makeSet(Vertex v) {
+		Node n = new Node(0, rootNodes.size(), null);
+	    v.setNode(n);
 		this.rootNodes.add(n);
 		this.setCount++;
 		this.nodeCount++;

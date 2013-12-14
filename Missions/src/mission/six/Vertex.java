@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 
 /**
  * Classe representant un noeud d'un graphe
+ * @author benoit Sluysmans
  * @author Loic Lacomblez
  *
  * @param <E> type d'element stocke par le noeud
@@ -14,6 +15,7 @@ public class Vertex<E,F extends Comparable<F>>
 {
 	private E element;
 	private ArrayList<Edge<E,F>> adjacent;
+	private Node n;
 	
 	/**
 	 * Constructeur de la classe Vertex 
@@ -26,6 +28,9 @@ public class Vertex<E,F extends Comparable<F>>
 		element = elem;
 		adjacent = new ArrayList<Edge<E,F>>();
 	}
+	
+	public void setNode(Node n) { this.n = n; }
+	public Node getNode() { return this.n; }
 	
 	/**
 	 * Retourne l'element contenu dans le noeud

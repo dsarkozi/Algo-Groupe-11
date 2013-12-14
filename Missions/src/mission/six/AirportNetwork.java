@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
  * printed.
  * 
  * @author David Sarkozi
+ * @author Benoit Sluysmans
  * 
  */
 public class AirportNetwork
@@ -22,6 +23,12 @@ public class AirportNetwork
 	{
 		network = new Graph<Integer, Integer>();
 	}
+	
+	public AirportNetwork(Graph g)
+	{
+		network = g;
+	}
+	
 
 	/**
 	 * Hydrates {@link #network} with the values of {@code inputFile}.
@@ -114,10 +121,12 @@ public class AirportNetwork
 		airnet.printNetwork(System.out);
 		PrintStream ps = null;
 		PrintStream psSort = null;
+		PrintStream psKruskal= null;
 		try
 		{
 			ps = new PrintStream("output.txt");
 			psSort = new PrintStream("output-sorted.txt");
+			psKruskal = new PrintStream("output-kruskal.txt");
 		}
 		catch (FileNotFoundException e1)
 		{
@@ -132,6 +141,9 @@ public class AirportNetwork
 			System.exit(-1);
 		}
 		airnet.printNetwork(ps);
+		Graph g = Graph.kruskal(airnet.network);
+		AirportNetwork finish = new AirportNetwork(g);
+		finish.printNetwork(psKruskal);
 		Collections.sort(airnet.network.getEdge());
 		airnet.printNetwork(psSort);
 	}
