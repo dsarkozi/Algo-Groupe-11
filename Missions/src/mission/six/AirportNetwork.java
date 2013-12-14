@@ -2,6 +2,7 @@ package mission.six;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -46,9 +47,20 @@ public class AirportNetwork
 			network.connectVertex(v1, v2, Integer.parseInt(lineParts[2]));
 		}
 	}
-	
-	private void printNetwork()
+
+	/**
+	 * Prints the airport {@link #network}.
+	 * 
+	 * @param out
+	 *            The {@link PrintStream} where it has to print.
+	 * @pre -
+	 * @post Prints {@link #network} to the {@link PrintStream} specified by
+	 *       {@code out}. If {@code out == null}, then printing is directed to
+	 *       {@link System#out} by default.
+	 */
+	private void printNetwork(PrintStream out)
 	{
+		if (out == null) out = System.out;
 		ArrayList<Edge<Integer, Integer>> edges = network.getEdge();
 		ArrayList<Vertex<Integer, Integer>> vertex = null;
 		for (Edge<Integer, Integer> edge : edges)
@@ -56,10 +68,10 @@ public class AirportNetwork
 			vertex = edge.getEnds();
 			for (Vertex<Integer, Integer> v : vertex)
 			{
-				System.out.print(v.getElement());
-				System.out.print("\t");
+				out.print(v.getElement());
+				out.print("\t");
 			}
-			System.out.println(edge.getElement());
+			out.println(edge.getElement());
 		}
 	}
 
@@ -67,8 +79,9 @@ public class AirportNetwork
 	 * @param args
 	 *            The input of the program.
 	 * @pre -
-	 * @post Processes the input and prints the output to {@code System.out}, or
-	 *       an error message if something went bad.
+	 * @post Processes the input and prints the output to {@link System#out} or
+	 *       any other {@link PrintStream} specified, or an error message if
+	 *       something went bad.
 	 */
 	public static void main(String[] args)
 	{
@@ -95,9 +108,33 @@ public class AirportNetwork
 		catch (IOException e)
 		{
 			System.err.println("Error while reading input file.");
+			try
+			{
+				inputFile.closeFile();
+			}
+			catch (IOException e1)
+			{
+			}
 			System.exit(-1);
 		}
-		airnet.printNetwork();
+		airnet.printNetwork(System.out);
+		PrintStream ps = null;
+		try
+		{
+			ps = new PrintStream("output.txt");
+		}
+		catch (FileNotFoundException e1)
+		{
+			System.err.println("Error while writing to output file.");
+			try
+			{
+				inputFile.closeFile();
+			}
+			catch (IOException e2)
+			{
+			}
+			System.exit(-1);
+		}
+		airnet.printNetwork(ps);
 	}
-
 }
