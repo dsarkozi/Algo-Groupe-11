@@ -62,6 +62,17 @@ public class Edge<E,F> implements Comparable<Edge<E,F>>
 	}
 
 	/**
+	 * Retourne une representation textuelle de l'arrete
+	 * @pre _
+	 * @post un String est retourne : reprenant les deux noeuds connectes ainsi que l'element
+	 * 		stocke dans cette arrete (format : "vertex1 \t vertex2 \t element")
+	 */
+	public String toString()
+	{
+		return ends.get(0).toString() + '\t' + ends.get(1).toString() + '\t' + element.toString();
+	}
+	
+	/**
 	 * Comparateur de la classe Edge
 	 * @pre _
 	 * @post une valeur est retournee : <0 si 'this.elem' < 'edge.elem'

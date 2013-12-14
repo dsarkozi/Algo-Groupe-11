@@ -80,5 +80,15 @@ public class Vertex<E,F>
 			throw new NoSuchElementException();
 	}
 	
+	/**
+	 * Retourne la representation textuelle du noeud
+	 * @pre_
+	 * @post un String representant l'element stocke dans le noeud est retourne 
+	 */
+	public String toString()
+	{
+		return element.toString();
+	}
+	
 
 }
