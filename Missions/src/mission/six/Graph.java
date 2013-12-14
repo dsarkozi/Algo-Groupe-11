@@ -1,15 +1,17 @@
 package mission.six;
 
+import java.util.ArrayList;
+
 /** Une classe permettant de representer un graphe non-dirige
  * @author Loic Lacomblez
  *
  * @param <E> Type d'objet dans le noeud (Vertex)
- * @param <F> Type d'objet dans les arretes (Edge)
+ * @param <F> Type d'objet dans les arretes (Edge). Doit implementer comparable !
  */
 public class Graph<E,F>
 {
-	private ArrayList<Vertex<E>> vertex;
-	private ArrayList<Edge<F>> edge;
+	private ArrayList<Vertex<E,F>> vertex;
+	private ArrayList<Edge<E,F>> edge;
 	
 	/**
 	 * Constructeur de la classe Graph
@@ -18,8 +20,8 @@ public class Graph<E,F>
 	 */
 	public Graph()
 	{
-		vertex = new ArrayList<Vertex<E>>();
-		edge = new ArrayList<Edge<F>>();
+		vertex = new ArrayList<Vertex<E,F>>();
+		edge = new ArrayList<Edge<E,F>>();
 	}
 	
 	/**
@@ -28,7 +30,7 @@ public class Graph<E,F>
 	 * @post un ArrayList contenant la liste des noeuds du graphe est retournee
 	 * 		Celle-ci peut potentiellement etre vide !  
 	 */
-	public ArrayList<Vertex<E>> getVertex()
+	public ArrayList<Vertex<E,F>> getVertex()
 	{
 		return vertex;
 	}
@@ -39,7 +41,7 @@ public class Graph<E,F>
 	 * @post un ArrayList contenant la liste des noeuds du graphe est retournee
 	 * 		Celle-ci peut potentiellement etre vide !
 	 */
-	public ArrayList<Edge<F>> getEdge()
+	public ArrayList<Edge<E,F>> getEdge()
 	{
 		return edge;
 	}
@@ -50,9 +52,9 @@ public class Graph<E,F>
 	 * @post un nouveau noeud contenant l'element elem a ete ajoute au graphe. Ce noeud
 	 * 		est retourne
 	 */
-	public Vertex<E> addVertex(E elem)
+	public Vertex<E,F> addVertex(E elem)
 	{
-		Vertex<E> newVertex = new Vertex<E>(elem);
+		Vertex<E,F> newVertex = new Vertex<E,F>(elem);
 		vertex.add(newVertex);
 		return newVertex;
 	}
@@ -63,8 +65,8 @@ public class Graph<E,F>
 	 * @post les noueds 'vertex1' et 'vertex2' sont maintenant lies par une arrete stockant
 	 * 		l'element 'elem'.
 	 */
-	public void connextVertex(Vertex<E> vertex1, Vertex<E> vertex2, F weight)
+	public void connextVertex(Vertex<E,F> vertex1, Vertex<E,F> vertex2, F weight)
 	{
-		edge.add(new Edge<F>(vertex1, vertex2, weight));
+		edge.add(new Edge<E,F>(vertex1, vertex2, weight));
 	}
 }
