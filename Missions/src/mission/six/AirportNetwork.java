@@ -18,17 +18,13 @@ import java.util.regex.Pattern;
 public class AirportNetwork
 {
 	private Graph<Integer, Integer> network;
+	private Graph<Integer, Integer> networkOptimal;
 
 	public AirportNetwork()
 	{
 		network = new Graph<Integer, Integer>();
-	}
-	
-	public AirportNetwork(Graph g)
-	{
-		network = g;
-	}
-	
+		networkOptimal = new Graph<Integer, Integer>();
+	}	
 
 	/**
 	 * Hydrates {@link #network} with the values of {@code inputFile}.
@@ -57,16 +53,16 @@ public class AirportNetwork
 	}
 
 	/**
-	 * Prints the airport {@link #network}.
+	 * Prints the airport {@code network}.
 	 * 
 	 * @param out
 	 *            The {@link PrintStream} where it has to print.
 	 * @pre -
-	 * @post Prints {@link #network} to the {@link PrintStream} specified by
+	 * @post Prints {@code network} to the {@link PrintStream} specified by
 	 *       {@code out}. If {@code out == null}, then printing is directed to
 	 *       {@link System#out} by default.
 	 */
-	private void printNetwork(PrintStream out)
+	public void printNetwork(Graph<Integer, Integer> network, PrintStream out)
 	{
 		if (out == null) out = System.out;
 		ArrayList<Edge<Integer, Integer>> edges = network.getEdge();
@@ -118,7 +114,7 @@ public class AirportNetwork
 			}
 			System.exit(-1);
 		}
-		airnet.printNetwork(System.out);
+		airnet.printNetwork(airnet.network, System.out);
 		PrintStream ps = null;
 		PrintStream psSort = null;
 		PrintStream psKruskal= null;
@@ -140,11 +136,10 @@ public class AirportNetwork
 			}
 			System.exit(-1);
 		}
-		airnet.printNetwork(ps);
-		Graph g = Graph.kruskal(airnet.network);
-		AirportNetwork finish = new AirportNetwork(g);
-		finish.printNetwork(psKruskal);
+		airnet.printNetwork(airnet.network, ps);
+		airnet.networkOptimal = airnet.network.kruskal();
+		airnet.printNetwork(airnet.networkOptimal, psKruskal);
 		Collections.sort(airnet.network.getEdge());
-		airnet.printNetwork(psSort);
+		airnet.printNetwork(airnet.network, psSort);
 	}
 }

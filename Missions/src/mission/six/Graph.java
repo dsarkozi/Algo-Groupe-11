@@ -106,25 +106,25 @@ public class Graph<E, F extends Comparable<F>>
 	 * @pre 
 	 * @post l'arbre sous-tendant de g de poids minimum
 	 */
-	public static Graph kruskal(Graph g)
+	public Graph<E,F> kruskal()
 	{
-	    ArrayList<Vertex> vertices = g.getVertex();
-	    ArrayList<Edge> edges = g.getEdge();
+	    ArrayList<Vertex<E,F>> vertices = this.getVertex();
+	    ArrayList<Edge<E,F>> edges = this.getEdge();
 		
 	    //UnionFind pour runner l'algo
-		UnionFind u = new UnionFind(vertices);
+		UnionFind<E,F> u = new UnionFind<E,F>(vertices);
 		
 		//edges et vertices du graphe retourne
-		ArrayList<Edge> outEdges = new ArrayList<Edge>();
-		ArrayList<Vertex> outVertices = new ArrayList<Vertex>();
+		ArrayList<Edge<E,F>> outEdges = new ArrayList<Edge<E,F>>();
+		ArrayList<Vertex<E,F>> outVertices = new ArrayList<Vertex<E,F>>();
 		
 		//KRUSKAL
 		Collections.sort(edges);
 		
-	    for (Edge e : edges) {
+	    for (Edge<E,F> e : edges) {
 	    	//Noeuds lies a cette arete
-	    	Vertex a = (Vertex) e.getEnds().get(0);
-	        Vertex b = (Vertex) e.getEnds().get(1);
+	    	Vertex<E,F> a = e.getEnds().get(0);
+	        Vertex<E,F> b = e.getEnds().get(1);
 	        
 	        //Si ils ne sont pas dans le meme set, on lie leur set
 	        if (u.find(a.getNode()) != u.find(b.getNode())) {
@@ -141,6 +141,6 @@ public class Graph<E, F extends Comparable<F>>
 	        }
 	    }
 	    
-	    return new Graph(outVertices,outEdges);
+	    return new Graph<E,F>(outVertices,outEdges);
 	}
 }

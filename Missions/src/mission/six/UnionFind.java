@@ -8,7 +8,7 @@ import java.util.*;
  * Union-find structure based on nodes
  */
 
-public class UnionFind {
+public class UnionFind<E,F extends Comparable<F>> {
 	public ArrayList<Node> rootNodes;
 	public int nodeCount;
 	public int setCount;
@@ -17,11 +17,11 @@ public class UnionFind {
 	 * Create n sets, each one with one node
 	 * @param list = node's list of the graph
 	 */
-	public UnionFind(ArrayList<Vertex> list) {
+	public UnionFind(ArrayList<Vertex<E,F>> list) {
 		nodeCount = 0;
 		setCount = 0;
 		this.rootNodes = new ArrayList<Node>(list.size());
-		for (Vertex v : list)
+		for (Vertex<E,F> v : list)
 		      makeSet(v);
 	}
 
@@ -80,7 +80,7 @@ public class UnionFind {
 	 * Creates a singleton set containing one node
 	 * @pre n is in the graph
 	 */
-	public void makeSet(Vertex v) {
+	public void makeSet(Vertex<E,F> v) {
 		Node n = new Node(0, rootNodes.size(), null);
 	    v.setNode(n);
 		this.rootNodes.add(n);
