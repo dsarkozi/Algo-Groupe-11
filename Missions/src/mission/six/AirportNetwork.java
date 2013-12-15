@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 
 /**
@@ -15,16 +15,17 @@ import java.util.regex.Pattern;
  * @author Benoit Sluysmans
  * 
  */
+/*	Comments are for debugging purposes	*/
 public class AirportNetwork
 {
 	private Graph<Integer, Integer> network;
-	private Graph<Integer, Integer> networkOptimal;
+	// private Graph<Integer, Integer> networkOptimal;
 
 	public AirportNetwork()
 	{
 		network = new Graph<Integer, Integer>();
-		networkOptimal = new Graph<Integer, Integer>();
-	}	
+		// networkOptimal = new Graph<Integer, Integer>();
+	}
 
 	/**
 	 * Hydrates {@link #network} with the values of {@code inputFile}.
@@ -115,9 +116,16 @@ public class AirportNetwork
 			System.exit(-1);
 		}
 		airnet.printNetwork(airnet.network, System.out);
+		System.out.println("Do you want to save the output to a file ?");
+		System.out.println("Not saving by default (y/n)");
+		Scanner in = new Scanner(System.in);
+		String output = null;
+		if (in.hasNext("[yn]")) output = in.next();
+		in.close();
+		/*
 		PrintStream ps = null;
 		PrintStream psSort = null;
-		PrintStream psKruskal= null;
+		PrintStream psKruskal = null;
 		try
 		{
 			ps = new PrintStream("output.txt");
@@ -136,10 +144,38 @@ public class AirportNetwork
 			}
 			System.exit(-1);
 		}
+		
 		airnet.printNetwork(airnet.network, ps);
-		airnet.networkOptimal = airnet.network.kruskal();
-		airnet.printNetwork(airnet.networkOptimal, psKruskal);
 		Collections.sort(airnet.network.getEdge());
 		airnet.printNetwork(airnet.network, psSort);
+		airnet.networkOptimal = airnet.network.kruskal();
+		airnet.printNetwork(airnet.networkOptimal, psKruskal);
+		psSort.close();
+		psKruskal.close();
+		*/
+		if (output != null && output.equals("y"))
+		{
+			PrintStream ps = null;
+			try
+			{
+				ps = new PrintStream("output.txt");
+			}
+			catch (FileNotFoundException e)
+			{
+				System.err.println("Error while writing to output file.");
+				try
+				{
+					inputFile.closeFile();
+				}
+				catch (IOException e2)
+				{
+				}
+				System.exit(-1);
+			}
+			airnet.printNetwork(airnet.network.kruskal(), ps);
+			System.out.println("Output saved to ./output.txt");
+			ps.close();
+		}
+		else System.out.println("Output hasn't been saved.");
 	}
 }
