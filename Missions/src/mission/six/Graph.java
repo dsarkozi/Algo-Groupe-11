@@ -4,34 +4,46 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Une classe permettant de representer un graphe non-dirige
+ * Class representing a non-directed graph.
+ * 
  * @author Benoit Sluysmans
  * @author Loic Lacomblez
  * 
- * 
  * @param <E>
- *            Type d'objet dans le noeud (Vertex)
+ *            Type of element stored in each {@link Vertex}.
  * @param <F>
- *            Type d'objet dans les arretes (Edge). Doit implementer comparable
- *            !
+ *            Type of element stored in each {@link Edge} (weights), that has a
+ *            natural ordering.
  */
 public class Graph<E, F extends Comparable<F>>
 {
+	/**
+	 * List of the nodes of a graph.
+	 */
 	private ArrayList<Vertex<E, F>> vertex;
+
+	/**
+	 * List of the connections of a graph.
+	 */
 	private ArrayList<Edge<E, F>> edge;
 
 	/**
-	 * Constructeur de la classe Graph
-	 * 
-	 * @pre _
-	 * @post Un nouveau graphe vide a ete cree
+	 * Constructor of the class.
 	 */
 	public Graph()
 	{
 		vertex = new ArrayList<Vertex<E, F>>();
 		edge = new ArrayList<Edge<E, F>>();
 	}
-	
+
+	/**
+	 * Constructor of the class.
+	 * 
+	 * @param v
+	 *            A list of nodes.
+	 * @param e
+	 *            A list of connections.
+	 */
 	public Graph(ArrayList<Vertex<E, F>> v, ArrayList<Edge<E, F>> e)
 	{
 		vertex = v;
@@ -39,11 +51,11 @@ public class Graph<E, F extends Comparable<F>>
 	}
 
 	/**
-	 * Retourne la liste des noeuds contenus dans le graphe
+	 * Returns the list of the nodes of {@code this}.
 	 * 
-	 * @pre _
-	 * @post un ArrayList contenant la liste des noeuds du graphe est retournee
-	 *       Celle-ci peut potentiellement etre vide !
+	 * @return {@link #vertex}.
+	 * @pre -
+	 * @post Returns {@link #vertex}.
 	 */
 	public ArrayList<Vertex<E, F>> getVertex()
 	{
@@ -51,11 +63,11 @@ public class Graph<E, F extends Comparable<F>>
 	}
 
 	/**
-	 * Retourne la liste des arretes contenues dans le graphe
+	 * Returns the list of the connections of {@code this}.
 	 * 
-	 * @pre _
-	 * @post un ArrayList contenant la liste des noeuds du graphe est retournee
-	 *       Celle-ci peut potentiellement etre vide !
+	 * @return {@link #edge}.
+	 * @pre -
+	 * @post Returns {@link #edge}.
 	 */
 	public ArrayList<Edge<E, F>> getEdge()
 	{
@@ -63,12 +75,16 @@ public class Graph<E, F extends Comparable<F>>
 	}
 
 	/**
-	 * Ajoute au graphe un noeud
+	 * Adds a new {@link Vertex} to {@code this} with value {@code elem}.
 	 * 
-	 * @meth.author Refined by David Sarkozi
+	 * @param elem
+	 *            The value of the new {@link Vertex}.
+	 * @return The new {@link Vertex} added or the existing one.
+	 * @meth.author Refined by David Sarkozi.
 	 * @pre -
-	 * @post Check la presence d'un noeud dans le graphe, s'il n'est pas present
-	 *       l'ajoute, et s'il l'est, retourne l'instance existante.
+	 * @post Checks if the new {@link Vertex} referenced by {@code elem} already
+	 *       exists. If yes, then returns the existing one. Otherwise, adds it
+	 *       to the list.
 	 */
 	public Vertex<E, F> addVertex(E elem)
 	{
@@ -81,11 +97,17 @@ public class Graph<E, F extends Comparable<F>>
 	}
 
 	/**
-	 * Ajoute au graphe une arrete liant les 2 noeuds specifies
+	 * Adds a new weighted connection between two {@link Vertex}.
 	 * 
-	 * @pre l'arrete n'existe pas encore
-	 * @post les noueds 'vertex1' et 'vertex2' sont maintenant lies par une
-	 *       arrete stockant l'element 'elem'.
+	 * @param vertex1
+	 *            One end of the new connection.
+	 * @param vertex2
+	 *            The other end of the new connection.
+	 * @param weight
+	 *            The weight of the connection.
+	 * @pre The new connection doesn't exist yet.
+	 * @post Adds a new connection to {@code this} with {@code weight} between
+	 *       {@code vertex1} and {@code vertex2}.
 	 */
 	public void connectVertex(Vertex<E, F> vertex1, Vertex<E, F> vertex2,
 			F weight)
@@ -99,48 +121,49 @@ public class Graph<E, F extends Comparable<F>>
 
 		edge.add(newEdge);
 	}
-	
+
 	/**
-	 * Applique l'algo de Kruskal sur g
+	 * Applies Kruskal's algorithm on {@code this}.
 	 * 
-	 * @pre 
-	 * @post l'arbre sous-tendant de g de poids minimum
+	 * @return The resulting {@link Graph} from Kruskal's algorithm.
+	 * @pre -
+	 * @post Returns the underlying {@link Graph} of minimum weight.
 	 */
-	public Graph<E,F> kruskal()
+	public Graph<E, F> kruskal()
 	{
-	    ArrayList<Vertex<E,F>> vertices = this.getVertex();
-	    ArrayList<Edge<E,F>> edges = this.getEdge();
-		
-	    //UnionFind pour runner l'algo
-		UnionFind<E,F> u = new UnionFind<E,F>(vertices);
-		
-		//edges et vertices du graphe retourne
-		ArrayList<Edge<E,F>> outEdges = new ArrayList<Edge<E,F>>();
-		ArrayList<Vertex<E,F>> outVertices = new ArrayList<Vertex<E,F>>();
-		
-		//KRUSKAL
+		ArrayList<Vertex<E, F>> vertices = this.getVertex();
+		ArrayList<Edge<E, F>> edges = this.getEdge();
+
+		// UnionFind pour runner l'algo
+		UnionFind<E, F> u = new UnionFind<E, F>(vertices);
+
+		// edges et vertices du graphe retourne
+		ArrayList<Edge<E, F>> outEdges = new ArrayList<Edge<E, F>>();
+		ArrayList<Vertex<E, F>> outVertices = new ArrayList<Vertex<E, F>>();
+
+		// KRUSKAL
 		Collections.sort(edges);
-		
-	    for (Edge<E,F> e : edges) {
-	    	//Noeuds lies a cette arete
-	    	Vertex<E,F> a = e.getEnds().get(0);
-	        Vertex<E,F> b = e.getEnds().get(1);
-	        
-	        //Si ils ne sont pas dans le meme set, on lie leur set
-	        if (u.find(a.getNode()) != u.find(b.getNode())) {
-	        	
-	        	//On ajoute l'arete et les noeuds au graphe retourne
-	        	outEdges.add(e);
-	        	if (!outVertices.contains(a))
-	        		outVertices.add(a);
-	        	if (!outVertices.contains(b))
-	        		outVertices.add(b);
-	        	
-	        	//On lie leur set
-	        	u.union(a.getNode(), b.getNode());
-	        }
-	    }
-	    
-	    return new Graph<E,F>(outVertices,outEdges);
+
+		for (Edge<E, F> e : edges)
+		{
+			// Noeuds lies a cette arete
+			Vertex<E, F> a = e.getEnds().get(0);
+			Vertex<E, F> b = e.getEnds().get(1);
+
+			// Si ils ne sont pas dans le meme set, on lie leur set
+			if (u.find(a.getNode()) != u.find(b.getNode()))
+			{
+
+				// On ajoute l'arete et les noeuds au graphe retourne
+				outEdges.add(e);
+				if (!outVertices.contains(a)) outVertices.add(a);
+				if (!outVertices.contains(b)) outVertices.add(b);
+
+				// On lie leur set
+				u.union(a.getNode(), b.getNode());
+			}
+		}
+
+		return new Graph<E, F>(outVertices, outEdges);
 	}
 }
