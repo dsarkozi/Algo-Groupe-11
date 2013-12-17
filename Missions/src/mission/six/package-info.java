@@ -5,7 +5,7 @@
  * <ul>
  * <li>Clementine Munyabarenzi</li>
  * <ul>
- * <li></li>
+ * <li>Question 2</li>
  * </ul>
  * <ul>
  * 
@@ -39,7 +39,7 @@
  * </ul>
  * <li>David Sarkozi</li>
  * <ul>
- * <li>{@link mission.six.AirportNetwork}
+ * <li>{@link mission.six.AirportNetwork}</li>
  * <li>{@link mission.six.FileManager}</li>
  * <li>Javadoc</li>
  * </ul>
@@ -62,7 +62,7 @@
  * </ul>
  * <li>Nicolas Marchand</li>
  * <ul>
- * <li>Questions 2 and 3</li>
+ * <li>Questions 1 and 3</li>
  * </ul>
  * <ul>
  * 
