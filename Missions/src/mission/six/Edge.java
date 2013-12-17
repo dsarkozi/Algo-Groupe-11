@@ -3,45 +3,66 @@ package mission.six;
 import java.util.ArrayList;
 
 /**
- * Une classe representant les arrets d'un graphe
+ * Class representing the connections between {@link Vertex} of a {@link Graph}.
+ * These connections have a natural ordering according to their weight.
+ * 
  * @author Loic Lacomblez
- *
- * @param <E> type d'elment stocke dans les noueds connectes aux arretes
- * @param <F> type d'element stocke dans les arretes ('poids') 
+ * 
+ * @param <E>
+ *            Type of element stored in each {@link Vertex}.
+ * @param <F>
+ *            Type of element stored in each {@link Edge} (weights), that has a
+ *            natural ordering.
  */
-public class Edge<E,F extends Comparable<F>> implements Comparable<Edge<E,F>>
+public class Edge<E, F extends Comparable<F>> implements Comparable<Edge<E, F>>
 {
-	private ArrayList<Vertex<E,F>> ends;
-	private F element;
-	
 	/**
-	 * Constructeur de la classe Edge
-	 * @pre _
-	 * @post une nouvelle arrete a ete cree, liant les noueds 'vertex1' et 'vertex2'.
-	 * 		Cette arrete contient l'element elem.
+	 * Represents the two {@link Vertex} of a connection.
 	 */
-	public Edge(Vertex<E,F> vertex1, Vertex<E,F> vertex2, F elem)
+	private ArrayList<Vertex<E, F>> ends;
+
+	/**
+	 * Represents the weight of the connection, that can be naturally ordered.
+	 */
+	private F element;
+
+	/**
+	 * Constructor of the class.
+	 * 
+	 * @param vertex1
+	 *            One end of the new connection.
+	 * @param vertex2
+	 *            The other end of the new connection.
+	 * @param elem
+	 *            The weight of the connection.
+	 */
+	public Edge(Vertex<E, F> vertex1, Vertex<E, F> vertex2, F elem)
 	{
-		ends = new ArrayList<Vertex<E,F>>(2);
+		ends = new ArrayList<Vertex<E, F>>(2);
 		ends.add(vertex1);
 		ends.add(vertex2);
 		element = elem;
 	}
-	
+
 	/**
-	 * retourne les noeuds aux extremites de l'arrete
-	 * @pre _ 
-	 * @post une liste des 2 noeuds contenus aux extremites de l'arrete est retournee
+	 * Returns the two {@link Vertex} of {@code this}, represented by
+	 * {@link #ends}.
+	 * 
+	 * @return {@link #ends}.
+	 * @pre -
+	 * @post Returns {@link #ends}.
 	 */
-	public ArrayList<Vertex<E,F>> getEnds()
+	public ArrayList<Vertex<E, F>> getEnds()
 	{
 		return ends;
 	}
 
 	/**
-	 * retourne l'element stocke dans l'arrete
-	 * @pre _
-	 * @post l'element stocke par l'arrete est retourne
+	 * Returns the weight of {@code this}.
+	 * 
+	 * @return {@link #element}.
+	 * @pre -
+	 * @post Returns {@link #element}.
 	 */
 	public F getElement()
 	{
@@ -49,39 +70,45 @@ public class Edge<E,F extends Comparable<F>> implements Comparable<Edge<E,F>>
 	}
 
 	/**
-	 * modifie l'element stocke a l'arret
-	 * @pre _
-	 * @post l'element stocke a l'arrete est modifie, et son ancien element
-	 * 		est retourne
+	 * Edits the weight of {@code this}.
+	 * 
+	 * @param element
+	 *            The new weight to set.
+	 * @pre -
+	 * @post Sets {@link #element} to a new value.
 	 */
-	public F setElement(F elem)
+	public void setElement(F element)
 	{
-		F prevElem = element;
-		element = elem;
-		return prevElem;
+		this.element = element;
 	}
 
 	/**
-	 * Retourne une representation textuelle de l'arrete
-	 * @pre _
-	 * @post un String est retourne : reprenant les deux noeuds connectes ainsi que l'element
-	 * 		stocke dans cette arrete (format : "vertex1 \t vertex2 \t element")
+	 * Returns a textual representation of {@code this}.
+	 * 
+	 * @return A textual representation of {@code this}.
+	 * @pre -
+	 * @post Returns a textual representation of {@code this} as follows :
+	 *       {@code vertex1.toString() + '\t' + vertex2.toString() + '\t' +
+	 *       {@link #element}.toString()} .
 	 */
 	@Override
 	public String toString()
 	{
-		return ends.get(0).toString() + '\t' + ends.get(1).toString() + '\t' + element.toString();
+		return ends.get(0).toString() + '\t' + ends.get(1).toString() + '\t'
+				+ element.toString();
 	}
-	
+
 	/**
-	 * Comparateur de la classe Edge
-	 * @pre _
-	 * @post une valeur est retournee : <0 si 'this.elem' < 'edge.elem'
-	 * 									=0 si 'this.elem' == 'edge.elem'
-	 * 									>0 si 'this.elem' > 'edge.elem'
+	 * Comparator of the class.
+	 * 
+	 * @param edge
+	 *            A connection to compare with {@code this}.
+	 * @pre -
+	 * @post Compares two connections according to the natural ordering of their
+	 *       {@link #element}.
 	 */
 	@Override
-	public int compareTo(Edge<E,F> edge)
+	public int compareTo(Edge<E, F> edge)
 	{
 		return this.getElement().compareTo(edge.getElement());
 	}
