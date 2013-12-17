@@ -12,15 +12,22 @@ import java.util.regex.Pattern;
  * printed.
  * 
  * @author David Sarkozi
- * @author Benoit Sluysmans
  * 
  */
-/*	Comments are for debugging purposes	*/
+/* Comments are for debugging purposes */
 public class AirportNetwork
 {
+	/**
+	 * Represents the airport network graph, containing all the potential flight
+	 * paths between all the destinations.
+	 */
 	private Graph<Integer, Integer> network;
+
 	// private Graph<Integer, Integer> networkOptimal;
 
+	/**
+	 * Constructor of the class.
+	 */
 	public AirportNetwork()
 	{
 		network = new Graph<Integer, Integer>();
@@ -28,19 +35,62 @@ public class AirportNetwork
 	}
 
 	/**
-	 * Hydrates {@link #network} with the values of {@code inputFile}.
+	 * Constructor of the class. Opens {@code inputFile} and hydrates
+	 * {@link #network} with data read from it.
+	 * 
+	 * @param inputFile
+	 *            The input file manager to be opened and read.
+	 * @see #hydrateNetwork(FileManager)
+	 */
+	public AirportNetwork(FileManager inputFile)
+	{
+		this();
+		try
+		{
+			inputFile.openFile();
+		}
+		catch (FileNotFoundException e)
+		{
+			System.err.println("Error loading the file.");
+			System.exit(-1);
+		}
+		try
+		{
+			hydrateNetwork(inputFile);
+		}
+		catch (IOException e)
+		{
+			System.err.println("Error while reading input file.");
+			try
+			{
+				inputFile.closeFile();
+			}
+			catch (IOException e1)
+			{
+			}
+			System.exit(-1);
+		}
+	}
+
+	/**
+	 * Hydrates {@link #network} with data from {@code inputFile}.
+	 * 
+	 * @pre {@code inputFile} has been opened before the call.
+	 * @post Hydrates {@link #network} with data from {@code inputFile}, throws
+	 *       an exception on error.
 	 * 
 	 * @param inputFile
 	 *            The input file manager.
 	 * @throws IOException
 	 *             If the reading operation failed.
 	 * @throws NumberFormatException
-	 *             If the input file isn't made of Integers.
+	 *             If the input file isn't made of {@code Integers}.
 	 */
 	private void hydrateNetwork(FileManager inputFile) throws IOException
 	{
 		String[] lineParts = null;
 		String line = null;
+		/* For tab delimiters parsing */
 		Pattern pattern = Pattern.compile("[\\t ]");
 		while ((line = inputFile.readLine()) != null)
 		{
@@ -54,10 +104,13 @@ public class AirportNetwork
 	}
 
 	/**
-	 * Prints the airport {@code network}.
+	 * Prints an airport {@link #network}.
 	 * 
 	 * @param out
 	 *            The {@link PrintStream} where it has to print.
+	 *            {@link System#out} by default if {@code null}.
+	 * @param network
+	 *            The {@link #network} to print.
 	 * @pre -
 	 * @post Prints {@code network} to the {@link PrintStream} specified by
 	 *       {@code out}. If {@code out == null}, then printing is directed to
@@ -75,11 +128,11 @@ public class AirportNetwork
 
 	/**
 	 * @param args
-	 *            The input of the program.
+	 *            The input of the program. {@code args[0] == inputFile}.
 	 * @pre -
-	 * @post Processes the input and prints the output to {@link System#out} or
-	 *       any other {@link PrintStream} specified, or an error message if
-	 *       something went bad.
+	 * @post Processes the input and prints the output to {@link System#out}
+	 *       plus any other {@link PrintStream} specified, or an error message
+	 *       if something went bad.
 	 */
 	public static void main(String[] args)
 	{
@@ -89,32 +142,8 @@ public class AirportNetwork
 			System.exit(-1);
 		}
 		FileManager inputFile = new FileManager(args[0]);
-		try
-		{
-			inputFile.openFile();
-		}
-		catch (FileNotFoundException e)
-		{
-			System.err.println("Error loading the file.");
-			System.exit(-1);
-		}
-		AirportNetwork airnet = new AirportNetwork();
-		try
-		{
-			airnet.hydrateNetwork(inputFile);
-		}
-		catch (IOException e)
-		{
-			System.err.println("Error while reading input file.");
-			try
-			{
-				inputFile.closeFile();
-			}
-			catch (IOException e1)
-			{
-			}
-			System.exit(-1);
-		}
+		AirportNetwork airnet = new AirportNetwork(inputFile);
+
 		airnet.printNetwork(airnet.network, System.out);
 		System.out.println("Do you want to save the output to a file ?");
 		System.out.println("Not saving by default (y/n)");
@@ -123,36 +152,18 @@ public class AirportNetwork
 		if (in.hasNext("[yn]")) output = in.next();
 		in.close();
 		/*
-		PrintStream ps = null;
-		PrintStream psSort = null;
-		PrintStream psKruskal = null;
-		try
-		{
-			ps = new PrintStream("output.txt");
-			psSort = new PrintStream("output-sorted.txt");
-			psKruskal = new PrintStream("output-kruskal.txt");
-		}
-		catch (FileNotFoundException e1)
-		{
-			System.err.println("Error while writing to output file.");
-			try
-			{
-				inputFile.closeFile();
-			}
-			catch (IOException e2)
-			{
-			}
-			System.exit(-1);
-		}
-		
-		airnet.printNetwork(airnet.network, ps);
-		Collections.sort(airnet.network.getEdge());
-		airnet.printNetwork(airnet.network, psSort);
-		airnet.networkOptimal = airnet.network.kruskal();
-		airnet.printNetwork(airnet.networkOptimal, psKruskal);
-		psSort.close();
-		psKruskal.close();
-		*/
+		 * PrintStream ps = null; PrintStream psSort = null; PrintStream
+		 * psKruskal = null; try { ps = new PrintStream("output.txt"); psSort =
+		 * new PrintStream("output-sorted.txt"); psKruskal = new
+		 * PrintStream("output-kruskal.txt"); } catch (FileNotFoundException e1)
+		 * { System.err.println("Error while writing to output file."); try {
+		 * inputFile.closeFile(); } catch (IOException e2) { } System.exit(-1);
+		 * } airnet.printNetwork(airnet.network, ps);
+		 * Collections.sort(airnet.network.getEdge());
+		 * airnet.printNetwork(airnet.network, psSort); airnet.networkOptimal =
+		 * airnet.network.kruskal(); airnet.printNetwork(airnet.networkOptimal,
+		 * psKruskal); psSort.close(); psKruskal.close();
+		 */
 		if (output != null && output.equals("y"))
 		{
 			PrintStream ps = null;
