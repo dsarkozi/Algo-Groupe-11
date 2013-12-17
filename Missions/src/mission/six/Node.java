@@ -1,16 +1,40 @@
 package mission.six;
 
 /**
- * @author: Benoit Sluysmans
+ * Class representing the nodes of the {@link UnionFind} structure.
  * 
- * Classe cree pour utiliser le concept UnionFind
+ * @author Benoit Sluysmans
+ * @see UnionFind
  */
-public class Node {
-	public int rank;      // Number of nodes in the same set
-	public int index;     // Each node has its own index
-	public Node parent;   // Root of the node's set, null if the node is its own parent
+public class Node
+{
+	/**
+	 * Number of nodes in the same set.
+	 */
+	public int rank;
 
-	public Node(int r, int i, Node p) {
+	/**
+	 * Each node has its own index.
+	 */
+	public int index;
+
+	/**
+	 * Root of the node's set, {@code null} if the node is its own parent.
+	 */
+	public Node parent;
+
+	/**
+	 * Constructor of the class.
+	 * 
+	 * @param r
+	 *            The rank.
+	 * @param i
+	 *            The index.
+	 * @param p
+	 *            The parent.
+	 */
+	public Node(int r, int i, Node p)
+	{
 		this.rank = r;
 		this.index = i;
 		this.parent = p;
