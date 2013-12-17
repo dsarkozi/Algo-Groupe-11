@@ -144,7 +144,8 @@ public class AirportNetwork
 		FileManager inputFile = new FileManager(args[0]);
 		AirportNetwork airnet = new AirportNetwork(inputFile);
 
-		airnet.printNetwork(airnet.network, System.out);
+		Graph<Integer, Integer> kruskal = airnet.network.kruskal();
+		airnet.printNetwork(kruskal, System.out);
 		System.out.println("Do you want to save the output to a file ?");
 		System.out.println("Not saving by default (y/n)");
 		Scanner in = new Scanner(System.in);
@@ -183,7 +184,7 @@ public class AirportNetwork
 				}
 				System.exit(-1);
 			}
-			airnet.printNetwork(airnet.network.kruskal(), ps);
+			airnet.printNetwork(kruskal, ps);
 			System.out.println("Output saved to ./output.txt");
 			ps.close();
 		}
