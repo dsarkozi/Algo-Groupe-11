@@ -1,6 +1,6 @@
 /**
  * Mission 6 - Graphs manipulation algorithms : Optimal airports
- * network by minimizing flight costs.
+ * network by minimizing flight costs with help of Kruskal's algorithm.
  * 
  * <ul>
  * <li>Clementine Munyabarenzi</li>
@@ -29,12 +29,10 @@
  * </ul>
  * <li>Benoit Sluysmans</li>
  * <ul>
- * <li>{@link mission.six.UnionFind}
- * <li>{@link mission.six.Node}
- * <li>{@link mission.six.vertex}
- * <li>{@link mission.six.Graph}
- * <li>{@link mission.six.AirportNetwork}</li>
- * <li>Javadoc</li>
+ * <li>{@link mission.six.UnionFind}</li>
+ * <li>{@link mission.six.Node}</li>
+ * <li>{@link mission.six.Vertex}</li>
+ * <li>{@link mission.six.Graph}</li>
  * </ul>
  * <ul>
  * 

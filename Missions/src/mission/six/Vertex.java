@@ -4,38 +4,77 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 /**
- * Classe representant un noeud d'un graphe
- * @author benoit Sluysmans
+ * Class representing a node of a {@link Graph}.
+ * 
+ * @author Benoit Sluysmans
  * @author Loic Lacomblez
- *
- * @param <E> type d'element stocke par le noeud
- * @param <F> type d'elemnt stocke par les arretes liant les noeuds
+ * 
+ * @param <E>
+ *            Type of element stored in each {@link Vertex}.
+ * @param <F>
+ *            Type of element stored in each {@link Edge} (weights), that has a
+ *            natural ordering.
  */
-public class Vertex<E,F extends Comparable<F>>
+public class Vertex<E, F extends Comparable<F>>
 {
-	private E element;
-	private ArrayList<Edge<E,F>> adjacent;
-	private Node n;
-	
 	/**
-	 * Constructeur de la classe Vertex 
-	 * @pre _
-	 * @post Un nouveau noeud contenant l'element 'elem' a ete cree. Il
-	 * 		possede une liste d'arretes adjacentes nulles
+	 * The value stored by a node.
+	 */
+	private E element;
+
+	/**
+	 * List of all the links of a node.
+	 */
+	private ArrayList<Edge<E, F>> adjacent;
+
+	/**
+	 * The {@link Node} of a node, required by the {@link UnionFind} structure.
+	 */
+	private Node n;
+
+	/**
+	 * Constructor of the class.
+	 * 
+	 * @param elem
+	 *            The value of {@code this} to set.
 	 */
 	public Vertex(E elem)
 	{
 		element = elem;
-		adjacent = new ArrayList<Edge<E,F>>();
+		adjacent = new ArrayList<Edge<E, F>>();
 	}
-	
-	public void setNode(Node n) { this.n = n; }
-	public Node getNode() { return this.n; }
-	
+
 	/**
-	 * Retourne l'element contenu dans le noeud
-	 * @pre _
-	 * @post l'element contenu dans le noeud est retourne
+	 * Sets a new {@link Node}.
+	 * 
+	 * @param n
+	 *            The new {@link Node} to set.
+	 * @pre -
+	 * @post Sets {@link #n} to the new {@link Node}.
+	 */
+	public void setNode(Node n)
+	{
+		this.n = n;
+	}
+
+	/**
+	 * Gets {@link #n}.
+	 * 
+	 * @pre -
+	 * @post Returns {@link #n}.
+	 * @return {@link #n}.
+	 */
+	public Node getNode()
+	{
+		return this.n;
+	}
+
+	/**
+	 * Returns the value of {@code this}.
+	 * 
+	 * @return {@link #element}.
+	 * @pre -
+	 * @post Returns {@link #element}.
 	 */
 	public E getElement()
 	{
@@ -43,9 +82,12 @@ public class Vertex<E,F extends Comparable<F>>
 	}
 
 	/**
-	 * Modifie l'element contenu dans le noeud
-	 * @pre _
-	 * @post this contient maintenant l'element 'elem'
+	 * Sets {@link #element} to a new value {@code elem}.
+	 * 
+	 * @param elem
+	 *            The new value to set.
+	 * @pre -
+	 * @post Sets {@link #element} to {@code elem}.
 	 */
 	public void setElement(E elem)
 	{
@@ -53,49 +95,63 @@ public class Vertex<E,F extends Comparable<F>>
 	}
 
 	/**
-	 * Retourne la liste des arretes adjacentes au noeud
-	 * @pre _
-	 * @post une liste contenant les arretes adajacentes au noeud est retournee.
-	 * 		Cette liste peut etre vide !
+	 * Returns the list of the links of {@code this}.
+	 * 
+	 * @return {@link #adjacent}.
+	 * @pre -
+	 * @post Returns {@link #adjacent}.
 	 */
-	public ArrayList<Edge<E,F>> getAdjacent()
+	public ArrayList<Edge<E, F>> getAdjacent()
 	{
 		return adjacent;
 	}
-	
+
 	/**
-	 * Ajoute l'arrete 'edge' a la liste des arretes adjacentes du noeud
-	 * @pre edge n'est pas encore lie au noued 'this'
-	 * @post 'edge' a ete rajoutee a la liste des arretes adjacentes au noeud
+	 * Adds a new link to {@link #adjacent}.
+	 * 
+	 * @param edge
+	 *            The new link to add.
+	 * @pre {@code this} doesn't have {@code edge} as a link yet.
+	 * @post {@code edge} is added to {@link #adjacent}.
 	 */
-	public void addAdjacent(Edge<E,F> edge)
+	public void addAdjacent(Edge<E, F> edge)
 	{
 		adjacent.add(edge);
 	}
-	
+
 	/**
-	 * Retire l'arrete 'edge' de la liste des arrets adjacentes du noeud
-	 * @pre _
-	 * @post edge a ete retire du noeud 'this'. Si edge n'etait pas liee
-	 * 		au noued 'this', 'this' est inchange et une exception est lancee
+	 * Removes a link from the list {@link #adjacent} of {@code this}.
+	 * 
+	 * @param edge
+	 *            The link to remove.
+	 * @pre -
+	 * @post Removes {@code edge} from {@link #adjacent}, or throws an exception
+	 *       if an error occured.
+	 * @throws NoSuchElementException
+	 *             If {@code edge} isn't in {@link #adjacent}.
 	 */
-	public void removeAdjacent(Edge<E,F> edge) throws NoSuchElementException
+	public void removeAdjacent(Edge<E, F> edge) throws NoSuchElementException
 	{
-		if(!adjacent.remove(edge))
-			throw new NoSuchElementException();
+		if (!adjacent.remove(edge)) throw new NoSuchElementException();
 	}
-	
+
 	/**
-	 * Retourne la representation textuelle du noeud
-	 * @pre_
-	 * @post un String representant l'element stocke dans le noeud est retourne 
+	 * Returns the textual representation of {@code this}.
+	 * 
+	 * @return The textual representation of {@link #element}.
+	 * @pre -
+	 * @post Returns the textual representation of {@code this} by returning the
+	 *       textual representation of {@link #element}.
 	 */
+	@Override
 	public String toString()
 	{
 		return element.toString();
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
 	 * @meth.author David Sarkozi
 	 */
 	@Override
@@ -108,6 +164,11 @@ public class Vertex<E,F extends Comparable<F>>
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
+	 * Note that the comparison is done between {@link #element} of {@code this}
+	 * .
+	 * 
 	 * @meth.author David Sarkozi
 	 */
 	@Override
@@ -116,7 +177,7 @@ public class Vertex<E,F extends Comparable<F>>
 		if (this == obj) return true;
 		if (obj == null) return false;
 		if (getClass() != obj.getClass()) return false;
-		Vertex<?,?> other = (Vertex<?,?>) obj;
+		Vertex<?, ?> other = (Vertex<?, ?>) obj;
 		if (element == null)
 		{
 			if (other.element != null) return false;
